@@ -1,16 +1,15 @@
 {
   "schemaVersion": 1,
-  "id": "modid",
+  "id": "heartshapedbox",
   "version": "${version}",
 
-  "name": "Example Mod",
+  "name": "HeartShapedBox",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
     "Me!"
   ],
   "contact": {
-    "homepage": "https://fabricmc.net/",
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/FaeCraft/Heart-Shaped-Box"
   },
 
   "license": "CC0-1.0",
@@ -19,19 +18,19 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.heartshapedbox.main.HSBMain"
+    ],
+    "client": [
+      "net.heartshapedbox.main.HSBClient"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "heartshapedbox.mixins.json"
   ],
 
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",
     "minecraft": "1.16.x"
-  },
-  "suggests": {
-    "another-mod": "*"
   }
 }

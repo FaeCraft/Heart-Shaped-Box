@@ -1,9 +1,10 @@
-package net.fabricmc.example;
+package net.heartshapedbox.main;
 
 import net.fabricmc.api.ModInitializer;
 
-public class ExampleMod implements ModInitializer {
+public class HSBMain implements ModInitializer {
 	@Override
 	public void onInitialize() {
+	
 	}
 }
