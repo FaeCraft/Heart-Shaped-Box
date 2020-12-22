@@ -4,6 +4,8 @@
   "package": "net.heartshapedbox.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "BodyPartDuck",
+    "HandleTakenDamageMixin"
   ],
   "client": [
   ],
