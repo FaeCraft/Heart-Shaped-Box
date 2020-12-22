@@ -19,7 +19,6 @@ public class LegsBodyPart extends AbstractBodyPart {
     }
     
     public static void tickPlayer(ServerPlayerEntity playerEntity) {
-        System.out.println(((BodyPartProvider)playerEntity).getLegs().getHealth());
         if (((BodyPartProvider)playerEntity).getLegs().getHealth() <= 0) {
             playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, 2, true, true));
         }

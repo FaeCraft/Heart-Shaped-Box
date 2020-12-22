@@ -11,6 +11,10 @@ public abstract class AbstractBodyPart {
         return health;
     }
     
+    public void setHealth(float amount) {
+        health = amount;
+    }
+    
     public float takeDamage(float amount) {
         if (amount > health) {
             amount = health;
