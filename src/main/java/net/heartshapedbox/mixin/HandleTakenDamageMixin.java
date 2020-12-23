@@ -1,6 +1,5 @@
 package net.heartshapedbox.mixin;
 
-import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.body.other.CustomHSBDamageLogic;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
