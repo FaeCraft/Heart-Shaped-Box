@@ -2,25 +2,32 @@ package net.heartshapedbox.body.impl;
 
 import net.heartshapedbox.body.AbstractBodyPart;
 import net.heartshapedbox.body.BodyPartProvider;
+import net.heartshapedbox.body.BodyPartSide;
 import net.heartshapedbox.body.BodyPartType;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Pair;
 
-public class LegsBodyPart extends AbstractBodyPart {
+public class FootBodyPart extends AbstractBodyPart {
+    private final BodyPartSide side;
+    
+    public FootBodyPart(BodyPartSide side) {
+        this.side = side;
+    }
+    
     @Override
     public BodyPartType getType() {
         return BodyPartType.LEGS;
     }
     
     @Override
-    public float getMaxHealth() {
-        return 5.0f;
+    public BodyPartSide getSide() {
+        return side;
     }
     
-    public static void tickPlayer(ServerPlayerEntity playerEntity) {
-        if (((BodyPartProvider)playerEntity).getLegs().getHealth() <= 0) {
-            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, 2, true, true));
-        }
+    @Override
+    public float getMaxHealth() {
+        return 2;
     }
 }

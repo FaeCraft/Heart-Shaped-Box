@@ -1,10 +1,12 @@
 package net.heartshapedbox.mixin;
 
 import net.heartshapedbox.body.BodyPartProvider;
+import net.heartshapedbox.body.other.CustomHSBDamageLogic;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -24,17 +26,16 @@ public abstract class HandleTakenDamageMixin extends LivingEntity {
     
     @Inject(method = "damage", at = @At(value = "TAIL", shift = At.Shift.BY, by = -1), cancellable = true)
     public void applyDamageToIndividualBodyPart(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (isAlreadyProcessedDamage) {
-            isAlreadyProcessedDamage = false;
-            return;
+        if (!this.world.isClient) {
+            if (isAlreadyProcessedDamage) {
+                isAlreadyProcessedDamage = false;
+                return;
+            }
+            isAlreadyProcessedDamage = true;
+    
+            // This would be recursive due to impl, hence the isAlreadyProcessedDamage flag
+            CustomHSBDamageLogic.handleDamage(source, (ServerPlayerEntity)(Object)this, amount);
+            cir.setReturnValue(true);
         }
-        isAlreadyProcessedDamage = true;
-        if (source.name.equals("fall")) {
-            // This would be recursive, hence the isAlreadyProcessedDamage flag
-            damage(source, ((BodyPartProvider)this).getLegs().takeDamage(amount));
-        }
-        
-        // Return true always because when mod is done we can safely redirect all damage into custom logic
-        cir.setReturnValue(true);
     }
 }
