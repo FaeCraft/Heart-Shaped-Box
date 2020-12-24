@@ -19,9 +19,12 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class HSBMain implements ModInitializer {
 	@Override
 	public void onInitialize() {
-		ServerTickEvents.END_SERVER_TICK.register( minecraftServer ->
-			// Debuff all players accordingly
-			PlayerStream.all(minecraftServer).forEach(HSBMiscLogic::debuffPlayer)
+		ServerTickEvents.END_SERVER_TICK.register( minecraftServer -> {
+				// Update FlexBoxes
+				PlayerStream.all(minecraftServer).forEach(HSBMiscLogic::updatePlayerFlexBoxes);
+				// Debuff all players accordingly
+				PlayerStream.all(minecraftServer).forEach(HSBMiscLogic::debuffPlayer);
+			}
 		);
 		
 		// Debug command

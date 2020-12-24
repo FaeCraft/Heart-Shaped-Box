@@ -19,7 +19,7 @@ import java.util.Random;
 public class HSBMiscLogic {
     public static void updatePlayerFlexBoxes(ServerPlayerEntity playerEntity) {
         BodyPartProvider provider = (BodyPartProvider)playerEntity;
-    
+        
         Vec3d pos = playerEntity.getPos();
     }
     
@@ -66,21 +66,32 @@ public class HSBMiscLogic {
         BodyPartProvider provider = (BodyPartProvider)playerEntity;
         
         if (source.name.equals("fall")) {
+            // Damage from fall
             // Deals damage to feet first, then legs
-            // Currently extra damage is voided
             playerEntity.damage(
                 source,
-                Math.abs(
-                    dealDamageToPair(
-                        provider.getLegs(),
-                        dealDamageToPair(provider.getFeet(), amount)
-                    ) - amount
+                amount - dealDamageToPair(
+                    provider.getLegs(),
+                    dealDamageToPair(provider.getFeet(), amount)
                 )
             );
             return;
         }
         
+        if (source.name.equals("anvil") || source.name.equals("fallingBlock")) {
+            // Damage from falling block entity
+            playerEntity.damage(source, amount - provider.getHead().takeDamage(amount));
+            return;
+        }
+        
+        if (source.name.equals("hotFloor")) {
+            // Magma + similar
+            playerEntity.damage(source, amount - dealDamageToPair(provider.getFeet(), amount));
+            return;
+        }
+        
         // No source, choose randomly
+        // Keep dealing damage until its all used up
         if (source.getAttacker() == null) {
             ArrayList<AbstractBodyPart> parts = new ArrayList<>();
             parts.add(provider.getHead());
@@ -91,8 +102,15 @@ public class HSBMiscLogic {
             parts.add(provider.getFeet().getLeft());
             parts.add(provider.getFeet().getRight());
             
-            AbstractBodyPart randomPart = parts.get(new Random().nextInt(parts.size()));
-            randomPart.takeDamage(amount);
+            float dealt;
+            float cap = 30;
+            do {
+                AbstractBodyPart randomPart = parts.get(new Random().nextInt(parts.size()));
+                dealt = amount - randomPart.takeDamage(amount);
+                playerEntity.damage(source, dealt);
+                amount -= dealt;
+                cap--;
+            } while (amount > 0 && cap > 0);
         }
     }
     
