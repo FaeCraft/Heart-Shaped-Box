@@ -1,5 +1,6 @@
 package net.heartshapedbox.mixin;
 
+import net.heartshapedbox.HSBMiscLogic;
 import net.heartshapedbox.body.other.CustomHSBDamageLogic;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -33,7 +34,7 @@ public abstract class HandleTakenDamageMixin extends LivingEntity {
             isAlreadyProcessedDamage = true;
     
             // This would be recursive due to impl, hence the isAlreadyProcessedDamage flag
-            CustomHSBDamageLogic.handleDamage(source, (ServerPlayerEntity)(Object)this, amount);
+            HSBMiscLogic.handleDamage(source, (ServerPlayerEntity)(Object)this, amount);
             cir.setReturnValue(true);
         }
     }

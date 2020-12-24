@@ -4,10 +4,10 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.server.PlayerStream;
+import net.heartshapedbox.HSBMiscLogic;
 import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.body.impl.FootBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
-import net.heartshapedbox.body.other.HSBDebuffLogic;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Pair;
@@ -19,7 +19,7 @@ public class HSBMain implements ModInitializer {
 	public void onInitialize() {
 		ServerTickEvents.END_SERVER_TICK.register( minecraftServer ->
 			// Debuff all players accordingly
-			PlayerStream.all(minecraftServer).forEach(HSBDebuffLogic::debuffPlayer)
+			PlayerStream.all(minecraftServer).forEach(HSBMiscLogic::debuffPlayer)
 		);
 		
 		// Debug command

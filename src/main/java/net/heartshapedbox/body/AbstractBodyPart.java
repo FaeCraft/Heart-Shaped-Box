@@ -1,9 +1,11 @@
 package net.heartshapedbox.body;
 
+import net.heartshapedbox.math.FlexBox;
 import net.minecraft.nbt.CompoundTag;
 
 public abstract class AbstractBodyPart {
     private float health = getMaxHealth();
+    private FlexBox flexBox = FlexBox.zero();
     
     public abstract BodyPartType getType();
     
@@ -46,5 +48,13 @@ public abstract class AbstractBodyPart {
             "maxHealth=" + getMaxHealth() +
             ", health=" + health +
             '}';
+    }
+    
+    public FlexBox getFlexBox() {
+        return flexBox;
+    }
+    
+    public void setFlexBox(FlexBox flexBox) {
+        this.flexBox = flexBox;
     }
 }

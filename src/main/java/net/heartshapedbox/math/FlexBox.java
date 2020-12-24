@@ -15,4 +15,8 @@ public class FlexBox {
         quads[4] = new Quad(c, g, f, b);
         quads[5] = new Quad(d, h, g, c);
     }
+    
+    public static FlexBox zero() {
+        return new FlexBox(Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO);
+    }
 }
