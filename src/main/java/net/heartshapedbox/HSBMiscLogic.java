@@ -2,9 +2,10 @@ package net.heartshapedbox;
 
 import net.heartshapedbox.body.AbstractBodyPart;
 import net.heartshapedbox.body.BodyPartProvider;
+import net.heartshapedbox.body.impl.ArmBodyPart;
 import net.heartshapedbox.body.impl.FootBodyPart;
+import net.heartshapedbox.body.impl.HeadBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
-import net.heartshapedbox.math.FlexBox;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
@@ -29,15 +30,33 @@ public class HSBMiscLogic {
         // Each broken part adds a slowness level
         Pair<LegBodyPart, LegBodyPart> legs = provider.getLegs();
         Pair<FootBodyPart, FootBodyPart> feet = provider.getFeet();
-        int amp = -1;
+        int slowAmp = -1;
         
-        if (legs.getLeft().getHealth() <= 0) amp++;
-        if (legs.getRight().getHealth() <= 0) amp++;
-        if (feet.getLeft().getHealth() <= 0) amp++;
-        if (feet.getLeft().getHealth() <= 0) amp++;
+        if (legs.getLeft().getHealth() <= 0) slowAmp++;
+        if (legs.getRight().getHealth() <= 0) slowAmp++;
+        if (feet.getLeft().getHealth() <= 0) slowAmp++;
+        if (feet.getLeft().getHealth() <= 0) slowAmp++;
         
-        if (amp > -1) {
-            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, amp, true, true));
+        if (slowAmp > -1) {
+            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.SLOWNESS, 2, slowAmp, true, true));
+        }
+        
+        // Check for broken arms
+        // Each broken one adds a mining fatigue level
+        Pair<ArmBodyPart, ArmBodyPart> arms = provider.getArms();
+        int fatigueAmp = -1;
+        if (arms.getLeft().getHealth() <= 0) fatigueAmp++;
+        if (arms.getRight().getHealth() <= 0) fatigueAmp++;
+        if (fatigueAmp > -1) {
+            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 2, slowAmp, true, true));
+        }
+        
+        // Check for broken(? is it broken or just injured lol) head
+        // Blindness and nausea if broken
+        HeadBodyPart head = provider.getHead();
+        if (head.getHealth() <= 0) {
+            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 2, 0, true, true));
+            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 2, 0, true, true));
         }
     }
     
@@ -62,6 +81,9 @@ public class HSBMiscLogic {
         // No source, choose randomly
         if (source.getAttacker() == null) {
             ArrayList<AbstractBodyPart> parts = new ArrayList<>();
+            parts.add(provider.getHead());
+            parts.add(provider.getArms().getLeft());
+            parts.add(provider.getArms().getRight());
             parts.add(provider.getLegs().getLeft());
             parts.add(provider.getLegs().getRight());
             parts.add(provider.getFeet().getLeft());
