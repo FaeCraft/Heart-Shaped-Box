@@ -8,12 +8,9 @@ import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.body.impl.FootBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
 import net.heartshapedbox.body.other.HSBDebuffLogic;
-import net.heartshapedbox.math.Quad;
-import net.heartshapedbox.math.Ray;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Pair;
-import net.minecraft.util.math.Vec3d;
 
 import static net.minecraft.server.command.CommandManager.literal;
 

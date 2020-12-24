@@ -2,6 +2,7 @@ package net.heartshapedbox.math;
 
 import net.minecraft.util.math.Vec3d;
 
+import java.util.Arrays;
 import java.util.Optional;
 
 public class Ray {
@@ -25,5 +26,9 @@ public class Ray {
             new Triangle(quad.points[0], quad.points[3], quad.points[2])
         );
         return a.isPresent() || b.isPresent();
+    }
+    
+    public boolean intersectsBox(FlexBox box) {
+        return Arrays.stream(box.quads).anyMatch(this::intersectsQuad);
     }
 }
