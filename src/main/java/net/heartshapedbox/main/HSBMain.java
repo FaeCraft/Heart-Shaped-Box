@@ -6,7 +6,9 @@ import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.server.PlayerStream;
 import net.heartshapedbox.HSBMiscLogic;
 import net.heartshapedbox.body.BodyPartProvider;
+import net.heartshapedbox.body.impl.ArmBodyPart;
 import net.heartshapedbox.body.impl.FootBodyPart;
+import net.heartshapedbox.body.impl.HeadBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
@@ -30,6 +32,15 @@ public class HSBMain implements ModInitializer {
 				ServerCommandSource source = context.getSource();
 				BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
 				
+				source.sendFeedback(new LiteralText("Head"), false);
+				HeadBodyPart head = provider.getHead();
+				source.sendFeedback(new LiteralText("- CENTER: " + head.getHealth()), false);
+				
+				source.sendFeedback(new LiteralText("Arms"), false);
+				Pair<ArmBodyPart, ArmBodyPart> arms = provider.getArms();
+				source.sendFeedback(new LiteralText("- LEFT: " + arms.getLeft().getHealth()), false);
+				source.sendFeedback(new LiteralText("- RIGHT: " + arms.getRight().getHealth()), false);
+				
 				source.sendFeedback(new LiteralText("Legs"), false);
 				Pair<LegBodyPart, LegBodyPart> legs = provider.getLegs();
 				source.sendFeedback(new LiteralText("- LEFT: " + legs.getLeft().getHealth()), false);
@@ -44,6 +55,12 @@ public class HSBMain implements ModInitializer {
 				.then(literal("reset").executes(context -> {
 					ServerCommandSource source = context.getSource();
 					BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
+					
+					provider.getHead().setHealth(provider.getHead().getMaxHealth());
+					
+					Pair<ArmBodyPart, ArmBodyPart> arms = provider.getArms();
+					arms.getLeft().setHealth(arms.getLeft().getMaxHealth());
+					arms.getRight().setHealth(arms.getRight().getMaxHealth());
 					
 					Pair<LegBodyPart, LegBodyPart> legs = provider.getLegs();
 					legs.getLeft().setHealth(legs.getLeft().getMaxHealth());

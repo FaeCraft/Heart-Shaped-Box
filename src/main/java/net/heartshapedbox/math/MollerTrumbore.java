@@ -23,7 +23,7 @@ public class MollerTrumbore {
         if (a > -EPSILON && a < EPSILON)
             return Optional.empty();    // This ray is parallel to this triangle.
         f = 1.0/a;
-        s = rayOrigin .subtract(vertex0);
+        s = rayOrigin.subtract(vertex0);
         u = f * s.dotProduct(h);
         if (u < 0.0 || u > 1.0)
             return Optional.empty();

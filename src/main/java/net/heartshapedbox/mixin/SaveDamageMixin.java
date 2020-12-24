@@ -15,6 +15,13 @@ public class SaveDamageMixin {
         BodyPartProvider provider = (BodyPartProvider)this;
         
         CompoundTag partsTag = new CompoundTag();
+    
+        // Head
+        provider.getHead().toTag(partsTag);
+        
+        // Arms
+        provider.getArms().getLeft().toTag(partsTag);
+        provider.getArms().getRight().toTag(partsTag);
         
         // Legs
         provider.getLegs().getLeft().toTag(partsTag);
@@ -33,6 +40,13 @@ public class SaveDamageMixin {
         
         CompoundTag partsTag = tag.getCompound("hsb");
     
+        // Head
+        provider.getHead().fromTag(partsTag);
+        
+        // Arms
+        provider.getArms().getLeft().fromTag(partsTag);
+        provider.getArms().getRight().fromTag(partsTag);
+        
         // Legs
         provider.getLegs().getLeft().fromTag(partsTag);
         provider.getLegs().getRight().fromTag(partsTag);

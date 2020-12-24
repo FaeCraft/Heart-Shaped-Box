@@ -4,16 +4,12 @@ import net.heartshapedbox.body.AbstractBodyPart;
 import net.heartshapedbox.body.BodyPartSide;
 import net.heartshapedbox.body.BodyPartType;
 
-public class LegBodyPart extends AbstractBodyPart {
-    private final BodyPartSide side;
-    
-    public LegBodyPart(BodyPartSide side) {
-        this.side = side;
-    }
+public class HeadBodyPart extends AbstractBodyPart {
+    private final BodyPartSide side = BodyPartSide.CENTER;
     
     @Override
     public BodyPartType getType() {
-        return BodyPartType.LEGS;
+        return BodyPartType.HEAD;
     }
     
     @Override
@@ -23,6 +19,7 @@ public class LegBodyPart extends AbstractBodyPart {
     
     @Override
     public float getMaxHealth() {
-        return 3;
+        return 6;
     }
 }
+

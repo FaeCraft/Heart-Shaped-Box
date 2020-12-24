@@ -4,16 +4,16 @@ import net.heartshapedbox.body.AbstractBodyPart;
 import net.heartshapedbox.body.BodyPartSide;
 import net.heartshapedbox.body.BodyPartType;
 
-public class LegBodyPart extends AbstractBodyPart {
+public class ArmBodyPart extends AbstractBodyPart {
     private final BodyPartSide side;
     
-    public LegBodyPart(BodyPartSide side) {
+    public ArmBodyPart(BodyPartSide side) {
         this.side = side;
     }
     
     @Override
     public BodyPartType getType() {
-        return BodyPartType.LEGS;
+        return BodyPartType.ARMS;
     }
     
     @Override
