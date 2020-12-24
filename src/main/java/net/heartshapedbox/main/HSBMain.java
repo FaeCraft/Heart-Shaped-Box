@@ -8,9 +8,12 @@ import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.body.impl.FootBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
 import net.heartshapedbox.body.other.HSBDebuffLogic;
+import net.heartshapedbox.math.Quad;
+import net.heartshapedbox.math.Ray;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Pair;
+import net.minecraft.util.math.Vec3d;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
@@ -37,8 +40,8 @@ public class HSBMain implements ModInitializer {
 				
 				source.sendFeedback(new LiteralText("Feet"), false);
 				Pair<FootBodyPart, FootBodyPart> feet = provider.getFeet();
-				source.sendFeedback(new LiteralText("- LEFT: " + legs.getLeft().getHealth()), false);
-				source.sendFeedback(new LiteralText("- RIGHT: " + legs.getRight().getHealth()), false);
+				source.sendFeedback(new LiteralText("- LEFT: " + feet.getLeft().getHealth()), false);
+				source.sendFeedback(new LiteralText("- RIGHT: " + feet.getRight().getHealth()), false);
 				return 1;
 			})
 				.then(literal("reset").executes(context -> {

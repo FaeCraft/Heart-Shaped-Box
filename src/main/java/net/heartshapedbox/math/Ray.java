@@ -1,7 +1,8 @@
 package net.heartshapedbox.math;
 
-import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Optional;
 
 public class Ray {
     Vec3d start;
@@ -12,28 +13,17 @@ public class Ray {
         this.direction = direction.normalize();
     }
     
-    public boolean intersectsBox(Box box) {
-        // Adapted from
-        // https://www.scratchapixel.com/lessons/3d-basic-rendering/minimal-ray-tracer-rendering-simple-shapes/ray-box-intersection
-    
-        double tmin = (box.minX - start.x) / direction.x;
-        double tmax = (box.maxX - start.x) / direction.x;
-    
-        double tymin = (box.minY - start.y) / direction.y;
-        double tymax = (box.maxY - start.y) / direction.y;
-    
-        if ((tmin > tymax) || (tymin > tmax))
-            return false;
-    
-        if (tymin > tmin)
-            tmin = tymin;
-    
-        if (tymax < tmax)
-            tmax = tymax;
-    
-        double tzmin = (box.minZ - start.z) / direction.z;
-        double tzmax = (box.maxZ - start.z) / direction.z;
-    
-        return (!(tmin > tzmax)) && (!(tzmin > tmax));
+    public boolean intersectsQuad(Quad quad) {
+        Optional<Vec3d> a = MollerTrumbore.rayIntersectsTriangle(
+            start,
+            direction,
+            new Triangle(quad.points[0], quad.points[1], quad.points[2])
+        );
+        Optional<Vec3d> b = MollerTrumbore.rayIntersectsTriangle(
+            start,
+            direction,
+            new Triangle(quad.points[0], quad.points[3], quad.points[2])
+        );
+        return a.isPresent() || b.isPresent();
     }
 }

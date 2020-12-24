@@ -6,6 +6,9 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
 
+import java.util.ArrayList;
+import java.util.Random;
+
 public class CustomHSBDamageLogic {
     public static void handleDamage(DamageSource source, ServerPlayerEntity playerEntity, float amount) {
         BodyPartProvider provider = (BodyPartProvider)playerEntity;
@@ -27,7 +30,14 @@ public class CustomHSBDamageLogic {
         
         // No source, choose randomly
         if (source.getAttacker() == null) {
-            // TODO: Choose randomly
+            ArrayList<AbstractBodyPart> parts = new ArrayList<>();
+            parts.add(provider.getLegs().getLeft());
+            parts.add(provider.getLegs().getRight());
+            parts.add(provider.getFeet().getLeft());
+            parts.add(provider.getFeet().getRight());
+            
+            AbstractBodyPart randomPart = parts.get(new Random().nextInt(parts.size()));
+            randomPart.takeDamage(amount);
         }
     }
     
