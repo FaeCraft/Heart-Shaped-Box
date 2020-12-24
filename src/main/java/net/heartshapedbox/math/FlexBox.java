@@ -5,7 +5,7 @@ import net.minecraft.util.math.Vec3d;
 // box with a flex
 // how perplex
 public class FlexBox {
-    Quad[] quads = new Quad[6];
+    public Quad[] quads = new Quad[6];
     
     public FlexBox(Vec3d a, Vec3d b, Vec3d c, Vec3d d, Vec3d e, Vec3d f, Vec3d g, Vec3d h) {
         quads[0] = new Quad(a, b, c, d);

@@ -4,16 +4,24 @@ import net.heartshapedbox.body.AbstractBodyPart;
 import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.body.impl.FootBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
+import net.heartshapedbox.math.FlexBox;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
+import net.minecraft.util.math.Vec3d;
 
 import java.util.ArrayList;
 import java.util.Random;
 
 public class HSBMiscLogic {
+    public static void updatePlayerFlexBoxes(ServerPlayerEntity playerEntity) {
+        BodyPartProvider provider = (BodyPartProvider)playerEntity;
+    
+        Vec3d pos = playerEntity.getPos();
+    }
+    
     public static void debuffPlayer(ServerPlayerEntity playerEntity) {
         BodyPartProvider provider = (BodyPartProvider)playerEntity;
         

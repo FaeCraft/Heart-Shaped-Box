@@ -1,7 +1,6 @@
 package net.heartshapedbox.mixin;
 
 import net.heartshapedbox.HSBMiscLogic;
-import net.heartshapedbox.body.other.CustomHSBDamageLogic;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
