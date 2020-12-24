@@ -48,15 +48,17 @@ public class HSBMiscLogic {
         if (arms.getLeft().getHealth() <= 0) fatigueAmp++;
         if (arms.getRight().getHealth() <= 0) fatigueAmp++;
         if (fatigueAmp > -1) {
-            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 2, slowAmp, true, true));
+            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 2, fatigueAmp, true, true));
         }
         
         // Check for broken(? is it broken or just injured lol) head
         // Blindness and nausea if broken
         HeadBodyPart head = provider.getHead();
         if (head.getHealth() <= 0) {
-            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 2, 0, true, true));
-            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 2, 0, true, true));
+            // Causes rapid strobing at ~23->~10, be careful!
+            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 25, 0, true, true));
+            // Has no effect at 61 or below
+            playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 62, 0, true, true));
         }
     }
     
