@@ -107,8 +107,10 @@ public class HSBMiscLogic {
             do {
                 AbstractBodyPart randomPart = parts.get(new Random().nextInt(parts.size()));
                 dealt = amount - randomPart.takeDamage(amount);
-                playerEntity.damage(source, dealt);
-                amount -= dealt;
+                if (dealt > 0) {
+                    playerEntity.damage(source, dealt);
+                    amount -= dealt;
+                }
                 cap--;
             } while (amount > 0 && cap > 0);
         }
