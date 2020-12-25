@@ -4,12 +4,13 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.server.PlayerStream;
-import net.heartshapedbox.HSBMiscLogic;
+import net.heartshapedbox.logic.HSBMiscLogic;
 import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.body.impl.ArmBodyPart;
 import net.heartshapedbox.body.impl.FootBodyPart;
 import net.heartshapedbox.body.impl.HeadBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
+import net.heartshapedbox.logic.damage.DamageHandlerDispatcher;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Pair;
@@ -19,6 +20,8 @@ import static net.minecraft.server.command.CommandManager.literal;
 public class HSBMain implements ModInitializer {
 	@Override
 	public void onInitialize() {
+		DamageHandlerDispatcher.registerHandlers();
+		
 		ServerTickEvents.END_SERVER_TICK.register( minecraftServer -> {
 				// Update FlexBoxes
 				PlayerStream.all(minecraftServer).forEach(HSBMiscLogic::updatePlayerFlexBoxes);
