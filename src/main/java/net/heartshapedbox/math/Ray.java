@@ -20,12 +20,16 @@ public class Ray {
             direction,
             new Triangle(quad.points[0], quad.points[1], quad.points[2])
         );
+        if (a.isPresent()) {
+            return true;
+        }
+        
         Optional<Vec3d> b = MollerTrumbore.rayIntersectsTriangle(
             start,
             direction,
             new Triangle(quad.points[0], quad.points[3], quad.points[2])
         );
-        return a.isPresent() || b.isPresent();
+        return b.isPresent();
     }
     
     public boolean intersectsBox(FlexBox box) {

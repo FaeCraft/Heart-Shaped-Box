@@ -6,17 +6,35 @@ import net.heartshapedbox.body.impl.ArmBodyPart;
 import net.heartshapedbox.body.impl.FootBodyPart;
 import net.heartshapedbox.body.impl.HeadBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
+import net.heartshapedbox.math.two_d.Line;
+import net.heartshapedbox.math.two_d.Square;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
+import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
+
+import java.util.Arrays;
 
 public class HSBMiscLogic {
     public static void updatePlayerFlexBoxes(ServerPlayerEntity playerEntity) {
         BodyPartProvider provider = (BodyPartProvider)playerEntity;
         
         Vec3d pos = playerEntity.getPos();
+        Box boundingBox = playerEntity.getBoundingBox(playerEntity.getPose());
+        
+        Square playerBoxSlice = new Square(
+            new Vec2f((float)(pos.x + boundingBox.minX), (float)(pos.z + boundingBox.minZ)),
+            new Vec2f((float)(pos.x + boundingBox.maxX), (float)(pos.z + boundingBox.maxZ))
+        );
+        Line facingLine = new Line(
+            new Vec2f((float)pos.x, (float)pos.z),
+            playerEntity.bodyYaw
+        );
+    
+        Pair<Vec2f[], Vec2f[]> results = playerBoxSlice.splitFromLine(facingLine);
     }
     
     public static void debuffPlayer(ServerPlayerEntity playerEntity) {
