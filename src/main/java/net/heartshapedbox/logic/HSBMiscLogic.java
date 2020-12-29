@@ -6,6 +6,7 @@ import net.heartshapedbox.body.impl.ArmBodyPart;
 import net.heartshapedbox.body.impl.FootBodyPart;
 import net.heartshapedbox.body.impl.HeadBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
+import net.heartshapedbox.math.FlexBox;
 import net.heartshapedbox.math.two_d.Line;
 import net.heartshapedbox.math.two_d.Square;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -15,8 +16,6 @@ import net.minecraft.util.Pair;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
-
-import java.util.Arrays;
 
 public class HSBMiscLogic {
     public static void updatePlayerFlexBoxes(ServerPlayerEntity playerEntity) {
@@ -35,6 +34,65 @@ public class HSBMiscLogic {
         );
     
         Pair<Vec2f[], Vec2f[]> results = playerBoxSlice.splitFromLine(facingLine);
+        Vec2f[] leftSet = results.getLeft();
+        Vec2f[] rightSet = results.getRight();
+        
+        // Feet
+        provider.getFeet().getLeft().setFlexBox(new FlexBox(
+            v3FromV2(leftSet[0], pos.y),
+            v3FromV2(leftSet[1], pos.y),
+            v3FromV2(leftSet[2], pos.y),
+            v3FromV2(leftSet[3], pos.y),
+            0.3
+        ));
+        provider.getFeet().getRight().setFlexBox(new FlexBox(
+            v3FromV2(rightSet[0], pos.y),
+            v3FromV2(rightSet[1], pos.y),
+            v3FromV2(rightSet[2], pos.y),
+            v3FromV2(rightSet[3], pos.y),
+            0.3
+        ));
+    
+        // Legs
+        provider.getLegs().getLeft().setFlexBox(new FlexBox(
+            v3FromV2(leftSet[0], pos.y + 0.3),
+            v3FromV2(leftSet[1], pos.y + 0.3),
+            v3FromV2(leftSet[2], pos.y + 0.3),
+            v3FromV2(leftSet[3], pos.y + 0.3),
+            0.6
+        ));
+        provider.getLegs().getRight().setFlexBox(new FlexBox(
+            v3FromV2(rightSet[0], pos.y + 0.3),
+            v3FromV2(rightSet[1], pos.y + 0.3),
+            v3FromV2(rightSet[2], pos.y + 0.3),
+            v3FromV2(rightSet[3], pos.y + 0.3),
+            0.6
+        ));
+    
+        // Arms
+        provider.getLegs().getLeft().setFlexBox(new FlexBox(
+            v3FromV2(leftSet[0], pos.y + 0.3 + 0.6),
+            v3FromV2(leftSet[1], pos.y + 0.3 + 0.6),
+            v3FromV2(leftSet[2], pos.y + 0.3 + 0.6),
+            v3FromV2(leftSet[3], pos.y + 0.3 + 0.6),
+            0.7
+        ));
+        provider.getLegs().getRight().setFlexBox(new FlexBox(
+            v3FromV2(rightSet[0], pos.y + 0.3 + 0.6),
+            v3FromV2(rightSet[1], pos.y + 0.3 + 0.6),
+            v3FromV2(rightSet[2], pos.y + 0.3 + 0.6),
+            v3FromV2(rightSet[3], pos.y + 0.3 + 0.6),
+            0.7
+        ));
+        
+        // Head
+        provider.getHead().setFlexBox(new FlexBox(
+            v3FromV2(leftSet[2], pos.y + 0.3 + 0.6 + 0.7),
+            v3FromV2(leftSet[1], pos.y + 0.3 + 0.6 + 0.7),
+            v3FromV2(rightSet[1], pos.y + 0.3 + 0.6 + 0.7),
+            v3FromV2(rightSet[2], pos.y + 0.3 + 0.6 + 0.7),
+            0.4
+        ));
     }
     
     public static void debuffPlayer(ServerPlayerEntity playerEntity) {
@@ -85,5 +143,9 @@ public class HSBMiscLogic {
             halved +
                 pair.getLeft().takeDamage(halved)
         );
+    }
+    
+    private static Vec3d v3FromV2(Vec2f vec, double height) {
+        return new Vec3d(vec.x, height, vec.y);
     }
 }

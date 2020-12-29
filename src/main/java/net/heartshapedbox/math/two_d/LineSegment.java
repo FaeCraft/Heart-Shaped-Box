@@ -5,8 +5,8 @@ import net.minecraft.util.math.Vec2f;
 import java.util.Optional;
 
 public class LineSegment {
-    Vec2f a;
-    Vec2f b;
+    final Vec2f a;
+    final Vec2f b;
     
     public LineSegment(Vec2f a, Vec2f b) {
         this.a = a;

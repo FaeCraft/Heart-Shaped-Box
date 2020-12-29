@@ -3,10 +3,10 @@ package net.heartshapedbox.math.two_d;
 import net.minecraft.util.math.Vec2f;
 
 public class Line {
-    Vec2f start;
-    double slope;
+    final Vec2f start;
+    final double slope;
     
-    float b;
+    final float b;
     
     public Line(Vec2f start, double slope) {
         this.start = start;

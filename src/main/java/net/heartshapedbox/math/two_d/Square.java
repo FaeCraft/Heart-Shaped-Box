@@ -6,23 +6,14 @@ import net.minecraft.util.math.Vec2f;
 import java.util.Optional;
 
 public class Square {
-    LineSegment a;
-    LineSegment b;
-    LineSegment c;
-    LineSegment d;
+    final LineSegment a;
+    final LineSegment b;
+    final LineSegment c;
+    final LineSegment d;
     
-    Vec2f min;
-    Vec2f max;
+    final Vec2f min;
+    final Vec2f max;
     
-    /**
-     *          b      b(p)
-     *     -----------
-     *     |         |
-     *   a |         |  c
-     *     |         |
-     *     -----------
-     *  a(p)   d
-     */
     public Square(Vec2f a, Vec2f b) {
         this.min = a;
         this.max = b;
@@ -37,43 +28,37 @@ public class Square {
         Optional<Vec2f> aRes = a.intersectFromLine(line, false);
         if (aRes.isPresent()) {
             Optional<Vec2f> cRes = c.intersectFromLine(line, false);
-            if (!cRes.isPresent()) {
-                throw new IllegalStateException("cRes did not result in an intersect from the provided line, unable to continue.");
-            }
             
             return new Pair<>(
                 new Vec2f[]{
                     aRes.get(),
-                    a.b,
+                    b.a,
                     max,
-                    cRes.get()
+                    cRes.orElseThrow(IllegalStateException::new)
                 },
                 new Vec2f[]{
                     aRes.get(),
                     min,
                     d.b,
-                    cRes.get()
+                    cRes.orElseThrow(IllegalStateException::new)
                 }
             );
         } else {
             Optional<Vec2f> bRes = b.intersectFromLine(line, true);
             Optional<Vec2f> dRes = d.intersectFromLine(line, true);
-            if (!bRes.isPresent() || !dRes.isPresent()) {
-                throw new IllegalStateException("Either bRes or dRes did not result in an intersect from the provided line, unable to continue.");
-            }
     
             return new Pair<>(
                 new Vec2f[]{
-                    bRes.get(),
+                    bRes.orElseThrow(IllegalStateException::new),
                     b.a,
                     min,
-                    dRes.get()
+                    dRes.orElseThrow(IllegalStateException::new)
                 },
                 new Vec2f[]{
-                    bRes.get(),
+                    bRes.orElseThrow(IllegalStateException::new),
                     max,
                     d.b,
-                    dRes.get()
+                    dRes.orElseThrow(IllegalStateException::new)
                 }
             );
         }
