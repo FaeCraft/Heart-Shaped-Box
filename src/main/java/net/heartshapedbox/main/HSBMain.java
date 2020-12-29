@@ -3,6 +3,7 @@ package net.heartshapedbox.main;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.fabricmc.fabric.api.server.PlayerStream;
 import net.heartshapedbox.logic.HSBMiscLogic;
 import net.heartshapedbox.body.BodyPartProvider;
@@ -24,9 +25,9 @@ public class HSBMain implements ModInitializer {
 		
 		ServerTickEvents.END_SERVER_TICK.register( minecraftServer -> {
 				// Update FlexBoxes
-				PlayerStream.all(minecraftServer).forEach(HSBMiscLogic::updatePlayerFlexBoxes);
+				PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::updatePlayerFlexBoxes);
 				// Debuff all players accordingly
-				PlayerStream.all(minecraftServer).forEach(HSBMiscLogic::debuffPlayer);
+				PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::debuffPlayer);
 			}
 		);
 		
