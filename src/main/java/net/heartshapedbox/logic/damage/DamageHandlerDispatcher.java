@@ -1,11 +1,9 @@
 package net.heartshapedbox.logic.damage;
 
 import net.heartshapedbox.body.BodyPartProvider;
-import net.heartshapedbox.logic.damage.impl.FallDamageHandler;
-import net.heartshapedbox.logic.damage.impl.FallingBlockDamageHandler;
-import net.heartshapedbox.logic.damage.impl.GenericDamageHandler;
-import net.heartshapedbox.logic.damage.impl.HotFloorDamageHandler;
+import net.heartshapedbox.logic.damage.impl.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
 
@@ -25,6 +23,10 @@ public class DamageHandlerDispatcher {
     }
     
     public static void registerHandlers() {
+        handlers.add(new Pair<>(
+            source -> source instanceof ProjectileDamageSource && source.getAttacker() != null,
+            new ProjectileDamageHandler()
+        ));
         handlers.add(new Pair<>(
             source -> source.name.equals("anvil") || source.name.equals("fallingBlock"),
             new FallingBlockDamageHandler()
