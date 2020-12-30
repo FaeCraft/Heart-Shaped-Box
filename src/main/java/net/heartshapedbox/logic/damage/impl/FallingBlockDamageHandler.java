@@ -7,7 +7,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class FallingBlockDamageHandler implements DamageHandler {
     @Override
-    public void handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
-        player.damage(source, amount - provider.getHead().takeDamage(amount));
+    public boolean shouldHandle(DamageSource source) {
+        return source.name.equals("anvil") || source.name.equals("fallingBlock");
+    }
+    
+    @Override
+    public float handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
+        return provider.getHead().takeDamage(amount);
     }
 }

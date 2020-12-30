@@ -8,7 +8,12 @@ import net.minecraft.server.network.ServerPlayerEntity;
 
 public class HotFloorDamageHandler implements DamageHandler {
     @Override
-    public void handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
-        player.damage(source, amount - HSBMiscLogic.dealDamageToPair(provider.getFeet(), amount));
+    public boolean shouldHandle(DamageSource source) {
+        return source.name.equals("hotFloor");
+    }
+    
+    @Override
+    public float handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
+        return HSBMiscLogic.dealDamageToPair(provider.getFeet(), amount);
     }
 }

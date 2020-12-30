@@ -11,7 +11,12 @@ import java.util.Random;
 
 public class GenericDamageHandler implements DamageHandler {
     @Override
-    public void handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
+    public boolean shouldHandle(DamageSource source) {
+        return true;
+    }
+    
+    @Override
+    public float handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
         ArrayList<AbstractBodyPart> parts = new ArrayList<>();
         parts.add(provider.getHead());
         parts.add(provider.getArms().getLeft());
@@ -26,13 +31,12 @@ public class GenericDamageHandler implements DamageHandler {
         do {
             AbstractBodyPart randomPart = parts.get(new Random().nextInt(parts.size()));
             dealt = amount - randomPart.takeDamage(amount);
-            System.out.println(dealt);
-            System.out.println(amount);
             if (dealt > 0) {
-                System.out.println(player.damage(source, dealt));
+                player.damage(source, dealt);
                 amount -= dealt;
             }
             cap--;
         } while (amount > 0 && cap > 0);
+        return dealt;
     }
 }
