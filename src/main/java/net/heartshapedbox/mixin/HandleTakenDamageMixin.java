@@ -8,7 +8,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Overwrite;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerEntity.class)
 public abstract class HandleTakenDamageMixin extends LivingEntity {
@@ -16,14 +18,8 @@ public abstract class HandleTakenDamageMixin extends LivingEntity {
         super(entityType, world);
     }
     
-    /**
-     * @author P03W
-     *
-     * The entirety of the damage logic is replaced
-     * better to fail fast than fail silently
-     */
-    @Overwrite
-    public void applyDamage(DamageSource source, float amount) {
+    @Inject(method = "applyDamage", at = @At("HEAD"))
+    public void applyDamage(DamageSource source, float amount, CallbackInfo ci) {
         if (!this.world.isClient) {
             DamageHandlerDispatcher.handleDamage((ServerPlayerEntity)(Object)this, source, amount);
         }
