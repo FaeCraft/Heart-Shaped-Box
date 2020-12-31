@@ -7,6 +7,9 @@ import net.minecraft.util.math.Vec3d;
 public class FlexBox {
     public final Quad[] quads = new Quad[6];
     
+    // Not the actual center, but a good enough approximation for what its used for
+    public Vec3d roughCenter;
+    
     public FlexBox(Vec3d a, Vec3d b, Vec3d c, Vec3d d, Vec3d e, Vec3d f, Vec3d g, Vec3d h) {
         quads[0] = new Quad(a, b, c, d);
         quads[1] = new Quad(e, f, g, h);
@@ -14,6 +17,8 @@ public class FlexBox {
         quads[3] = new Quad(b, f, e, a);
         quads[4] = new Quad(c, g, f, b);
         quads[5] = new Quad(d, h, g, c);
+        
+        roughCenter = a.add(h.subtract(a).multiply(0.5));
     }
     
     public FlexBox(Vec3d a, Vec3d b, Vec3d c, Vec3d d, double height) {
@@ -28,6 +33,8 @@ public class FlexBox {
         quads[3] = new Quad(b, f, e, a);
         quads[4] = new Quad(c, g, f, b);
         quads[5] = new Quad(d, h, g, c);
+    
+        roughCenter = a.add(h.subtract(a).multiply(0.5));
     }
     
     public static FlexBox zero() {

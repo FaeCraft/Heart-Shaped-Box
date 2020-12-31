@@ -17,15 +17,8 @@ public class GenericDamageHandler implements DamageHandler {
     
     @Override
     public float handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
-        ArrayList<AbstractBodyPart> parts = new ArrayList<>();
-        parts.add(provider.getHead());
-        parts.add(provider.getArms().getLeft());
-        parts.add(provider.getArms().getRight());
-        parts.add(provider.getLegs().getLeft());
-        parts.add(provider.getLegs().getRight());
-        parts.add(provider.getFeet().getLeft());
-        parts.add(provider.getFeet().getRight());
-    
+        ArrayList<AbstractBodyPart> parts = provider.getAll();
+        
         float dealt;
         float cap = 30;
         do {

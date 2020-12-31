@@ -44,7 +44,7 @@ public abstract class AbstractBodyPart {
     
     @Override
     public String toString() {
-        return getType().name() + "{" +
+        return getType().name() + "-" + getSide().name() + "{" +
             "maxHealth=" + getMaxHealth() +
             ", health=" + health +
             '}';

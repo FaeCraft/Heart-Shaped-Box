@@ -4,6 +4,7 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.heartshapedbox.body.AbstractBodyPart;
 import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.body.impl.ArmBodyPart;
 import net.heartshapedbox.body.impl.FootBodyPart;
@@ -66,19 +67,9 @@ public class HSBMain implements ModInitializer {
                         ServerCommandSource source = context.getSource();
                         BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
                         
-                        provider.getHead().setHealth(provider.getHead().getMaxHealth());
-                        
-                        Pair<ArmBodyPart, ArmBodyPart> arms = provider.getArms();
-                        arms.getLeft().setHealth(arms.getLeft().getMaxHealth());
-                        arms.getRight().setHealth(arms.getRight().getMaxHealth());
-                        
-                        Pair<LegBodyPart, LegBodyPart> legs = provider.getLegs();
-                        legs.getLeft().setHealth(legs.getLeft().getMaxHealth());
-                        legs.getRight().setHealth(legs.getRight().getMaxHealth());
-                        
-                        Pair<FootBodyPart, FootBodyPart> feet = provider.getFeet();
-                        feet.getLeft().setHealth(feet.getLeft().getMaxHealth());
-                        feet.getRight().setHealth(feet.getRight().getMaxHealth());
+                        for (AbstractBodyPart limb : provider.getAll()) {
+                            limb.setHealth(limb.getMaxHealth());
+                        }
                         
                         source.sendFeedback(new LiteralText("Reset health"), false);
                         return 1;

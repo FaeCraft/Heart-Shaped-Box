@@ -70,14 +70,14 @@ public class HSBMiscLogic {
         ));
     
         // Arms
-        provider.getLegs().getLeft().setFlexBox(new FlexBox(
+        provider.getArms().getLeft().setFlexBox(new FlexBox(
             v3FromV2(leftSet[0], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[1], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[2], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[3], pos.y + 0.2 + 0.6),
             0.8
         ));
-        provider.getLegs().getRight().setFlexBox(new FlexBox(
+        provider.getArms().getRight().setFlexBox(new FlexBox(
             v3FromV2(rightSet[0], pos.y + 0.2 + 0.6),
             v3FromV2(rightSet[1], pos.y + 0.2 + 0.6),
             v3FromV2(rightSet[2], pos.y + 0.2 + 0.6),
@@ -87,10 +87,10 @@ public class HSBMiscLogic {
         
         // Head
         provider.getHead().setFlexBox(new FlexBox(
-            v3FromV2(leftSet[2], pos.y + 0.2 + 0.6 + 0.7),
-            v3FromV2(leftSet[1], pos.y + 0.2 + 0.6 + 0.7),
-            v3FromV2(rightSet[1], pos.y + 0.2 + 0.6 + 0.7),
-            v3FromV2(rightSet[2], pos.y + 0.2 + 0.6 + 0.7),
+            v3FromV2(leftSet[2], pos.y + 0.2 + 0.6 + 0.8),
+            v3FromV2(leftSet[1], pos.y + 0.2 + 0.6 + 0.8),
+            v3FromV2(rightSet[1], pos.y + 0.2 + 0.6 + 0.8),
+            v3FromV2(rightSet[2], pos.y + 0.2 + 0.6 + 0.8),
             0.4
         ));
     }

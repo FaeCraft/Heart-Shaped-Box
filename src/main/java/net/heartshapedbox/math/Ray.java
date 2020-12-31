@@ -6,8 +6,8 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class Ray {
-    final Vec3d start;
-    final Vec3d direction;
+    public final Vec3d start;
+    public final Vec3d direction;
     
     public Ray(Vec3d start, Vec3d direction) {
         this.start = start;

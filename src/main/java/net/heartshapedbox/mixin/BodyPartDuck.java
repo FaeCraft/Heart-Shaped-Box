@@ -1,5 +1,6 @@
 package net.heartshapedbox.mixin;
 
+import net.heartshapedbox.body.AbstractBodyPart;
 import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.body.BodyPartSide;
 import net.heartshapedbox.body.impl.ArmBodyPart;
@@ -9,6 +10,8 @@ import net.heartshapedbox.body.impl.LegBodyPart;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Pair;
 import org.spongepowered.asm.mixin.Mixin;
+
+import java.util.ArrayList;
 
 @Mixin(PlayerEntity.class)
 public abstract class BodyPartDuck implements BodyPartProvider {
@@ -41,5 +44,18 @@ public abstract class BodyPartDuck implements BodyPartProvider {
     @Override
     public Pair<FootBodyPart, FootBodyPart> getFeet() {
         return new Pair<>(leftFoot, rightFoot);
+    }
+    
+    @Override
+    public ArrayList<AbstractBodyPart> getAll() {
+        ArrayList<AbstractBodyPart> out = new ArrayList<>();
+        out.add(head);
+        out.add(leftArm);
+        out.add(rightArm);
+        out.add(leftLeg);
+        out.add(rightLeg);
+        out.add(leftFoot);
+        out.add(rightFoot);
+        return out;
     }
 }

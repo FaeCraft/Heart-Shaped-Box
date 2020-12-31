@@ -6,6 +6,8 @@ import net.heartshapedbox.body.impl.HeadBodyPart;
 import net.heartshapedbox.body.impl.LegBodyPart;
 import net.minecraft.util.Pair;
 
+import java.util.ArrayList;
+
 // Duck, make sure to add to this for each part
 public interface BodyPartProvider {
     HeadBodyPart getHead();
@@ -15,4 +17,6 @@ public interface BodyPartProvider {
     Pair<LegBodyPart, LegBodyPart> getLegs();
     
     Pair<FootBodyPart, FootBodyPart> getFeet();
+    
+    ArrayList<AbstractBodyPart> getAll();
 }
