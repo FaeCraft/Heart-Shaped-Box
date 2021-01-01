@@ -1,12 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "net.heartshapedbox.mixin",
+  "package": "io.github.faecraft.heartshapedbox",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BodyPartDuck",
-    "HandleTakenDamageMixin",
-    "SaveDamageMixin"
+    "io.github.faecraft.heartshapedbox.mixin.BodyPartDuck",
+    "io.github.faecraft.heartshapedbox.mixin.HandleTakenDamageMixin",
+    "io.github.faecraft.heartshapedbox.mixin.SaveDamageMixin"
   ],
   "client": [
   ],
