@@ -7,6 +7,7 @@ import net.heartshapedbox.math.Ray;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.damage.ProjectileDamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -18,7 +19,7 @@ public class ProjectileDamageHandler implements DamageHandler {
     }
     
     @Override
-    public float handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
+    public Pair<Boolean, Float> handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
         // Can suppress because our predicate only fires if its not null
         //noinspection ConstantConditions
         Ray ray = new Ray(source.getAttacker().getPos(), source.getAttacker().getVelocity());
@@ -28,7 +29,7 @@ public class ProjectileDamageHandler implements DamageHandler {
         
         for (AbstractBodyPart limb : possible) {
             if (ray.intersectsBox(limb.getFlexBox())) {
-                return limb.takeDamage(amount);
+                return new Pair<>(false, limb.takeDamage(amount));
             }
         }
         
@@ -36,6 +37,6 @@ public class ProjectileDamageHandler implements DamageHandler {
         System.err.println(player.getPos());
         System.err.println(ray.start);
         System.err.println(ray.direction);
-        return amount;
+        return new Pair<>(false, amount);
     }
 }

@@ -5,6 +5,7 @@ import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.logic.damage.DamageHandler;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +17,7 @@ public class GenericDamageHandler implements DamageHandler {
     }
     
     @Override
-    public float handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
+    public Pair<Boolean, Float> handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
         ArrayList<AbstractBodyPart> parts = provider.getAll();
         
         float dealt;
@@ -30,6 +31,6 @@ public class GenericDamageHandler implements DamageHandler {
             }
             cap--;
         } while (amount > 0 && cap > 0);
-        return dealt;
+        return new Pair<>(true, dealt);
     }
 }

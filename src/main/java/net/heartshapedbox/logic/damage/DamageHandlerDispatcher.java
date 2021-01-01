@@ -4,6 +4,7 @@ import net.heartshapedbox.body.BodyPartProvider;
 import net.heartshapedbox.logic.damage.impl.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
 
@@ -13,8 +14,11 @@ public class DamageHandlerDispatcher {
     public static void handleDamage(ServerPlayerEntity player, DamageSource source, float amount) {
         for (DamageHandler possibleHandler : handlers) {
             if (possibleHandler.shouldHandle(source)) {
-                player.damage(source,amount - possibleHandler.handleDamage(player, (BodyPartProvider)player, source, amount));
-                break;
+                Pair<Boolean, Float> result = possibleHandler.handleDamage(player, (BodyPartProvider)player, source, amount);
+                player.damage(source,amount - result.getRight());
+                if (result.getLeft() || amount - result.getRight() <= 0) {
+                    break;
+                }
             }
         }
     }
