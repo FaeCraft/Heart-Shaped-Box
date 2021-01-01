@@ -4,11 +4,13 @@
   "version": "${version}",
 
   "name": "HeartShapedBox",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "A health system of increased difficulty by breaking the healthbar into limbs",
   "authors": [
-    "Me!"
+    "EternalFrost",
+    "sakira"
   ],
   "contact": {
+    "homepage": "https://discord.gg/hqpmDas",
     "sources": "https://github.com/FaeCraft/Heart-Shaped-Box"
   },
 
