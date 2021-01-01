@@ -30,9 +30,9 @@ public class HSBMiscLogic {
         );
         Line facingLine = new Line(
             new Vec2f((float)pos.x, (float)pos.z),
-            playerEntity.bodyYaw
+            playerEntity.yaw == 0 ? 0.00001 : playerEntity.yaw
         );
-    
+        
         Pair<Vec2f[], Vec2f[]> results = playerBoxSlice.splitFromLine(facingLine);
         Vec2f[] leftSet = results.getLeft();
         Vec2f[] rightSet = results.getRight();
