@@ -2,7 +2,6 @@ package io.github.faecraft.heartshapedbox.logic.damage;
 
 import io.github.faecraft.heartshapedbox.logic.damage.impl.*;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
-import net.heartshapedbox.logic.damage.impl.*;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;

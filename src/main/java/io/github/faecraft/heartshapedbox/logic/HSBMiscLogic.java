@@ -1,14 +1,14 @@
-package net.heartshapedbox.logic;
+package io.github.faecraft.heartshapedbox.logic;
 
-import net.heartshapedbox.body.AbstractBodyPart;
-import net.heartshapedbox.body.BodyPartProvider;
-import net.heartshapedbox.body.impl.ArmBodyPart;
-import net.heartshapedbox.body.impl.FootBodyPart;
-import net.heartshapedbox.body.impl.HeadBodyPart;
-import net.heartshapedbox.body.impl.LegBodyPart;
-import net.heartshapedbox.math.FlexBox;
-import net.heartshapedbox.math.two_d.Line;
-import net.heartshapedbox.math.two_d.Square;
+import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
+import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
+import io.github.faecraft.heartshapedbox.body.impl.ArmBodyPart;
+import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
+import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
+import io.github.faecraft.heartshapedbox.body.impl.LegBodyPart;
+import io.github.faecraft.heartshapedbox.math.FlexBox;
+import io.github.faecraft.heartshapedbox.math.two_d.Line;
+import io.github.faecraft.heartshapedbox.math.two_d.Square;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.server.network.ServerPlayerEntity;
