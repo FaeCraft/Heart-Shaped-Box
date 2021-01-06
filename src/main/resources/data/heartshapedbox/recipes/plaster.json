@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SWS"
+  ],
+  "key": {
+    "S": {
+      "item": "minecraft:string"
+    },
+    "W": {
+      "item": "minecraft:wool"
+    }
+  },
+  "result": {
+    "item": "heartshapedbox:plaster",
+    "count": 2
+  }
+}
