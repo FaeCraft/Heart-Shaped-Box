@@ -67,7 +67,7 @@ public class HSBMain implements ModInitializer {
                         ServerCommandSource source = context.getSource();
                         BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
                         
-                        for (AbstractBodyPart limb : provider.getAll()) {
+                        for (AbstractBodyPart limb : provider.getParts()) {
                             limb.setHealth(limb.getDefaultMaxHealth());
                         }
                         

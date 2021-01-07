@@ -6,7 +6,9 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.Optional;
 
-// Duck, make sure to add to this for each part
+/**
+ * Duck, applied in BodyPartDuck mixin
+ */
 public interface BodyPartProvider {
     ArrayList<AbstractBodyPart> getParts();
     
