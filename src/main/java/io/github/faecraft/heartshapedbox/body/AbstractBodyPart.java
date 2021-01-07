@@ -17,10 +17,10 @@ public abstract class AbstractBodyPart {
     public abstract float getDefaultMaxHealth();
     
     public void toTag(CompoundTag tag) {
-        CompoundTag info = new CompoundTag();
-        info.putFloat("health", health);
-        info.putFloat("maxHealth", maxHealth);
-        tag.put(getIdentifier().toString(), info);
+        CompoundTag data = new CompoundTag();
+        data.putFloat("health", health);
+        data.putFloat("maxHealth", maxHealth);
+        tag.put(getIdentifier().toString(), data);
     }
     
     public void fromTag(CompoundTag tag) {

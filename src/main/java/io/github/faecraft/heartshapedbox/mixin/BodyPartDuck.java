@@ -9,7 +9,8 @@ import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.LegBodyPart;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Pair;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -18,6 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
 public abstract class BodyPartDuck implements BodyPartProvider {
@@ -40,12 +42,19 @@ public abstract class BodyPartDuck implements BodyPartProvider {
     }
     
     @Override
-    public ArrayList<AbstractBodyPart> stateCopy() {
-        return null;
+    public Optional<AbstractBodyPart> getFromIdentifier(Identifier identifier) {
+        return parts.stream().filter(abstractBodyPart -> abstractBodyPart.getIdentifier().equals(identifier)).findFirst();
     }
     
     @Override
-    public void setStateFrom(ArrayList<AbstractBodyPart> provider) {
+    public CompoundTag toTag() {
+        CompoundTag out = new CompoundTag();
+        getParts().iterator().forEachRemaining(abstractBodyPart -> abstractBodyPart.toTag(out));
+        return out;
+    }
+    
+    @Override
+    public void fromTag(CompoundTag tag) {
     
     }
 }

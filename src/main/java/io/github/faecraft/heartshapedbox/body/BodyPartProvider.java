@@ -1,18 +1,18 @@
 package io.github.faecraft.heartshapedbox.body;
 
-import io.github.faecraft.heartshapedbox.body.impl.ArmBodyPart;
-import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
-import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
-import io.github.faecraft.heartshapedbox.body.impl.LegBodyPart;
-import net.minecraft.util.Pair;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 // Duck, make sure to add to this for each part
 public interface BodyPartProvider {
     ArrayList<AbstractBodyPart> getParts();
     
-    ArrayList<AbstractBodyPart> stateCopy();
+    CompoundTag toTag();
     
-    void setStateFrom(ArrayList<AbstractBodyPart> provider);
+    void fromTag(CompoundTag tag);
+    
+    Optional<AbstractBodyPart> getFromIdentifier(Identifier identifier);
 }
