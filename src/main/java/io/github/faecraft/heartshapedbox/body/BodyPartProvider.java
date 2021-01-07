@@ -10,17 +10,9 @@ import java.util.ArrayList;
 
 // Duck, make sure to add to this for each part
 public interface BodyPartProvider {
-    HeadBodyPart getHead();
-    
-    Pair<ArmBodyPart, ArmBodyPart> getArms();
-    
-    Pair<LegBodyPart, LegBodyPart> getLegs();
-    
-    Pair<FootBodyPart, FootBodyPart> getFeet();
-    
-    ArrayList<AbstractBodyPart> getAll();
+    ArrayList<AbstractBodyPart> getParts();
     
     ArrayList<AbstractBodyPart> stateCopy();
     
-    void setFrom(ArrayList<AbstractBodyPart> provider);
+    void setStateFrom(ArrayList<AbstractBodyPart> provider);
 }

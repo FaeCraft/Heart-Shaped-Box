@@ -68,7 +68,7 @@ public class HSBMain implements ModInitializer {
                         BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
                         
                         for (AbstractBodyPart limb : provider.getAll()) {
-                            limb.setHealth(limb.getMaxHealth());
+                            limb.setHealth(limb.getDefaultMaxHealth());
                         }
                         
                         source.sendFeedback(new LiteralText("Reset health"), false);
