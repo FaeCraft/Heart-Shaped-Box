@@ -42,6 +42,12 @@ public abstract class AbstractBodyPart {
         return 0;
     }
     
+    public <T extends AbstractBodyPart> T copyInto(T out) {
+        out.setFlexBox(getFlexBox());
+        out.setHealth(getHealth());
+        return out;
+    }
+    
     @Override
     public String toString() {
         return getType().name() + "-" + getSide().name() + "{" +

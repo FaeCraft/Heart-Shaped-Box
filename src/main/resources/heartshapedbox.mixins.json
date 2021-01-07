@@ -5,8 +5,11 @@
   "compatibilityLevel": "JAVA_8",
   "mixins": [
     "BodyPartDuck",
-    "HandleTakenDamageMixin",
-    "SaveDamageMixin"
+    "ManageLivingEntityDamageLogicMixin",
+    "ManageTakenDamageMixin",
+    "SaveDamageMixin",
+    "damage_invoke.PlayerEntityDamageBypass",
+    "damage_invoke.ServerPlayerEntityDamageBypass",
   ],
   "client": [
   ],

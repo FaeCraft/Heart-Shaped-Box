@@ -19,4 +19,8 @@ public interface BodyPartProvider {
     Pair<FootBodyPart, FootBodyPart> getFeet();
     
     ArrayList<AbstractBodyPart> getAll();
+    
+    ArrayList<AbstractBodyPart> stateCopy();
+    
+    void setFrom(ArrayList<AbstractBodyPart> provider);
 }

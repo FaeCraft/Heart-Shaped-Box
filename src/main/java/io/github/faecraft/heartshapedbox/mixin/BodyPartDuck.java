@@ -15,16 +15,16 @@ import java.util.ArrayList;
 
 @Mixin(PlayerEntity.class)
 public abstract class BodyPartDuck implements BodyPartProvider {
-    public final HeadBodyPart head = new HeadBodyPart();
+    public HeadBodyPart head = new HeadBodyPart();
     
-    public final ArmBodyPart leftArm = new ArmBodyPart(BodyPartSide.LEFT);
-    public final ArmBodyPart rightArm = new ArmBodyPart(BodyPartSide.RIGHT);
+    public ArmBodyPart leftArm = new ArmBodyPart(BodyPartSide.LEFT);
+    public ArmBodyPart rightArm = new ArmBodyPart(BodyPartSide.RIGHT);
     
-    public final LegBodyPart leftLeg = new LegBodyPart(BodyPartSide.LEFT);
-    public final LegBodyPart rightLeg = new LegBodyPart(BodyPartSide.RIGHT);
+    public LegBodyPart leftLeg = new LegBodyPart(BodyPartSide.LEFT);
+    public LegBodyPart rightLeg = new LegBodyPart(BodyPartSide.RIGHT);
     
-    public final FootBodyPart leftFoot = new FootBodyPart(BodyPartSide.LEFT);
-    public final FootBodyPart rightFoot = new FootBodyPart(BodyPartSide.RIGHT);
+    public FootBodyPart leftFoot = new FootBodyPart(BodyPartSide.LEFT);
+    public FootBodyPart rightFoot = new FootBodyPart(BodyPartSide.RIGHT);
     
     @Override
     public HeadBodyPart getHead() {
@@ -57,5 +57,30 @@ public abstract class BodyPartDuck implements BodyPartProvider {
         out.add(leftFoot);
         out.add(rightFoot);
         return out;
+    }
+    
+    @Override
+    public ArrayList<AbstractBodyPart> stateCopy() {
+        ArrayList<AbstractBodyPart> out = new ArrayList<>();
+        out.add(head.copyInto(new HeadBodyPart()));
+        out.add(leftArm.copyInto(new ArmBodyPart(BodyPartSide.LEFT)));
+        out.add(rightArm.copyInto(new ArmBodyPart(BodyPartSide.RIGHT)));
+        out.add(leftLeg.copyInto(new LegBodyPart(BodyPartSide.LEFT)));
+        out.add(rightLeg.copyInto(new LegBodyPart(BodyPartSide.RIGHT)));
+        out.add(leftFoot.copyInto(new FootBodyPart(BodyPartSide.LEFT)));
+        out.add(rightFoot.copyInto(new FootBodyPart(BodyPartSide.RIGHT)));
+        return out;
+    }
+    
+    @Override
+    public void setFrom(ArrayList<AbstractBodyPart> state) {
+        // TODO: Refactor this! It assumes fixed input order
+        head = (HeadBodyPart)state.get(0);
+        leftArm = (ArmBodyPart)state.get(1);
+        rightArm = (ArmBodyPart)state.get(2);
+        leftLeg = (LegBodyPart)state.get(3);
+        rightLeg = (LegBodyPart)state.get(4);
+        leftFoot = (FootBodyPart)state.get(5);
+        rightFoot = (FootBodyPart)state.get(6);
     }
 }
