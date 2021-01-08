@@ -1,5 +1,6 @@
 package io.github.faecraft.heartshapedbox.main;
 
+import io.github.faecraft.heartshapedbox.body.BuiltInParts;
 import io.github.faecraft.heartshapedbox.body.impl.ArmBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
@@ -44,21 +45,21 @@ public class HSBMain implements ModInitializer {
                     BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
                     
                     source.sendFeedback(new LiteralText("Head"), false);
-                    HeadBodyPart head = provider.getHead();
+                    HeadBodyPart head = (HeadBodyPart)provider.getOrThrow(BuiltInParts.HEAD);
                     source.sendFeedback(new LiteralText("- CENTER: " + head.getHealth()), false);
                     
                     source.sendFeedback(new LiteralText("Arms"), false);
-                    Pair<ArmBodyPart, ArmBodyPart> arms = provider.getArms();
+                    Pair<ArmBodyPart, ArmBodyPart> arms = BuiltInParts.getArms(provider);
                     source.sendFeedback(new LiteralText("- LEFT: " + arms.getLeft().getHealth()), false);
                     source.sendFeedback(new LiteralText("- RIGHT: " + arms.getRight().getHealth()), false);
                     
                     source.sendFeedback(new LiteralText("Legs"), false);
-                    Pair<LegBodyPart, LegBodyPart> legs = provider.getLegs();
+                    Pair<LegBodyPart, LegBodyPart> legs = BuiltInParts.getLegs(provider);
                     source.sendFeedback(new LiteralText("- LEFT: " + legs.getLeft().getHealth()), false);
                     source.sendFeedback(new LiteralText("- RIGHT: " + legs.getRight().getHealth()), false);
                     
                     source.sendFeedback(new LiteralText("Feet"), false);
-                    Pair<FootBodyPart, FootBodyPart> feet = provider.getFeet();
+                    Pair<FootBodyPart, FootBodyPart> feet = BuiltInParts.getFeet(provider);
                     source.sendFeedback(new LiteralText("- LEFT: " + feet.getLeft().getHealth()), false);
                     source.sendFeedback(new LiteralText("- RIGHT: " + feet.getRight().getHealth()), false);
                     return 1;

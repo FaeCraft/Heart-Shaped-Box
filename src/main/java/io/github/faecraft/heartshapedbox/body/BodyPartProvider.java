@@ -16,5 +16,7 @@ public interface BodyPartProvider {
     
     void fromTag(CompoundTag tag);
     
-    Optional<AbstractBodyPart> getFromIdentifier(Identifier identifier);
+    Optional<AbstractBodyPart> maybeGet(Identifier identifier);
+    
+    AbstractBodyPart getOrThrow(Identifier identifier);
 }

@@ -1,6 +1,7 @@
 package io.github.faecraft.heartshapedbox.logic.damage.impl;
 
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
+import io.github.faecraft.heartshapedbox.body.BuiltInParts;
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -14,6 +15,6 @@ public class FallingBlockDamageHandler implements DamageHandler {
     
     @Override
     public Pair<Boolean, Float> handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
-        return new Pair<>(false, provider.getHead().takeDamage(amount));
+        return new Pair<>(false, provider.getOrThrow(BuiltInParts.HEAD).takeDamage(amount));
     }
 }
