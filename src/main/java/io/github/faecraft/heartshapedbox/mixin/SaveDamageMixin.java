@@ -13,12 +13,8 @@ public class SaveDamageMixin {
     @Inject(method = "writeCustomDataToTag", at = @At("RETURN"))
     public void serializeBodyParts(CompoundTag tag, CallbackInfo ci) {
         BodyPartProvider provider = (BodyPartProvider)this;
-        
-        CompoundTag partsTag = new CompoundTag();
     
-        partsTag.put("hsb", provider.toTag());
-        
-        tag.put("hsb", partsTag);
+        tag.put("hsb", provider.toTag());
     }
     
     @Inject(method = "readCustomDataFromTag", at = @At("RETURN"))
