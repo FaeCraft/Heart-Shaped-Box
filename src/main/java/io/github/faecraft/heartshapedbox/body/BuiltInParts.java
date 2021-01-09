@@ -6,8 +6,6 @@ import io.github.faecraft.heartshapedbox.body.impl.LegBodyPart;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Pair;
 
-import java.util.Locale;
-
 import static io.github.faecraft.heartshapedbox.body.BodyPartSide.LEFT;
 import static io.github.faecraft.heartshapedbox.body.BodyPartSide.RIGHT;
 

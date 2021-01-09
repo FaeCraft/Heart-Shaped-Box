@@ -5,8 +5,6 @@ import io.github.faecraft.heartshapedbox.body.BodyPartSide;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Locale;
-
 public class ArmBodyPart extends AbstractBodyPart {
     private final BodyPartSide side;
     private final Identifier identifier;

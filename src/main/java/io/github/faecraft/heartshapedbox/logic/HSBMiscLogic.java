@@ -2,7 +2,6 @@ package io.github.faecraft.heartshapedbox.logic;
 
 import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
-import io.github.faecraft.heartshapedbox.body.BodyPartSide;
 import io.github.faecraft.heartshapedbox.body.BuiltInParts;
 import io.github.faecraft.heartshapedbox.body.impl.ArmBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
