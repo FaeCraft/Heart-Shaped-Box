@@ -19,14 +19,13 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
-import java.util.MissingResourceException;
 import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
 public abstract class BodyPartDuck implements BodyPartProvider {
     private final ArrayList<AbstractBodyPart> parts = new ArrayList<>();
     
-    @Inject(method = "<init>", at = @At("TAIL"))
+    @Inject(method = "<init>*", at = @At("RETURN"))
     public void addPartsOnInit(World world, BlockPos pos, float yaw, GameProfile profile, CallbackInfo ci) {
         parts.add(new HeadBodyPart());
         parts.add(new ArmBodyPart(BodyPartSide.LEFT));
@@ -48,18 +47,18 @@ public abstract class BodyPartDuck implements BodyPartProvider {
     }
     
     @Override
-    public CompoundTag toTag() {
+    public CompoundTag writeToTag() {
         CompoundTag out = new CompoundTag();
         getParts().iterator().forEachRemaining(abstractBodyPart -> abstractBodyPart.toTag(out));
         return out;
     }
     
     @Override
-    public void fromTag(CompoundTag tag) {
+    public void readFromTag(CompoundTag tag) {
         CompoundTag data = tag.getCompound("hsb");
         for (String key : data.getKeys()) {
             Optional<AbstractBodyPart> optional = maybeGet(new Identifier(key));
-            optional.ifPresent(abstractBodyPart -> abstractBodyPart.fromTag(tag.getCompound(key)));
+            optional.ifPresent(abstractBodyPart -> abstractBodyPart.fromTag(data.getCompound(key)));
         }
     }
     

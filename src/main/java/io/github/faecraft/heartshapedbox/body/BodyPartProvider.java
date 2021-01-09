@@ -12,9 +12,9 @@ import java.util.Optional;
 public interface BodyPartProvider {
     ArrayList<AbstractBodyPart> getParts();
     
-    CompoundTag toTag();
+    CompoundTag writeToTag();
     
-    void fromTag(CompoundTag tag);
+    void readFromTag(CompoundTag tag);
     
     Optional<AbstractBodyPart> maybeGet(Identifier identifier);
     

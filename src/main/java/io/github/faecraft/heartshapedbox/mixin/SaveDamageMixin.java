@@ -14,7 +14,7 @@ public class SaveDamageMixin {
     public void serializeBodyParts(CompoundTag tag, CallbackInfo ci) {
         BodyPartProvider provider = (BodyPartProvider)this;
     
-        tag.put("hsb", provider.toTag());
+        tag.put("hsb", provider.writeToTag());
     }
     
     @Inject(method = "readCustomDataFromTag", at = @At("RETURN"))
@@ -23,6 +23,6 @@ public class SaveDamageMixin {
         
         CompoundTag partsTag = tag.getCompound("hsb");
     
-        provider.fromTag(partsTag);
+        provider.readFromTag(partsTag);
     }
 }

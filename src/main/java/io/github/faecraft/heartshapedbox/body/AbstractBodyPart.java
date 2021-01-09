@@ -24,9 +24,8 @@ public abstract class AbstractBodyPart {
     }
     
     public void fromTag(CompoundTag tag) {
-        CompoundTag info = tag.getCompound(getIdentifier().toString());
-        health = info.getFloat("health");
-        maxHealth = info.getFloat("maxHealth");
+        health = tag.getFloat("health");
+        maxHealth = tag.getFloat("maxHealth");
     }
     
     public float getHealth() {
@@ -50,7 +49,7 @@ public abstract class AbstractBodyPart {
     @Override
     public String toString() {
         return "BodyPart(" + getIdentifier().toString() + ") {" +
-            "maxHealth=" + getDefaultMaxHealth() +
+            "maxHealth=" + maxHealth +
             ", health=" + health +
             '}';
     }
