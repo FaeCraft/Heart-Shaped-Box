@@ -13,6 +13,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -47,6 +48,17 @@ public abstract class BodyPartDuck implements BodyPartProvider {
     }
     
     @Override
+    public @Nullable AbstractBodyPart getOrNull(Identifier identifier) {
+        return maybeGet(identifier).orElse(null);
+    }
+    
+    @Override
+    public AbstractBodyPart getOrThrow(Identifier identifier) {
+        //noinspection OptionalGetWithoutIsPresent
+        return maybeGet(identifier).get();
+    }
+    
+    @Override
     public CompoundTag writeToTag() {
         CompoundTag out = new CompoundTag();
         getParts().iterator().forEachRemaining(abstractBodyPart -> abstractBodyPart.toTag(out));
@@ -59,11 +71,5 @@ public abstract class BodyPartDuck implements BodyPartProvider {
             Optional<AbstractBodyPart> optional = maybeGet(new Identifier(key));
             optional.ifPresent(abstractBodyPart -> abstractBodyPart.fromTag(tag.getCompound(key)));
         }
-    }
-    
-    @Override
-    public AbstractBodyPart getOrThrow(Identifier identifier) {
-        //noinspection OptionalGetWithoutIsPresent
-        return maybeGet(identifier).get();
     }
 }

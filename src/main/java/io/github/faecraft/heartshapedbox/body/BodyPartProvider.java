@@ -2,6 +2,7 @@ package io.github.faecraft.heartshapedbox.body;
 
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Optional;
@@ -17,6 +18,8 @@ public interface BodyPartProvider {
     void readFromTag(CompoundTag tag);
     
     Optional<AbstractBodyPart> maybeGet(Identifier identifier);
+    
+    @Nullable AbstractBodyPart getOrNull(Identifier identifier);
     
     AbstractBodyPart getOrThrow(Identifier identifier);
 }
