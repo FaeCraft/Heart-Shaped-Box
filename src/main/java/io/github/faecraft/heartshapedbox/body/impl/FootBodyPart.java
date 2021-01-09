@@ -2,6 +2,7 @@ package io.github.faecraft.heartshapedbox.body.impl;
 
 import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
 import io.github.faecraft.heartshapedbox.body.BodyPartSide;
+import io.github.faecraft.heartshapedbox.body.BuiltInParts;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 
@@ -11,7 +12,7 @@ public class FootBodyPart extends AbstractBodyPart {
     
     public FootBodyPart(BodyPartSide side) {
         this.side = side;
-        this.identifier = new Identifier("hsb:foot/" + side.lowerName());
+        this.identifier = side == BodyPartSide.LEFT ? BuiltInParts.LEFT_FOOT : BuiltInParts.RIGHT_FOOT;
     }
     
     @Override

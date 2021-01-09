@@ -20,6 +20,8 @@ import net.minecraft.util.Pair;
 import static net.minecraft.server.command.CommandManager.literal;
 
 public class HSBMain implements ModInitializer {
+    public static final String MOD_ID = "heartshapedbox";
+    
     @Override
     public void onInitialize() {
         DamageHandlerDispatcher.registerHandlers();

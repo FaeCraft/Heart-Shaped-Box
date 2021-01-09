@@ -55,10 +55,9 @@ public abstract class BodyPartDuck implements BodyPartProvider {
     
     @Override
     public void readFromTag(CompoundTag tag) {
-        CompoundTag data = tag.getCompound("hsb");
-        for (String key : data.getKeys()) {
+        for (String key : tag.getKeys()) {
             Optional<AbstractBodyPart> optional = maybeGet(new Identifier(key));
-            optional.ifPresent(abstractBodyPart -> abstractBodyPart.fromTag(data.getCompound(key)));
+            optional.ifPresent(abstractBodyPart -> abstractBodyPart.fromTag(tag.getCompound(key)));
         }
     }
     
