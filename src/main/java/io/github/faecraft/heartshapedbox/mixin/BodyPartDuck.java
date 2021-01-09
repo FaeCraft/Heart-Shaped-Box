@@ -4,6 +4,7 @@ import com.mojang.authlib.GameProfile;
 import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
 import io.github.faecraft.heartshapedbox.body.BodyPartSide;
+import io.github.faecraft.heartshapedbox.body.BuiltInParts;
 import io.github.faecraft.heartshapedbox.body.impl.ArmBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
@@ -20,36 +21,42 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
 public abstract class BodyPartDuck implements BodyPartProvider {
-    private final ArrayList<AbstractBodyPart> parts = new ArrayList<>();
+    private final HashMap<Identifier, AbstractBodyPart> parts = new HashMap<>();
     
     @Inject(method = "<init>*", at = @At("RETURN"))
     public void addPartsOnInit(World world, BlockPos pos, float yaw, GameProfile profile, CallbackInfo ci) {
-        parts.add(new HeadBodyPart());
-        parts.add(new ArmBodyPart(BodyPartSide.LEFT));
-        parts.add(new ArmBodyPart(BodyPartSide.RIGHT));
-        parts.add(new LegBodyPart(BodyPartSide.LEFT));
-        parts.add(new LegBodyPart(BodyPartSide.RIGHT));
-        parts.add(new FootBodyPart(BodyPartSide.LEFT));
-        parts.add(new FootBodyPart(BodyPartSide.RIGHT));
+        parts.put(BuiltInParts.HEAD, new HeadBodyPart());
+        parts.put(BuiltInParts.LEFT_ARM, new ArmBodyPart(BodyPartSide.LEFT));
+        parts.put(BuiltInParts.RIGHT_ARM, new ArmBodyPart(BodyPartSide.RIGHT));
+        parts.put(BuiltInParts.LEFT_LEG, new LegBodyPart(BodyPartSide.LEFT));
+        parts.put(BuiltInParts.RIGHT_LEG, new LegBodyPart(BodyPartSide.RIGHT));
+        parts.put(BuiltInParts.LEFT_FOOT, new FootBodyPart(BodyPartSide.LEFT));
+        parts.put(BuiltInParts.RIGHT_FOOT, new FootBodyPart(BodyPartSide.RIGHT));
     }
     
     @Override
-    public ArrayList<AbstractBodyPart> getParts() {
+    public HashMap<Identifier, AbstractBodyPart> getPartsMap() {
         return parts;
     }
     
     @Override
+    public ArrayList<AbstractBodyPart> getParts() {
+        return new ArrayList<>(parts.values());
+    }
+    
+    @Override
     public Optional<AbstractBodyPart> maybeGet(Identifier identifier) {
-        return parts.stream().filter(abstractBodyPart -> abstractBodyPart.getIdentifier().equals(identifier)).findFirst();
+        return Optional.ofNullable(parts.get(identifier));
     }
     
     @Override
     public @Nullable AbstractBodyPart getOrNull(Identifier identifier) {
-        return maybeGet(identifier).orElse(null);
+        return parts.get(identifier);
     }
     
     @Override

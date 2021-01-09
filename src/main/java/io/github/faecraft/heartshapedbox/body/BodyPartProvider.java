@@ -5,12 +5,15 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Optional;
 
 /**
  * Duck, applied in BodyPartDuck mixin
  */
 public interface BodyPartProvider {
+    HashMap<Identifier, AbstractBodyPart> getPartsMap();
+    
     ArrayList<AbstractBodyPart> getParts();
     
     CompoundTag writeToTag();
