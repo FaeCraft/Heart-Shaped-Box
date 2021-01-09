@@ -16,16 +16,16 @@ public class BuiltInParts {
     public static final Identifier HEAD = new Identifier("hsb:head");
     
     // Arms
-    public static final Identifier LEFT_ARM = new Identifier("hsb:arm/" + LEFT.name().toLowerCase(Locale.ROOT));
-    public static final Identifier RIGHT_ARM = new Identifier("hsb:arm/" + RIGHT.name().toLowerCase(Locale.ROOT));
+    public static final Identifier LEFT_ARM = new Identifier("hsb:arm/" + LEFT.lowerName());
+    public static final Identifier RIGHT_ARM = new Identifier("hsb:arm/" + RIGHT.lowerName());
     
     // Legs
-    public static final Identifier LEFT_LEG = new Identifier("hsb:leg/" + LEFT.name().toLowerCase(Locale.ROOT));
-    public static final Identifier RIGHT_LEG = new Identifier("hsb:leg/" + RIGHT.name().toLowerCase(Locale.ROOT));
+    public static final Identifier LEFT_LEG = new Identifier("hsb:leg/" + LEFT.lowerName());
+    public static final Identifier RIGHT_LEG = new Identifier("hsb:leg/" + RIGHT.lowerName());
     
     // Feet
-    public static final Identifier LEFT_FOOT = new Identifier("hsb:foot/" + LEFT.name().toLowerCase(Locale.ROOT));
-    public static final Identifier RIGHT_FOOT = new Identifier("hsb:foot/" + RIGHT.name().toLowerCase(Locale.ROOT));
+    public static final Identifier LEFT_FOOT = new Identifier("hsb:foot/" + LEFT.lowerName());
+    public static final Identifier RIGHT_FOOT = new Identifier("hsb:foot/" + RIGHT.lowerName());
     
     
     // Pairs

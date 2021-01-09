@@ -13,7 +13,7 @@ public class LegBodyPart extends AbstractBodyPart {
     
     public LegBodyPart(BodyPartSide side) {
         this.side = side;
-        this.identifier = new Identifier("hsb:leg/" + side.name().toLowerCase(Locale.ROOT));
+        this.identifier = new Identifier("hsb:leg/" + side.lowerName());
     }
     
     @Override

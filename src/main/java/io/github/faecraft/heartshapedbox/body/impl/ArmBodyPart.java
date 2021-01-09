@@ -13,7 +13,7 @@ public class ArmBodyPart extends AbstractBodyPart {
     
     public ArmBodyPart(BodyPartSide side) {
         this.side = side;
-        this.identifier = new Identifier("hsb:arm/" + side.name().toLowerCase(Locale.ROOT));
+        this.identifier = new Identifier("hsb:arm/" + side.lowerName());
     }
     
     @Override

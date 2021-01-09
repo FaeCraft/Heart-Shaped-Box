@@ -13,7 +13,7 @@ public class FootBodyPart extends AbstractBodyPart {
     
     public FootBodyPart(BodyPartSide side) {
         this.side = side;
-        this.identifier = new Identifier("hsb:foot/" + side.name().toLowerCase(Locale.ROOT));
+        this.identifier = new Identifier("hsb:foot/" + side.lowerName());
     }
     
     @Override
