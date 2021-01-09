@@ -8,7 +8,7 @@
       "item": "minecraft:string"
     },
     "W": {
-      "item": "minecraft:wool"
+      "tag": "minecraft:wool"
     }
   },
   "result": {
