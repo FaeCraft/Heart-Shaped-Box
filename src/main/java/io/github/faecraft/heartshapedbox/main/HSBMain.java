@@ -28,11 +28,7 @@ public class HSBMain implements ModInitializer {
         
         ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {
                 // Update FlexBoxes
-                try {
-                    PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::updatePlayerFlexBoxes);
-                } catch (IllegalStateException e) {
-                    e.printStackTrace();
-                }
+                PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::updatePlayerFlexBoxes);
                 // Debuff all players accordingly
                 PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::debuffPlayer);
             }
@@ -46,24 +42,14 @@ public class HSBMain implements ModInitializer {
                     ServerCommandSource source = context.getSource();
                     BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
                     
-                    source.sendFeedback(new LiteralText("Head"), false);
-                    HeadBodyPart head = (HeadBodyPart)provider.getOrThrow(BuiltInParts.HEAD);
-                    source.sendFeedback(new LiteralText("- CENTER: " + head.getHealth()), false);
+                    for (AbstractBodyPart part : provider.getParts()) {
+                        source.sendFeedback(
+                            new LiteralText(part.getIdentifier().toString())
+                                .append(new LiteralText(" - "))
+                                .append(new LiteralText(part.getHealth() + "/" + part.getMaxHealth())),
+                            false);
+                    }
                     
-                    source.sendFeedback(new LiteralText("Arms"), false);
-                    Pair<ArmBodyPart, ArmBodyPart> arms = BuiltInParts.getArms(provider);
-                    source.sendFeedback(new LiteralText("- LEFT: " + arms.getLeft().getHealth()), false);
-                    source.sendFeedback(new LiteralText("- RIGHT: " + arms.getRight().getHealth()), false);
-                    
-                    source.sendFeedback(new LiteralText("Legs"), false);
-                    Pair<LegBodyPart, LegBodyPart> legs = BuiltInParts.getLegs(provider);
-                    source.sendFeedback(new LiteralText("- LEFT: " + legs.getLeft().getHealth()), false);
-                    source.sendFeedback(new LiteralText("- RIGHT: " + legs.getRight().getHealth()), false);
-                    
-                    source.sendFeedback(new LiteralText("Feet"), false);
-                    Pair<FootBodyPart, FootBodyPart> feet = BuiltInParts.getFeet(provider);
-                    source.sendFeedback(new LiteralText("- LEFT: " + feet.getLeft().getHealth()), false);
-                    source.sendFeedback(new LiteralText("- RIGHT: " + feet.getRight().getHealth()), false);
                     return 1;
                 })
                     .then(literal("reset").executes(context -> {

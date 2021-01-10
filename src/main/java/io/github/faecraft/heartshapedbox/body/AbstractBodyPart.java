@@ -36,6 +36,14 @@ public abstract class AbstractBodyPart {
         health = amount;
     }
     
+    public float getMaxHealth() {
+        return health;
+    }
+    
+    public void setMaxHealth(float amount) {
+        maxHealth = amount;
+    }
+    
     public float takeDamage(float amount) {
         if (amount > health) {
             float used = amount - health;
