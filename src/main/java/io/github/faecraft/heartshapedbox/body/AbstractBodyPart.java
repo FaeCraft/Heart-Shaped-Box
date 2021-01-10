@@ -37,7 +37,7 @@ public abstract class AbstractBodyPart {
     }
     
     public float getMaxHealth() {
-        return health;
+        return maxHealth;
     }
     
     public void setMaxHealth(float amount) {
