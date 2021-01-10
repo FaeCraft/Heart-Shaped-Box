@@ -1,21 +1,15 @@
 package io.github.faecraft.heartshapedbox.main;
 
-import io.github.faecraft.heartshapedbox.body.BuiltInParts;
-import io.github.faecraft.heartshapedbox.body.impl.ArmBodyPart;
-import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
-import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
+import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
+import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
 import io.github.faecraft.heartshapedbox.logic.HSBMiscLogic;
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandlerDispatcher;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
-import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
-import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
-import io.github.faecraft.heartshapedbox.body.impl.LegBodyPart;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.text.LiteralText;
-import net.minecraft.util.Pair;
 
 import static net.minecraft.server.command.CommandManager.literal;
 
