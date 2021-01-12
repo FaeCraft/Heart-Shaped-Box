@@ -2,26 +2,30 @@ package io.github.faecraft.heartshapedbox.body;
 
 import io.github.faecraft.heartshapedbox.math.FlexBox;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractBodyPart {
-    private float health = getMaxHealth();
+    private float maxHealth = getDefaultMaxHealth();
+    private float health = maxHealth;
     private FlexBox flexBox = FlexBox.zero();
     
-    public abstract BodyPartType getType();
+    public abstract @NotNull Identifier getIdentifier();
     
     public abstract BodyPartSide getSide();
     
-    public abstract float getMaxHealth();
+    public abstract float getDefaultMaxHealth();
     
     public void toTag(CompoundTag tag) {
-        CompoundTag info = new CompoundTag();
-        info.putFloat("health", health);
-        tag.put(getType().name() + " - " + getSide().name(), info);
+        CompoundTag data = new CompoundTag();
+        data.putFloat("health", health);
+        data.putFloat("maxHealth", maxHealth);
+        tag.put(getIdentifier().toString(), data);
     }
     
     public void fromTag(CompoundTag tag) {
-        CompoundTag info = tag.getCompound(getType().name() + " - " + getSide().name());
-        health = info.getFloat("health");
+        health = tag.getFloat("health");
+        maxHealth = tag.getFloat("maxHealth");
     }
     
     public float getHealth() {
@@ -30,6 +34,14 @@ public abstract class AbstractBodyPart {
     
     public void setHealth(float amount) {
         health = amount;
+    }
+    
+    public float getMaxHealth() {
+        return maxHealth;
+    }
+    
+    public void setMaxHealth(float amount) {
+        maxHealth = amount;
     }
     
     public float takeDamage(float amount) {
@@ -42,16 +54,10 @@ public abstract class AbstractBodyPart {
         return 0;
     }
     
-    public <T extends AbstractBodyPart> T copyInto(T out) {
-        out.setFlexBox(getFlexBox());
-        out.setHealth(getHealth());
-        return out;
-    }
-    
     @Override
     public String toString() {
-        return getType().name() + "-" + getSide().name() + "{" +
-            "maxHealth=" + getMaxHealth() +
+        return "BodyPart(" + getIdentifier().toString() + ") {" +
+            "maxHealth=" + maxHealth +
             ", health=" + health +
             '}';
     }

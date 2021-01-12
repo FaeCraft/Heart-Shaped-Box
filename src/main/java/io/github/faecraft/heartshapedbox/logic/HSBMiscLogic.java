@@ -2,6 +2,7 @@ package io.github.faecraft.heartshapedbox.logic;
 
 import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
+import io.github.faecraft.heartshapedbox.body.BuiltInParts;
 import io.github.faecraft.heartshapedbox.body.impl.ArmBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
@@ -38,14 +39,14 @@ public class HSBMiscLogic {
         Vec2f[] rightSet = results.getRight();
         
         // Feet
-        provider.getFeet().getLeft().setFlexBox(new FlexBox(
+        provider.getOrThrow(BuiltInParts.LEFT_FOOT).setFlexBox(new FlexBox(
             v3FromV2(leftSet[0], pos.y),
             v3FromV2(leftSet[1], pos.y),
             v3FromV2(leftSet[2], pos.y),
             v3FromV2(leftSet[3], pos.y),
             0.2
         ));
-        provider.getFeet().getRight().setFlexBox(new FlexBox(
+        provider.getOrThrow(BuiltInParts.RIGHT_FOOT).setFlexBox(new FlexBox(
             v3FromV2(rightSet[0], pos.y),
             v3FromV2(rightSet[1], pos.y),
             v3FromV2(rightSet[2], pos.y),
@@ -54,14 +55,14 @@ public class HSBMiscLogic {
         ));
     
         // Legs
-        provider.getLegs().getLeft().setFlexBox(new FlexBox(
+        provider.getOrThrow(BuiltInParts.LEFT_LEG).setFlexBox(new FlexBox(
             v3FromV2(leftSet[0], pos.y + 0.2),
             v3FromV2(leftSet[1], pos.y + 0.2),
             v3FromV2(leftSet[2], pos.y + 0.2),
             v3FromV2(leftSet[3], pos.y + 0.2),
             0.6
         ));
-        provider.getLegs().getRight().setFlexBox(new FlexBox(
+        provider.getOrThrow(BuiltInParts.RIGHT_LEG).setFlexBox(new FlexBox(
             v3FromV2(rightSet[0], pos.y + 0.2),
             v3FromV2(rightSet[1], pos.y + 0.2),
             v3FromV2(rightSet[2], pos.y + 0.2),
@@ -70,14 +71,14 @@ public class HSBMiscLogic {
         ));
     
         // Arms
-        provider.getArms().getLeft().setFlexBox(new FlexBox(
+        provider.getOrThrow(BuiltInParts.LEFT_ARM).setFlexBox(new FlexBox(
             v3FromV2(leftSet[0], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[1], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[2], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[3], pos.y + 0.2 + 0.6),
             0.8
         ));
-        provider.getArms().getRight().setFlexBox(new FlexBox(
+        provider.getOrThrow(BuiltInParts.RIGHT_ARM).setFlexBox(new FlexBox(
             v3FromV2(rightSet[0], pos.y + 0.2 + 0.6),
             v3FromV2(rightSet[1], pos.y + 0.2 + 0.6),
             v3FromV2(rightSet[2], pos.y + 0.2 + 0.6),
@@ -86,7 +87,7 @@ public class HSBMiscLogic {
         ));
         
         // Head
-        provider.getHead().setFlexBox(new FlexBox(
+        provider.getOrThrow(BuiltInParts.HEAD).setFlexBox(new FlexBox(
             v3FromV2(leftSet[2], pos.y + 0.2 + 0.6 + 0.8),
             v3FromV2(leftSet[1], pos.y + 0.2 + 0.6 + 0.8),
             v3FromV2(rightSet[1], pos.y + 0.2 + 0.6 + 0.8),
@@ -100,8 +101,8 @@ public class HSBMiscLogic {
         
         // Check for broken legs/feet
         // Each broken part adds a slowness level
-        Pair<LegBodyPart, LegBodyPart> legs = provider.getLegs();
-        Pair<FootBodyPart, FootBodyPart> feet = provider.getFeet();
+        Pair<LegBodyPart, LegBodyPart> legs = BuiltInParts.getLegs(provider);
+        Pair<FootBodyPart, FootBodyPart> feet = BuiltInParts.getFeet(provider);
         int slowAmp = -1;
         
         if (legs.getLeft().getHealth() <= 0) slowAmp++;
@@ -115,7 +116,7 @@ public class HSBMiscLogic {
         
         // Check for broken arms
         // Each broken one adds a mining fatigue level
-        Pair<ArmBodyPart, ArmBodyPart> arms = provider.getArms();
+        Pair<ArmBodyPart, ArmBodyPart> arms = BuiltInParts.getArms(provider);
         int fatigueAmp = -1;
         if (arms.getLeft().getHealth() <= 0) fatigueAmp++;
         if (arms.getRight().getHealth() <= 0) fatigueAmp++;
@@ -123,9 +124,9 @@ public class HSBMiscLogic {
             playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 2, fatigueAmp, true, true));
         }
         
-        // Check for broken(? is it broken or just injured lol) head
         // Blindness and nausea if broken
-        HeadBodyPart head = provider.getHead();
+        // TODO: Kill if broken, effects come sooner(?)
+        HeadBodyPart head = (HeadBodyPart)provider.getOrThrow(BuiltInParts.HEAD);
         if (head.getHealth() <= 0) {
             // Causes rapid strobing at ~23->~10, be careful!
             playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 25, 0, true, true));

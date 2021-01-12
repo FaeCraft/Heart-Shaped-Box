@@ -14,5 +14,5 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * @author P03W
  */
 public class BadMixinAtomicFlag {
-    public static AtomicBoolean callSuperDamage = new AtomicBoolean();
+    public static final AtomicBoolean callSuperDamage = new AtomicBoolean();
 }

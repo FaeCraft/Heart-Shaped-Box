@@ -8,7 +8,7 @@ public class FlexBox {
     public final Quad[] quads = new Quad[6];
     
     // Not the actual center, but a good enough approximation for what its used for
-    public Vec3d roughCenter;
+    public final Vec3d roughCenter;
     
     public FlexBox(Vec3d a, Vec3d b, Vec3d c, Vec3d d, Vec3d e, Vec3d f, Vec3d g, Vec3d h) {
         quads[0] = new Quad(a, b, c, d);

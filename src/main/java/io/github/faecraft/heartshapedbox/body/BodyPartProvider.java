@@ -1,26 +1,28 @@
 package io.github.faecraft.heartshapedbox.body;
 
-import io.github.faecraft.heartshapedbox.body.impl.ArmBodyPart;
-import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
-import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
-import io.github.faecraft.heartshapedbox.body.impl.LegBodyPart;
-import net.minecraft.util.Pair;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Optional;
 
-// Duck, make sure to add to this for each part
+/**
+ * Duck, applied in BodyPartDuck mixin
+ */
 public interface BodyPartProvider {
-    HeadBodyPart getHead();
+    HashMap<Identifier, AbstractBodyPart> getPartsMap();
     
-    Pair<ArmBodyPart, ArmBodyPart> getArms();
+    ArrayList<AbstractBodyPart> getParts();
     
-    Pair<LegBodyPart, LegBodyPart> getLegs();
+    CompoundTag writeToTag();
     
-    Pair<FootBodyPart, FootBodyPart> getFeet();
+    void readFromTag(CompoundTag tag);
     
-    ArrayList<AbstractBodyPart> getAll();
+    Optional<AbstractBodyPart> maybeGet(Identifier identifier);
     
-    ArrayList<AbstractBodyPart> stateCopy();
+    @Nullable AbstractBodyPart getOrNull(Identifier identifier);
     
-    void setFrom(ArrayList<AbstractBodyPart> provider);
+    AbstractBodyPart getOrThrow(Identifier identifier);
 }

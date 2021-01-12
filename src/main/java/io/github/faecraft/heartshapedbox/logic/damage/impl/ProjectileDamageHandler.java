@@ -24,7 +24,7 @@ public class ProjectileDamageHandler implements DamageHandler {
         //noinspection ConstantConditions
         Ray ray = new Ray(source.getAttacker().getPos(), source.getAttacker().getVelocity());
     
-        ArrayList<AbstractBodyPart> possible = provider.getAll();
+        ArrayList<AbstractBodyPart> possible = provider.getParts();
         possible.sort(Comparator.comparingDouble(o -> o.getFlexBox().roughCenter.distanceTo(ray.start.add(ray.direction))));
         
         for (AbstractBodyPart limb : possible) {

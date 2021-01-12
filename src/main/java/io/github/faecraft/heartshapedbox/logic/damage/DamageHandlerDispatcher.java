@@ -1,11 +1,10 @@
 package io.github.faecraft.heartshapedbox.logic.damage;
 
 import io.github.faecraft.heartshapedbox.bad.BadMixinAtomicFlag;
-import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
-import io.github.faecraft.heartshapedbox.logic.damage.impl.*;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
-import net.minecraft.entity.LivingEntity;
+import io.github.faecraft.heartshapedbox.logic.damage.impl.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
 
@@ -19,7 +18,7 @@ public class DamageHandlerDispatcher {
         for (DamageHandler possibleHandler : handlers) {
             if (possibleHandler.shouldHandle(source)) {
                 // Save a stateCopy of the provider if we want to revert
-                ArrayList<AbstractBodyPart> stateBefore = provider.stateCopy();
+                CompoundTag stateBefore = provider.writeToTag();
                 
                 Pair<Boolean, Float> result = possibleHandler.handleDamage(player, (BodyPartProvider)player, source, amount);
                 
@@ -30,7 +29,7 @@ public class DamageHandlerDispatcher {
                 
                 // Revert the state if vanilla doesn't like our damage for whatever reason
                 if (!didDealDamage) {
-                    provider.setFrom(stateBefore);
+                    provider.readFromTag(stateBefore);
                 }
                 
                 if (result.getLeft() || amount - result.getRight() <= 0) {

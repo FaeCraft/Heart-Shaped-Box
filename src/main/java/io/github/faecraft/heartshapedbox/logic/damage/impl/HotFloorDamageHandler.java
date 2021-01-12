@@ -1,6 +1,7 @@
 package io.github.faecraft.heartshapedbox.logic.damage.impl;
 
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
+import io.github.faecraft.heartshapedbox.body.BuiltInParts;
 import io.github.faecraft.heartshapedbox.logic.HSBMiscLogic;
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler;
 import net.minecraft.entity.damage.DamageSource;
@@ -15,6 +16,6 @@ public class HotFloorDamageHandler implements DamageHandler {
     
     @Override
     public Pair<Boolean, Float> handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
-        return new Pair<>(false, HSBMiscLogic.dealDamageToPair(provider.getFeet(), amount));
+        return new Pair<>(false, HSBMiscLogic.dealDamageToPair(BuiltInParts.getFeet(provider), amount));
     }
 }

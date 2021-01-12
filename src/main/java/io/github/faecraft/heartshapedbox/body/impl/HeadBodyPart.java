@@ -2,23 +2,25 @@ package io.github.faecraft.heartshapedbox.body.impl;
 
 import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
 import io.github.faecraft.heartshapedbox.body.BodyPartSide;
-import io.github.faecraft.heartshapedbox.body.BodyPartType;
+import io.github.faecraft.heartshapedbox.body.BuiltInParts;
+import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.NotNull;
 
 public class HeadBodyPart extends AbstractBodyPart {
-    private final BodyPartSide side = BodyPartSide.CENTER;
+    private final Identifier identifier = BuiltInParts.HEAD;
     
     @Override
-    public BodyPartType getType() {
-        return BodyPartType.HEAD;
+    public @NotNull Identifier getIdentifier() {
+        return identifier;
     }
     
     @Override
     public BodyPartSide getSide() {
-        return side;
+        return BodyPartSide.CENTER;
     }
     
     @Override
-    public float getMaxHealth() {
+    public float getDefaultMaxHealth() {
         return 6;
     }
 }
