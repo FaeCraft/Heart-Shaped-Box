@@ -16,51 +16,51 @@ import static net.minecraft.server.command.CommandManager.literal;
 
 public class HSBMain implements ModInitializer {
     public static final String MOD_ID = "heartshapedbox";
-    
+
     @Override
     public void onInitialize() {
         DamageHandlerDispatcher.registerHandlers();
-        
+
         ServerTickEvents.END_SERVER_TICK.register(minecraftServer -> {
-                // Update FlexBoxes
-                PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::updatePlayerFlexBoxes);
-                // Debuff all players accordingly
-                PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::debuffPlayer);
-            }
+                    // Update FlexBoxes
+                    PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::updatePlayerFlexBoxes);
+                    // Debuff all players accordingly
+                    PlayerLookup.all(minecraftServer).forEach(HSBMiscLogic::debuffPlayer);
+                }
         );
-        
+
         // Debug command
         // TODO: REMOVE THIS! or add an op requirement idc
         CommandRegistrationCallback.EVENT.register((commandDispatcher, b) ->
-            commandDispatcher.register(
-                literal("hsb").executes(context -> {
-                    ServerCommandSource source = context.getSource();
-                    BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
-                    
-                    for (AbstractBodyPart part : provider.getParts()) {
-                        source.sendFeedback(
-                            new LiteralText(part.getIdentifier().toString())
-                                .append(new LiteralText(" - "))
-                                .append(new LiteralText(part.getHealth() + "/" + part.getMaxHealth())),
-                            false);
-                    }
-                    
-                    return 1;
-                })
-                    .then(literal("reset").executes(context -> {
-                        ServerCommandSource source = context.getSource();
-                        ServerPlayerEntity player = context.getSource().getPlayer();
-                        BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
-                        
-                        for (AbstractBodyPart limb : provider.getParts()) {
-                            limb.setHealth(limb.getDefaultMaxHealth());
-                        }
-                        
-                        player.setHealth(player.getMaxHealth());
-                        
-                        source.sendFeedback(new LiteralText("Reset health"), false);
-                        return 1;
-                    }))
-            ));
+                commandDispatcher.register(
+                        literal("hsb").executes(context -> {
+                            ServerCommandSource source = context.getSource();
+                            BodyPartProvider provider = (BodyPartProvider) context.getSource().getPlayer();
+
+                            for (AbstractBodyPart part : provider.getParts()) {
+                                source.sendFeedback(
+                                        new LiteralText(part.getIdentifier().toString())
+                                                .append(new LiteralText(" - "))
+                                                .append(new LiteralText(part.getHealth() + "/" + part.getMaxHealth())),
+                                        false);
+                            }
+
+                            return 1;
+                        })
+                                .then(literal("reset").executes(context -> {
+                                    ServerCommandSource source = context.getSource();
+                                    ServerPlayerEntity player = context.getSource().getPlayer();
+                                    BodyPartProvider provider = (BodyPartProvider) context.getSource().getPlayer();
+
+                                    for (AbstractBodyPart limb : provider.getParts()) {
+                                        limb.setHealth(limb.getDefaultMaxHealth());
+                                    }
+
+                                    player.setHealth(player.getMaxHealth());
+
+                                    source.sendFeedback(new LiteralText("Reset health"), false);
+                                    return 1;
+                                }))
+                ));
     }
 }

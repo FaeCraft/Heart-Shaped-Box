@@ -36,6 +36,17 @@ public class FlexBox {
     
         roughCenter = a.add(h.subtract(a).multiply(0.5));
     }
+
+    public FlexBox(Quad a, Quad b, Quad c, Quad d, Quad e, Quad f, Vec3d roughCenter) {
+        quads[0] = a;
+        quads[1] = b;
+        quads[2] = c;
+        quads[3] = d;
+        quads[4] = e;
+        quads[5] = f;
+
+        this.roughCenter = roughCenter;
+    }
     
     public static FlexBox zero() {
         return new FlexBox(Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO, Vec3d.ZERO);

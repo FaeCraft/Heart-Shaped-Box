@@ -7,10 +7,11 @@
     "BodyPartDuck",
     "ManageLivingEntityDamageLogicMixin",
     "ManageTakenDamageMixin",
+    "NaturalRegenEffectMixin",
+    "PlayerManagerMixin",
     "SaveDamageMixin",
     "damage_invoke.PlayerEntityDamageBypass",
-    "damage_invoke.ServerPlayerEntityDamageBypass",
-    "NaturalRegenEffectMixin"
+    "damage_invoke.ServerPlayerEntityDamageBypass"
   ],
   "client": [
   ],
