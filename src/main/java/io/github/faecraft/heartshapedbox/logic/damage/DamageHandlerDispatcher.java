@@ -1,6 +1,6 @@
 package io.github.faecraft.heartshapedbox.logic.damage;
 
-import io.github.faecraft.heartshapedbox.bad.BadMixinAtomicFlag;
+import io.github.faecraft.heartshapedbox.bad.BadMixinAtomicFlags;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
 import io.github.faecraft.heartshapedbox.logic.damage.impl.*;
 import net.minecraft.entity.damage.DamageSource;
@@ -34,9 +34,9 @@ public class DamageHandlerDispatcher {
         }
         // Try to deal damage, roll back if failed
         // see BadMixinAtomicFlag for the reason behind this
-        BadMixinAtomicFlag.callSuperDamage.set(true);
+        BadMixinAtomicFlags.callSuperDamage.set(true);
         boolean didDealDamage = player.damage(source, collectedDamage);
-        BadMixinAtomicFlag.callSuperDamage.set(false);
+        BadMixinAtomicFlags.callSuperDamage.set(false);
 
         // Revert the state if vanilla doesn't like our damage for whatever reason
         if (!didDealDamage) {

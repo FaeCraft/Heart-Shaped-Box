@@ -23,15 +23,15 @@ public class GenericDamageHandler implements DamageHandler {
         float remainingTries = 30;
         do {
             AbstractBodyPart randomPart = parts.get(new Random().nextInt(parts.size()));
-
+    
+            remainingTries--;
+            
             if (randomPart.getHealth() <= 0) {
                 continue;
             }
 
             float result = randomPart.takeDamage(amount);
             amount -= amount - result;
-
-            remainingTries--;
         } while (amount > 0 && remainingTries > 0);
         return new Pair<>(true, amount);
     }

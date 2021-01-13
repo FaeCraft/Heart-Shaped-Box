@@ -1,7 +1,7 @@
 package io.github.faecraft.heartshapedbox.mixin.damage_invoke;
 
 import com.mojang.authlib.GameProfile;
-import io.github.faecraft.heartshapedbox.bad.BadMixinAtomicFlag;
+import io.github.faecraft.heartshapedbox.bad.BadMixinAtomicFlags;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -20,7 +20,7 @@ abstract public class ServerPlayerEntityDamageBypass extends PlayerEntity {
     
     @Inject(method = "damage", at = @At("HEAD"), cancellable = true)
     public void sendToPlayerEntitySuperDamageCall(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (BadMixinAtomicFlag.callSuperDamage.get()) {
+        if (BadMixinAtomicFlags.callSuperDamage.get()) {
             cir.setReturnValue(super.damage(source, amount));
         }
     }
