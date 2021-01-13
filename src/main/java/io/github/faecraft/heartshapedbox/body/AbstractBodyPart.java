@@ -1,14 +1,12 @@
 package io.github.faecraft.heartshapedbox.body;
 
 import io.github.faecraft.heartshapedbox.math.FlexBox;
-import io.github.faecraft.heartshapedbox.networking.S2CSyncPacket;
+import io.github.faecraft.heartshapedbox.networking.S2CBodyPartSyncPacket;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
-
-import java.lang.ref.WeakReference;
 
 public abstract class AbstractBodyPart {
     private float maxHealth = getDefaultMaxHealth();
@@ -23,7 +21,7 @@ public abstract class AbstractBodyPart {
 
     public void update() {
         if (owner instanceof ServerPlayerEntity) {
-            S2CSyncPacket packet = new S2CSyncPacket();
+            S2CBodyPartSyncPacket packet = new S2CBodyPartSyncPacket();
 
             packet.addPart(this);
             packet.send((ServerPlayerEntity) owner);

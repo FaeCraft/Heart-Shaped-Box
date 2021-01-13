@@ -13,13 +13,13 @@ import java.util.Optional;
 
 import static io.github.faecraft.heartshapedbox.main.HSBMain.MOD_ID;
 
-public class S2CSyncPacket {
-    public static final Identifier IDENTIFIER = new Identifier(MOD_ID, "sync");
+public class S2CBodyPartSyncPacket {
+    public static final Identifier IDENTIFIER = new Identifier(MOD_ID, "body_part_sync");
     private final HashSet<AbstractBodyPart> parts = new HashSet<>();
 
-    public S2CSyncPacket() {}
+    public S2CBodyPartSyncPacket() {}
 
-    public S2CSyncPacket(BodyPartProvider provider) {
+    public S2CBodyPartSyncPacket(BodyPartProvider provider) {
         parts.addAll(provider.getParts());
     }
 
@@ -44,8 +44,8 @@ public class S2CSyncPacket {
         }
     }
 
-    public static S2CSyncPacket from(ServerPlayerEntity player) {
-        return new S2CSyncPacket((BodyPartProvider) player);
+    public static S2CBodyPartSyncPacket from(ServerPlayerEntity player) {
+        return new S2CBodyPartSyncPacket((BodyPartProvider) player);
     }
 
     public void write(PacketByteBuf buffer) {
