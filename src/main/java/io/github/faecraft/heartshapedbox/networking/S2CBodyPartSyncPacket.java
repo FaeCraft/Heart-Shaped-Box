@@ -7,6 +7,8 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.HashSet;
 import java.util.Optional;
@@ -14,6 +16,8 @@ import java.util.Optional;
 import static io.github.faecraft.heartshapedbox.main.HSBMain.MOD_ID;
 
 public class S2CBodyPartSyncPacket {
+    private static Logger LOGGER = LogManager.getLogger("S2CBodyPartSyncPacket");
+
     public static final Identifier IDENTIFIER = new Identifier(MOD_ID, "body_part_sync");
     private final HashSet<AbstractBodyPart> parts = new HashSet<>();
 
@@ -32,6 +36,9 @@ public class S2CBodyPartSyncPacket {
             Identifier id = buffer.readIdentifier();
             float health = buffer.readFloat();
             float maxHealth = buffer.readFloat();
+
+            LOGGER.info("UPDATE | Provider: " + provider);
+            LOGGER.info("UPDATE | ID: " + id + " Health: " + health + " Max Health: " + maxHealth);
 
             Optional<AbstractBodyPart> optionalPart = provider.maybeGet(id);
 
@@ -57,6 +64,8 @@ public class S2CBodyPartSyncPacket {
     }
 
     public void send(ServerPlayerEntity player) {
+        LOGGER.info("Sending packet to player: " + player.getDisplayName().asString());
+
         PacketByteBuf buffer = PacketByteBufs.create();
 
         write(buffer);

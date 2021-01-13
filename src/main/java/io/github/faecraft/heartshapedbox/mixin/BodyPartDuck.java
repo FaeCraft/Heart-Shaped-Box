@@ -12,7 +12,6 @@ import io.github.faecraft.heartshapedbox.body.impl.LegBodyPart;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -30,54 +29,56 @@ import java.util.Optional;
 
 @Mixin(PlayerEntity.class)
 public abstract class BodyPartDuck implements BodyPartProvider {
-    // This is a dirty hack but I can't figure out how else to get a PlayerEntity object
-    @Shadow @Final public PlayerInventory inventory;
     private final HashMap<Identifier, AbstractBodyPart> parts = new HashMap<>();
-    
+
     @Inject(method = "<init>*", at = @At("RETURN"))
     public void addPartsOnInit(World world, BlockPos pos, float yaw, GameProfile profile, CallbackInfo ci) {
-        parts.put(BuiltInParts.HEAD, new HeadBodyPart(this.inventory.player));
-        parts.put(BuiltInParts.LEFT_ARM, new ArmBodyPart(this.inventory.player, BodyPartSide.LEFT));
-        parts.put(BuiltInParts.RIGHT_ARM, new ArmBodyPart(this.inventory.player, BodyPartSide.RIGHT));
-        parts.put(BuiltInParts.LEFT_LEG, new LegBodyPart(this.inventory.player, BodyPartSide.LEFT));
-        parts.put(BuiltInParts.RIGHT_LEG, new LegBodyPart(this.inventory.player, BodyPartSide.RIGHT));
-        parts.put(BuiltInParts.LEFT_FOOT, new FootBodyPart(this.inventory.player, BodyPartSide.LEFT));
-        parts.put(BuiltInParts.RIGHT_FOOT, new FootBodyPart(this.inventory.player, BodyPartSide.RIGHT));
+        parts.put(BuiltInParts.HEAD, new HeadBodyPart(this.asEntity()));
+        parts.put(BuiltInParts.LEFT_ARM, new ArmBodyPart(this.asEntity(), BodyPartSide.LEFT));
+        parts.put(BuiltInParts.RIGHT_ARM, new ArmBodyPart(this.asEntity(), BodyPartSide.RIGHT));
+        parts.put(BuiltInParts.LEFT_LEG, new LegBodyPart(this.asEntity(), BodyPartSide.LEFT));
+        parts.put(BuiltInParts.RIGHT_LEG, new LegBodyPart(this.asEntity(), BodyPartSide.RIGHT));
+        parts.put(BuiltInParts.LEFT_FOOT, new FootBodyPart(this.asEntity(), BodyPartSide.LEFT));
+        parts.put(BuiltInParts.RIGHT_FOOT, new FootBodyPart(this.asEntity(), BodyPartSide.RIGHT));
     }
-    
+
+    public PlayerEntity asEntity() {
+        return (PlayerEntity) (Object) this;
+    }
+
     @Override
     public HashMap<Identifier, AbstractBodyPart> getPartsMap() {
         return parts;
     }
-    
+
     @Override
     public ArrayList<AbstractBodyPart> getParts() {
         return new ArrayList<>(parts.values());
     }
-    
+
     @Override
     public Optional<AbstractBodyPart> maybeGet(Identifier identifier) {
         return Optional.ofNullable(parts.get(identifier));
     }
-    
+
     @Override
     public @Nullable AbstractBodyPart getOrNull(Identifier identifier) {
         return parts.get(identifier);
     }
-    
+
     @Override
     public AbstractBodyPart getOrThrow(Identifier identifier) {
         //noinspection OptionalGetWithoutIsPresent
         return maybeGet(identifier).get();
     }
-    
+
     @Override
     public CompoundTag writeToTag() {
         CompoundTag out = new CompoundTag();
         getParts().iterator().forEachRemaining(abstractBodyPart -> abstractBodyPart.toTag(out));
         return out;
     }
-    
+
     @Override
     public void readFromTag(CompoundTag tag) {
         for (String key : tag.getKeys()) {

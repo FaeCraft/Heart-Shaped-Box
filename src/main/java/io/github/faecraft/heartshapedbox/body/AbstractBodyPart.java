@@ -6,12 +6,15 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class AbstractBodyPart {
     private float maxHealth = getDefaultMaxHealth();
     private float health = maxHealth;
     private FlexBox flexBox = FlexBox.zero();
+    private static Logger LOGGER = LogManager.getLogger("AbstractBodyPart");
 
     private final PlayerEntity owner;
 
@@ -52,6 +55,9 @@ public abstract class AbstractBodyPart {
     
     public void setHealth(float amount) {
         if (amount != health) {
+            // TODO: Remove logging call later
+            LOGGER.info("Health changed (" + this.getIdentifier() + ") " + health + " -> " + amount);
+
             health = amount;
 
             update();
@@ -63,6 +69,9 @@ public abstract class AbstractBodyPart {
     }
     
     public void setMaxHealth(float amount) {
+        // TODO: Remove logging call later
+        LOGGER.info("Max health changed (" + this.getIdentifier() + ") " + health + " -> " + amount);
+
         if (amount != maxHealth) {
             maxHealth = amount;
 
@@ -73,10 +82,14 @@ public abstract class AbstractBodyPart {
     public float takeDamage(float amount) {
         if (amount > health) {
             float used = amount - health;
-            health = 0;
+
+            setHealth(0);
+
             return used;
         }
-        health -= amount;
+
+        setHealth(health - amount);
+
         return 0;
     }
     
