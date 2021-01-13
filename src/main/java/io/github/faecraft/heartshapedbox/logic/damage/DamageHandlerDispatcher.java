@@ -12,34 +12,39 @@ import java.util.ArrayList;
 
 public class DamageHandlerDispatcher {
     private static final ArrayList<DamageHandler> handlers = new ArrayList<>();
-    
+
     public static boolean handleDamage(ServerPlayerEntity player, DamageSource source, float amount) {
         BodyPartProvider provider = (BodyPartProvider)player;
+
+        // Done to deal damage in a single go
+        float collectedDamage = 0f;
+        // Saves state before damage handled
+        CompoundTag stateBefore = provider.writeToTag();
         for (DamageHandler possibleHandler : handlers) {
             if (possibleHandler.shouldHandle(source)) {
-                // Save a stateCopy of the provider if we want to revert
-                CompoundTag stateBefore = provider.writeToTag();
-                
                 Pair<Boolean, Float> result = possibleHandler.handleDamage(player, (BodyPartProvider)player, source, amount);
-                
-                // see BadMixinAtomicFlag for the reason behind this
-                BadMixinAtomicFlag.callSuperDamage.set(true);
-                boolean didDealDamage = player.damage(source, amount - result.getRight());
-                BadMixinAtomicFlag.callSuperDamage.set(false);
-                
-                // Revert the state if vanilla doesn't like our damage for whatever reason
-                if (!didDealDamage) {
-                    provider.readFromTag(stateBefore);
-                }
-                
-                if (result.getLeft() || amount - result.getRight() <= 0) {
-                    return didDealDamage;
+
+                collectedDamage += amount - result.getRight();
+                amount = result.getRight();
+
+                if (result.getLeft() || result.getRight() <= 0) {
+                    break;
                 }
             }
         }
-        return false;
+        // Try to deal damage, roll back if failed
+        // see BadMixinAtomicFlag for the reason behind this
+        BadMixinAtomicFlag.callSuperDamage.set(true);
+        boolean didDealDamage = player.damage(source, collectedDamage);
+        BadMixinAtomicFlag.callSuperDamage.set(false);
+
+        // Revert the state if vanilla doesn't like our damage for whatever reason
+        if (!didDealDamage) {
+            provider.readFromTag(stateBefore);
+        }
+        return didDealDamage;
     }
-    
+
     public static void registerHandlers() {
         // Lower indices get tested first (i.e higher priority)
         handlers.add(new ProjectileDamageHandler());

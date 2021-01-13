@@ -1,8 +1,8 @@
 package io.github.faecraft.heartshapedbox.logic.damage.impl;
 
-import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler;
 import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
+import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
@@ -15,22 +15,24 @@ public class GenericDamageHandler implements DamageHandler {
     public boolean shouldHandle(DamageSource source) {
         return true;
     }
-    
+
     @Override
     public Pair<Boolean, Float> handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
         ArrayList<AbstractBodyPart> parts = provider.getParts();
-        
-        float dealt;
-        float cap = 30;
+
+        float remainingTries = 30;
         do {
             AbstractBodyPart randomPart = parts.get(new Random().nextInt(parts.size()));
-            dealt = amount - randomPart.takeDamage(amount);
-            if (dealt > 0) {
-                player.damage(source, dealt);
-                amount -= dealt;
+
+            if (randomPart.getHealth() <= 0) {
+                continue;
             }
-            cap--;
-        } while (amount > 0 && cap > 0);
-        return new Pair<>(true, dealt);
+
+            float result = randomPart.takeDamage(amount);
+            amount -= amount - result;
+
+            remainingTries--;
+        } while (amount > 0 && remainingTries > 0);
+        return new Pair<>(true, amount);
     }
 }
