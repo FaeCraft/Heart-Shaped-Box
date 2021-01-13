@@ -9,6 +9,7 @@ import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 
 import static net.minecraft.server.command.CommandManager.literal;
@@ -48,11 +49,14 @@ public class HSBMain implements ModInitializer {
                 })
                     .then(literal("reset").executes(context -> {
                         ServerCommandSource source = context.getSource();
+                        ServerPlayerEntity player = context.getSource().getPlayer();
                         BodyPartProvider provider = (BodyPartProvider)context.getSource().getPlayer();
                         
                         for (AbstractBodyPart limb : provider.getParts()) {
                             limb.setHealth(limb.getDefaultMaxHealth());
                         }
+                        
+                        player.setHealth(player.getMaxHealth());
                         
                         source.sendFeedback(new LiteralText("Reset health"), false);
                         return 1;

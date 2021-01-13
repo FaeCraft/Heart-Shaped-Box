@@ -9,7 +9,8 @@
     "ManageTakenDamageMixin",
     "SaveDamageMixin",
     "damage_invoke.PlayerEntityDamageBypass",
-    "damage_invoke.ServerPlayerEntityDamageBypass"
+    "damage_invoke.ServerPlayerEntityDamageBypass",
+    "NaturalRegenEffectMixin"
   ],
   "client": [
   ],
