@@ -21,7 +21,7 @@ public class HeadBodyPart extends AbstractBodyPart {
     
     @Override
     public float getDefaultMaxHealth() {
-        return 6;
+        return 4;
     }
 }
 
