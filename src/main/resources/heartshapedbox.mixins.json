@@ -9,6 +9,8 @@
     "ManageTakenDamageMixin",
     "NaturalRegenEffectMixin",
     "SaveDamageMixin",
+    "SyncDataOnJoinMixin",
+    "accessor.CustomPayloadChannelAccessor",
     "damage_invoke.PlayerEntityDamageBypass",
     "damage_invoke.ServerPlayerEntityDamageBypass"
   ],
