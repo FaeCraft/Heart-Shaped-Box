@@ -4,6 +4,7 @@ import io.github.faecraft.heartshapedbox.body.AbstractBodyPart;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.item.ItemStack;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Pair;
 
@@ -15,7 +16,7 @@ public class GenericDamageHandler implements DamageHandler {
     public boolean shouldHandle(DamageSource source) {
         return true;
     }
-
+    
     @Override
     public Pair<Boolean, Float> handleDamage(ServerPlayerEntity player, BodyPartProvider provider, DamageSource source, float amount) {
         ArrayList<AbstractBodyPart> parts = provider.getParts();

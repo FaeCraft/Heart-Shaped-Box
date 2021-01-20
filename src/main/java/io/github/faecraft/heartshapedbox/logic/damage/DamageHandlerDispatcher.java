@@ -3,14 +3,18 @@ package io.github.faecraft.heartshapedbox.logic.damage;
 import io.github.faecraft.heartshapedbox.bad.BadMixinAtomicFlags;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
 import io.github.faecraft.heartshapedbox.logic.damage.impl.*;
+import net.minecraft.enchantment.EnchantmentHelper;
+import net.minecraft.entity.DamageUtil;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.stat.Stats;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DamageHandlerDispatcher {
     private static final ArrayList<DamageHandler> handlers = new ArrayList<>();
@@ -37,6 +41,13 @@ public class DamageHandlerDispatcher {
         CompoundTag stateBefore = provider.writeToTag();
         for (DamageHandler possibleHandler : handlers) {
             if (possibleHandler.shouldHandle(source)) {
+                Iterable<ItemStack> items = possibleHandler.getPossibleArmorPieces(player);
+    
+                int k = EnchantmentHelper.getProtectionAmount(items, source);
+                if (k > 0) {
+                    amount = DamageUtil.getInflictedDamage(amount, (float)k);
+                }
+                
                 Pair<Boolean, Float> result = possibleHandler.handleDamage(player, (BodyPartProvider)player, source, amount);
 
                 collectedDamage += amount - result.getRight();
