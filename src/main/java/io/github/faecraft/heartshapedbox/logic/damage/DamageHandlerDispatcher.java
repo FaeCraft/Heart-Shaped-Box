@@ -4,8 +4,10 @@ import io.github.faecraft.heartshapedbox.bad.BadMixinAtomicFlags;
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider;
 import io.github.faecraft.heartshapedbox.logic.damage.impl.*;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.stat.Stats;
 import net.minecraft.util.Pair;
 
 import java.util.ArrayList;
@@ -15,7 +17,20 @@ public class DamageHandlerDispatcher {
 
     public static boolean handleDamage(ServerPlayerEntity player, DamageSource source, float amount) {
         BodyPartProvider provider = (BodyPartProvider)player;
-
+    
+        if (player.hasStatusEffect(StatusEffects.RESISTANCE) && source != DamageSource.OUT_OF_WORLD) {
+            //noinspection ConstantConditions
+            int k = (player.getStatusEffect(StatusEffects.RESISTANCE).getAmplifier() + 1) * 5;
+            int j = 25 - k;
+            float f = amount * (float)j;
+            float g = amount;
+            amount = Math.max(f / 25.0F, 0.0F);
+            float h = g - amount;
+            if (h > 0.0F && h < 3.4028235E37F) {
+                player.increaseStat(Stats.DAMAGE_RESISTED, Math.round(h * 10.0F));
+            }
+        }
+    
         // Done to deal damage in a single go
         float collectedDamage = 0f;
         // Saves state before damage handled
@@ -33,7 +48,7 @@ public class DamageHandlerDispatcher {
             }
         }
         // Try to deal damage, roll back if failed
-        // see BadMixinAtomicFlag for the reason behind this
+        // see BadMixinAtomicFlags for the reason behind this
         BadMixinAtomicFlags.callSuperDamage.set(true);
         boolean didDealDamage = player.damage(source, collectedDamage);
         BadMixinAtomicFlags.callSuperDamage.set(false);
