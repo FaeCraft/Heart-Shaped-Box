@@ -28,5 +28,10 @@ public class HeadBodyPart extends AbstractBodyPart {
     public float getDefaultMaxHealth() {
         return 4;
     }
+    
+    @Override
+    public boolean isCritical() {
+        return true;
+    }
 }
 

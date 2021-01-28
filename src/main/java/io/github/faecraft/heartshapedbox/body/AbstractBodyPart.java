@@ -37,6 +37,10 @@ public abstract class AbstractBodyPart {
     
     public abstract float getDefaultMaxHealth();
     
+    public boolean isCritical() {
+        return false;
+    }
+    
     public void toTag(CompoundTag tag) {
         CompoundTag data = new CompoundTag();
         data.putFloat("health", health);

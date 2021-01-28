@@ -18,7 +18,59 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Vec2f;
 import net.minecraft.util.math.Vec3d;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 public class HSBMiscLogic {
+    public static void forceHealthChangeToLimbs(float newAmount, BodyPartProvider provider) {
+        ArrayList<AbstractBodyPart> allLimbs;
+        try {
+            allLimbs = provider.getParts();
+        } catch (NullPointerException err) {
+            return;
+        }
+        float totalCurrent = 0;
+        for (AbstractBodyPart limb : allLimbs) {
+            totalCurrent += limb.getHealth();
+        }
+    
+    
+        // all damage is passed through damage handler which force sync through math anyways, so only option is healing
+        // Also big epsilon because im sick of this triggering because the health differs by 1e^-6 NO ONE CARES
+        if (newAmount - totalCurrent > 0.001) {
+            float healingPool = newAmount - totalCurrent;
+            Iterator<AbstractBodyPart> criticalLimbs = allLimbs.stream().filter(AbstractBodyPart::isCritical).iterator();
+            Iterator<AbstractBodyPart> normalLimbs = allLimbs.stream().filter(abstractBodyPart -> !abstractBodyPart.isCritical()).iterator();
+    
+            while (criticalLimbs.hasNext() && healingPool > 0) {
+                AbstractBodyPart critLimb = criticalLimbs.next();
+                float missing = critLimb.getMaxHealth() - critLimb.getHealth();
+                if (missing > 0) {
+                    if (healingPool >= missing) {
+                        critLimb.setHealth(critLimb.getMaxHealth());
+                    } else {
+                        critLimb.setHealth(critLimb.getHealth() + healingPool);
+                    }
+                    healingPool -= missing;
+                }
+            }
+            if (healingPool > 0) {
+                while (normalLimbs.hasNext() && healingPool > 0) {
+                    AbstractBodyPart limb = normalLimbs.next();
+                    float missing = limb.getMaxHealth() - limb.getHealth();
+                    if (missing > 0) {
+                        if (healingPool >= missing) {
+                            limb.setHealth(limb.getMaxHealth());
+                        } else {
+                            limb.setHealth(limb.getHealth() + healingPool);
+                        }
+                        healingPool -= missing;
+                    }
+                }
+            }
+        }
+    }
+    
     public static void updatePlayerFlexBoxes(ServerPlayerEntity playerEntity) {
         BodyPartProvider provider = (BodyPartProvider)playerEntity;
         
@@ -97,6 +149,9 @@ public class HSBMiscLogic {
     }
     
     public static void debuffPlayer(ServerPlayerEntity playerEntity) {
+        if (!playerEntity.isAlive()) {
+            return;
+        }
         BodyPartProvider provider = (BodyPartProvider)playerEntity;
         
         // Check for broken legs/feet
@@ -124,14 +179,20 @@ public class HSBMiscLogic {
             playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.MINING_FATIGUE, 2, fatigueAmp, true, true));
         }
         
-        // Blindness and nausea if broken
-        // TODO: Kill if broken, effects come sooner(?)
+        // Blindness and nausea if low on health
         HeadBodyPart head = (HeadBodyPart)provider.getOrThrow(BuiltInParts.HEAD);
-        if (head.getHealth() <= 0) {
+        if (head.getHealth() <= 2) {
             // Causes rapid strobing at ~23->~10, be careful!
             playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 25, 0, true, true));
             // Has no effect at 61 or below
             playerEntity.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 62, 0, true, true));
+        }
+        
+        for (AbstractBodyPart limb : provider.getParts()) {
+            if (limb.isCritical() && limb.getHealth() <= 0) {
+                // Slightly hacky way to make em die with proper death message
+                playerEntity.setHealth(-1f);
+            }
         }
     }
     

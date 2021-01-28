@@ -4,6 +4,7 @@
   "package": "io.github.faecraft.heartshapedbox.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
+    "AlertChangeHealthMixin",
     "BodyPartDuck",
     "ManageLivingEntityDamageLogicMixin",
     "ManageTakenDamageMixin",
