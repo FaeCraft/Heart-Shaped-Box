@@ -1,16 +1,15 @@
 package io.github.faecraft.heartshapedbox.networking
 
-import java.util.HashSet
 import io.github.faecraft.heartshapedbox.body.AbstractBodyPart
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider
-import net.minecraft.network.PacketByteBuf
-import net.minecraft.server.network.ServerPlayerEntity
-import io.github.faecraft.heartshapedbox.networking.S2CBodyPartSyncPacket
+import io.github.faecraft.heartshapedbox.main.HSBMain
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking
-import io.github.faecraft.heartshapedbox.main.HSBMain
+import net.minecraft.network.PacketByteBuf
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
+import java.util.*
 
 class S2CBodyPartSyncPacket() {
     private val parts = HashSet<AbstractBodyPart>()
@@ -57,7 +56,6 @@ class S2CBodyPartSyncPacket() {
             }
         }
 
-        @JvmStatic
         fun from(player: ServerPlayerEntity): S2CBodyPartSyncPacket {
             return S2CBodyPartSyncPacket(player as BodyPartProvider)
         }

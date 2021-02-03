@@ -3,7 +3,7 @@ package io.github.faecraft.heartshapedbox.math.two_d
 import net.minecraft.util.math.Vec2f
 import java.util.*
 
-class LineSegment(val a: Vec2f, val b: Vec2f) {
+data class LineSegment(val a: Vec2f, val b: Vec2f) {
     fun intersectFromLine(line: Line, checkY: Boolean): Optional<Vec2f> {
         return if (!checkY) {
             val aRes = line.solveForX(a.y.toDouble())
@@ -59,11 +59,11 @@ class LineSegment(val a: Vec2f, val b: Vec2f) {
     }
 
     private fun hasSignChange(base: Double, a: Double, b: Double): Boolean {
-        var a = a
-        var b = b
-        a -= base
-        b -= base
-        return a >= 0 && b <= 0 || a <= 0 && b >= 0
+        var mutA = a
+        var mutB = b
+        mutA -= base
+        mutB -= base
+        return mutA >= 0 && mutB <= 0 || mutA <= 0 && mutB >= 0
     }
 
     private fun isNotValid(value: Double): Boolean {

@@ -1,23 +1,21 @@
 package io.github.faecraft.heartshapedbox.main
 
-import net.fabricmc.api.ModInitializer
-import io.github.faecraft.heartshapedbox.logic.damage.DamageHandlerDispatcher
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents.AfterRespawn
-import net.minecraft.server.network.ServerPlayerEntity
-import io.github.faecraft.heartshapedbox.main.HSBMain
-import io.github.faecraft.heartshapedbox.networking.S2CBodyPartSyncPacket
-import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
-import net.minecraft.server.MinecraftServer
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup
-import io.github.faecraft.heartshapedbox.logic.HSBMiscLogic
-import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback
 import com.mojang.brigadier.CommandDispatcher
-import net.minecraft.server.command.ServerCommandSource
-import net.minecraft.server.command.CommandManager
 import com.mojang.brigadier.context.CommandContext
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider
-import io.github.faecraft.heartshapedbox.body.AbstractBodyPart
+import io.github.faecraft.heartshapedbox.logic.HSBMiscLogic
+import io.github.faecraft.heartshapedbox.logic.damage.DamageHandlerDispatcher
+import io.github.faecraft.heartshapedbox.networking.S2CBodyPartSyncPacket
+import net.fabricmc.api.ModInitializer
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents
+import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents.AfterRespawn
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
+import net.fabricmc.fabric.api.networking.v1.PlayerLookup
+import net.minecraft.server.MinecraftServer
+import net.minecraft.server.command.CommandManager
+import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.LiteralText
 import org.apache.logging.log4j.LogManager
 import java.util.function.Consumer
@@ -57,19 +55,20 @@ class HSBMain : ModInitializer {
         // TODO: REMOVE THIS! or add an op requirement idc
         CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { commandDispatcher: CommandDispatcher<ServerCommandSource?>, b: Boolean ->
             commandDispatcher.register(
-                CommandManager.literal("hsb").executes { context: CommandContext<ServerCommandSource> ->
-                    val source = context.source
-                    val provider = context.source.player as BodyPartProvider
-                    for (part in provider.parts) {
-                        source.sendFeedback(
-                            LiteralText(part.getIdentifier().toString())
-                                .append(LiteralText(" - "))
-                                .append(LiteralText(part.getHealth().toString() + "/" + part.getMaxHealth())),
-                            false
-                        )
+                CommandManager
+                    .literal("hsb").executes { context: CommandContext<ServerCommandSource> ->
+                        val source = context.source
+                        val provider = context.source.player as BodyPartProvider
+                        for (part in provider.parts) {
+                            source.sendFeedback(
+                                LiteralText(part.getIdentifier().toString())
+                                    .append(LiteralText(" - "))
+                                    .append(LiteralText(part.getHealth().toString() + "/" + part.getMaxHealth())),
+                                false
+                            )
+                        }
+                        1
                     }
-                    1
-                }
                     .then(CommandManager.literal("reset").executes { context: CommandContext<ServerCommandSource> ->
                         val source = context.source
                         val player = context.source.player

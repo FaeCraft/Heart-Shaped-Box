@@ -19,7 +19,6 @@ import net.minecraft.util.math.Vec3d
 import java.util.*
 
 object HSBMiscLogic {
-    @JvmStatic
     fun forceHealthChangeToLimbs(newAmount: Float, provider: BodyPartProvider) {
         val allLimbs: ArrayList<AbstractBodyPart> = try {
             provider.parts
@@ -188,15 +187,14 @@ object HSBMiscLogic {
         }
     }
 
-    @JvmStatic
-    fun <T : AbstractBodyPart?> dealDamageToPair(pair: Pair<T, T>, amount: Float): Float {
+    fun <T : AbstractBodyPart> dealDamageToPair(pair: Pair<T, T>, amount: Float): Float {
         val halved = amount / 2
         // Deal half to left
         // Deal left-over to right
         // return leftover
-        return pair.right!!.takeDamage(
+        return pair.right.takeDamage(
             halved +
-                    pair.left!!.takeDamage(halved)
+                    pair.left.takeDamage(halved)
         )
     }
 

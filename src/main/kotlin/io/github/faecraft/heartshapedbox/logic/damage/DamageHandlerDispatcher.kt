@@ -15,7 +15,7 @@ import kotlin.math.roundToInt
 
 object DamageHandlerDispatcher {
     private val handlers = ArrayList<DamageHandler>()
-    @JvmStatic
+
     fun handleDamage(player: ServerPlayerEntity, source: DamageSource, amount: Float): Boolean {
         var mutAmount = amount
         val provider = player as BodyPartProvider

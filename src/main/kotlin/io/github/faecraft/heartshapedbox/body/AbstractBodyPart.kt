@@ -1,4 +1,9 @@
-// Apparently calling "getDefaultMaxHealth" inside the constructor can have issues in multithreading environments
+/*
+ Apparently calling "getDefaultMaxHealth" inside the constructor can have issues in multithreading environments
+ but I don't care enough right now to restructure this
+ so it stays
+ - P03W
+*/
 @file:Suppress("LeakingThis")
 
 package io.github.faecraft.heartshapedbox.body

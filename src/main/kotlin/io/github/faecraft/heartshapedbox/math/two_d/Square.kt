@@ -3,14 +3,11 @@ package io.github.faecraft.heartshapedbox.math.two_d
 import net.minecraft.util.math.Vec2f
 import java.util.*
 
-class Square(a: Vec2f, b: Vec2f) {
-    private val a: LineSegment = LineSegment(a, Vec2f(a.x, b.y))
-    private val b: LineSegment = LineSegment(Vec2f(a.x, b.y), b)
-    private val c: LineSegment = LineSegment(Vec2f(b.x, a.y), b)
-    private val d: LineSegment = LineSegment(a, Vec2f(b.x, a.y))
-
-    private val min: Vec2f = a
-    private val max: Vec2f = b
+data class Square(val min: Vec2f, val max: Vec2f) {
+    private val a: LineSegment = LineSegment(min, Vec2f(min.x, max.y))
+    private val b: LineSegment = LineSegment(Vec2f(min.x, max.y), max)
+    private val c: LineSegment = LineSegment(Vec2f(max.x, min.y), max)
+    private val d: LineSegment = LineSegment(min, Vec2f(max.x, min.y))
 
     fun splitFromLine(line: Line): Pair<Array<Vec2f>, Array<Vec2f>> {
         val aRes: Optional<Vec2f> = a.intersectFromLine(line, false)

@@ -1,13 +1,11 @@
 package io.github.faecraft.heartshapedbox.math
 
 import net.minecraft.util.math.Vec3d
-import io.github.faecraft.heartshapedbox.math.MollerTrumbore
-import io.github.faecraft.heartshapedbox.math.Triangle
-import io.github.faecraft.heartshapedbox.math.FlexBox
-import java.util.*
+data class Ray(val start: Vec3d, var direction: Vec3d) {
+    init {
+        direction = direction.normalize()
+    }
 
-class Ray(val start: Vec3d, direction: Vec3d) {
-    val direction: Vec3d = direction.normalize()
     private fun intersectsQuad(quad: Quad): Boolean {
         val a = MollerTrumbore.rayIntersectsTriangle(
             start,
@@ -29,3 +27,4 @@ class Ray(val start: Vec3d, direction: Vec3d) {
         return box.quads.any { intersectsQuad(it) }
     }
 }
+

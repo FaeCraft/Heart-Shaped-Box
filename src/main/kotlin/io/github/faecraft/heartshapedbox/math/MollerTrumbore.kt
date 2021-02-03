@@ -26,10 +26,10 @@ object MollerTrumbore {
         if (v < 0.0 || u + v > 1.0) return Optional.empty()
         // At this stage we can compute t to find out where the intersection point is on the line.
         val t = f * edge2.dotProduct(q)
-        return if (t > epsilon) // ray intersection
-        {
+        return if (t > epsilon) { // ray intersection
             Optional.of(rayOrigin.add(rayVector.multiply(t)))
-        } else  // This means that there is a line intersection but not a ray intersection.
+        } else { // This means that there is a line intersection but not a ray intersection.
             Optional.empty()
+        }
     }
 }
