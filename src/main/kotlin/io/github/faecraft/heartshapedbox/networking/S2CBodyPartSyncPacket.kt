@@ -40,6 +40,7 @@ class S2CBodyPartSyncPacket() {
     companion object {
         private val LOGGER = LogManager.getLogger("S2CBodyPartSyncPacket")
         val IDENTIFIER = Identifier(HSBMain.MOD_ID, "body_part_sync")
+
         fun update(buffer: PacketByteBuf, provider: BodyPartProvider) {
             while (buffer.isReadable) {
                 val id = buffer.readIdentifier()

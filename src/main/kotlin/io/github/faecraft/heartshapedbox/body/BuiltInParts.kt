@@ -14,21 +14,21 @@ object BuiltInParts {
 
     // Arms
     @JvmField
-    val LEFT_ARM = Identifier(HSBMain.MOD_ID, "arm/" + BodyPartSide.LEFT.lowerName())
+    val LEFT_ARM = Identifier(HSBMain.MOD_ID, "arm/${BodyPartSide.LEFT.lowerName()}")
     @JvmField
-    val RIGHT_ARM = Identifier(HSBMain.MOD_ID, "arm/" + BodyPartSide.RIGHT.lowerName())
+    val RIGHT_ARM = Identifier(HSBMain.MOD_ID, "arm/${BodyPartSide.RIGHT.lowerName()}")
 
     // Legs
     @JvmField
-    val LEFT_LEG = Identifier(HSBMain.MOD_ID, "leg/" + BodyPartSide.LEFT.lowerName())
+    val LEFT_LEG = Identifier(HSBMain.MOD_ID, "leg/${BodyPartSide.LEFT.lowerName()}")
     @JvmField
-    val RIGHT_LEG = Identifier(HSBMain.MOD_ID, "leg/" + BodyPartSide.RIGHT.lowerName())
+    val RIGHT_LEG = Identifier(HSBMain.MOD_ID, "leg/${BodyPartSide.RIGHT.lowerName()}")
 
     // Feet
     @JvmField
-    val LEFT_FOOT = Identifier(HSBMain.MOD_ID, "foot/" + BodyPartSide.LEFT.lowerName())
+    val LEFT_FOOT = Identifier(HSBMain.MOD_ID, "foot/${BodyPartSide.LEFT.lowerName()}")
     @JvmField
-    val RIGHT_FOOT = Identifier(HSBMain.MOD_ID, "foot/" + BodyPartSide.RIGHT.lowerName())
+    val RIGHT_FOOT = Identifier(HSBMain.MOD_ID, "foot/${BodyPartSide.RIGHT.lowerName()}")
 
     // Pairs
     fun getArms(provider: BodyPartProvider): Pair<ArmBodyPart, ArmBodyPart> {

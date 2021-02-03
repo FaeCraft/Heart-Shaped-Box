@@ -20,7 +20,8 @@ object DamageHandlerDispatcher {
     fun handleDamage(player: ServerPlayerEntity, source: DamageSource, amount: Float): Boolean {
         var mutAmount = amount
         val provider = player as BodyPartProvider
-        if (player.hasStatusEffect(StatusEffects.RESISTANCE) && source !== DamageSource.OUT_OF_WORLD) {
+
+        if (player.hasStatusEffect(StatusEffects.RESISTANCE) && source != DamageSource.OUT_OF_WORLD) {
             val k = (player.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1) * 5
             val j = 25 - k
             val f = mutAmount * j.toFloat()

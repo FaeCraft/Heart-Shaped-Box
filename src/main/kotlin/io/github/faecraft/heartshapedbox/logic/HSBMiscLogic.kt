@@ -6,7 +6,6 @@ import io.github.faecraft.heartshapedbox.body.BuiltInParts
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getArms
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getFeet
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getLegs
-import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart
 import io.github.faecraft.heartshapedbox.math.FlexBox
 import io.github.faecraft.heartshapedbox.math.two_d.Line
 import io.github.faecraft.heartshapedbox.math.two_d.Square
@@ -40,9 +39,12 @@ object HSBMiscLogic {
             val normalLimbs =
                 allLimbs.stream().filter { abstractBodyPart: AbstractBodyPart? -> !abstractBodyPart!!.isCritical }
                     .iterator()
-            while (criticalLimbs.hasNext() && healingPool > 0) {
-                val critLimb = criticalLimbs.next()
-                val missing = critLimb!!.getMaxHealth() - critLimb.getHealth()
+            for (critLimb in criticalLimbs) {
+                if (healingPool <= 0) {
+                    break
+                }
+
+                val missing = critLimb.getMaxHealth() - critLimb.getHealth()
                 if (missing > 0) {
                     if (healingPool >= missing) {
                         critLimb.setHealth(critLimb.getMaxHealth())
@@ -53,9 +55,12 @@ object HSBMiscLogic {
                 }
             }
             if (healingPool > 0) {
-                while (normalLimbs.hasNext() && healingPool > 0) {
-                    val limb = normalLimbs.next()
-                    val missing = limb!!.getMaxHealth() - limb.getHealth()
+                for (limb in criticalLimbs) {
+                    if (healingPool <= 0) {
+                        break
+                    }
+
+                    val missing = limb.getMaxHealth() - limb.getHealth()
                     if (missing > 0) {
                         if (healingPool >= missing) {
                             limb.setHealth(limb.getMaxHealth())
@@ -73,14 +78,17 @@ object HSBMiscLogic {
         val provider = playerEntity as BodyPartProvider
         val pos = playerEntity.pos
         val boundingBox = playerEntity.getBoundingBox(playerEntity.pose)
+
         val playerBoxSlice = Square(
             Vec2f((pos.x + boundingBox.minX).toFloat(), (pos.z + boundingBox.minZ).toFloat()),
             Vec2f((pos.x + boundingBox.maxX).toFloat(), (pos.z + boundingBox.maxZ).toFloat())
         )
+
         val facingLine = Line(
             Vec2f(pos.x.toFloat(), pos.z.toFloat()),
             (if (playerEntity.yaw == 0f) 0.00001f else playerEntity.yaw).toDouble()
         )
+
         val results = playerBoxSlice.splitFromLine(facingLine)
         val leftSet = results.first
         val rightSet = results.second
@@ -173,8 +181,8 @@ object HSBMiscLogic {
         }
 
         // Blindness and nausea if low on health
-        val head = provider.getOrThrow(BuiltInParts.HEAD) as HeadBodyPart?
-        if (head!!.getHealth() <= 2) {
+        val head = provider.getOrThrow(BuiltInParts.HEAD)
+        if (head.getHealth() <= 2) {
             // Causes rapid strobing at ~23->~10, be careful!
             playerEntity.addStatusEffect(StatusEffectInstance(StatusEffects.BLINDNESS, 25, 0, true, true))
             // Has no effect at 61 or below
@@ -192,7 +200,7 @@ object HSBMiscLogic {
         val halved = amount / 2
         // Deal half to left
         // Deal left-over to right
-        // return leftover
+        // Return leftover
         return pair.right.takeDamage(
             halved +
                     pair.left.takeDamage(halved)

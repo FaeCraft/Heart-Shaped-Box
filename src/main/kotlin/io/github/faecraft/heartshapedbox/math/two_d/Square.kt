@@ -17,27 +17,31 @@ data class Square(val min: Vec2f, val max: Vec2f) {
                 aRes.get(),
                 b.a,
                 max,
-                cRes.orElseThrow { IllegalStateException() }
+                cRes.getOrIllegal()
             ), arrayOf(
                 aRes.get(),
                 min,
                 d.b,
-                cRes.orElseThrow { IllegalStateException() }
+                cRes.getOrIllegal()
             ))
         } else {
             val bRes: Optional<Vec2f> = b.intersectFromLine(line, true)
             val dRes: Optional<Vec2f> = d.intersectFromLine(line, true)
             Pair(arrayOf(
-                bRes.orElseThrow { IllegalStateException() },
+                bRes.getOrIllegal(),
                 b.a,
                 min,
-                dRes.orElseThrow { IllegalStateException() }
+                dRes.getOrIllegal()
             ), arrayOf(
-                bRes.orElseThrow { IllegalStateException() },
+                bRes.getOrIllegal(),
                 max,
                 d.b,
-                dRes.orElseThrow { IllegalStateException() }
+                dRes.getOrIllegal()
             ))
         }
+    }
+
+    private fun <T: Any?> Optional<T>.getOrIllegal(): T {
+        return this.orElseThrow { IllegalStateException() }
     }
 }
