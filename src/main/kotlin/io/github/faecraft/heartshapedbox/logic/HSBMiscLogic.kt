@@ -17,7 +17,6 @@ import net.minecraft.util.Pair
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import java.util.*
-import java.util.function.Predicate
 
 object HSBMiscLogic {
     @JvmStatic
@@ -87,14 +86,14 @@ object HSBMiscLogic {
         val rightSet = results.second
 
         // Feet
-        provider.getOrThrow(BuiltInParts.LEFT_FOOT)!!.flexBox = FlexBox(
+        provider.getOrThrow(BuiltInParts.LEFT_FOOT).flexBox = FlexBox(
             v3FromV2(leftSet[0], pos.y),
             v3FromV2(leftSet[1], pos.y),
             v3FromV2(leftSet[2], pos.y),
             v3FromV2(leftSet[3], pos.y),
             0.2
         )
-        provider.getOrThrow(BuiltInParts.RIGHT_FOOT)!!.flexBox = FlexBox(
+        provider.getOrThrow(BuiltInParts.RIGHT_FOOT).flexBox = FlexBox(
             v3FromV2(rightSet[0], pos.y),
             v3FromV2(rightSet[1], pos.y),
             v3FromV2(rightSet[2], pos.y),
@@ -103,14 +102,14 @@ object HSBMiscLogic {
         )
 
         // Legs
-        provider.getOrThrow(BuiltInParts.LEFT_LEG)!!.flexBox = FlexBox(
+        provider.getOrThrow(BuiltInParts.LEFT_LEG).flexBox = FlexBox(
             v3FromV2(leftSet[0], pos.y + 0.2),
             v3FromV2(leftSet[1], pos.y + 0.2),
             v3FromV2(leftSet[2], pos.y + 0.2),
             v3FromV2(leftSet[3], pos.y + 0.2),
             0.6
         )
-        provider.getOrThrow(BuiltInParts.RIGHT_LEG)!!.flexBox = FlexBox(
+        provider.getOrThrow(BuiltInParts.RIGHT_LEG).flexBox = FlexBox(
             v3FromV2(rightSet[0], pos.y + 0.2),
             v3FromV2(rightSet[1], pos.y + 0.2),
             v3FromV2(rightSet[2], pos.y + 0.2),
@@ -119,14 +118,14 @@ object HSBMiscLogic {
         )
 
         // Arms
-        provider.getOrThrow(BuiltInParts.LEFT_ARM)!!.flexBox = FlexBox(
+        provider.getOrThrow(BuiltInParts.LEFT_ARM).flexBox = FlexBox(
             v3FromV2(leftSet[0], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[1], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[2], pos.y + 0.2 + 0.6),
             v3FromV2(leftSet[3], pos.y + 0.2 + 0.6),
             0.8
         )
-        provider.getOrThrow(BuiltInParts.RIGHT_ARM)!!.flexBox = FlexBox(
+        provider.getOrThrow(BuiltInParts.RIGHT_ARM).flexBox = FlexBox(
             v3FromV2(rightSet[0], pos.y + 0.2 + 0.6),
             v3FromV2(rightSet[1], pos.y + 0.2 + 0.6),
             v3FromV2(rightSet[2], pos.y + 0.2 + 0.6),
@@ -135,7 +134,7 @@ object HSBMiscLogic {
         )
 
         // Head
-        provider.getOrThrow(BuiltInParts.HEAD)!!.flexBox = FlexBox(
+        provider.getOrThrow(BuiltInParts.HEAD).flexBox = FlexBox(
             v3FromV2(leftSet[2], pos.y + 0.2 + 0.6 + 0.8),
             v3FromV2(leftSet[1], pos.y + 0.2 + 0.6 + 0.8),
             v3FromV2(rightSet[1], pos.y + 0.2 + 0.6 + 0.8),
@@ -181,8 +180,8 @@ object HSBMiscLogic {
             // Has no effect at 61 or below
             playerEntity.addStatusEffect(StatusEffectInstance(StatusEffects.NAUSEA, 62, 0, true, true))
         }
-        for (limb in provider.parts!!) {
-            if (limb!!.isCritical && limb.getHealth() <= 0) {
+        for (limb in provider.parts) {
+            if (limb.isCritical && limb.getHealth() <= 0) {
                 // Slightly hacky way to make em die with proper death message
                 playerEntity.health = -1f
             }

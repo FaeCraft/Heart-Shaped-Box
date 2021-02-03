@@ -4,13 +4,13 @@ import net.minecraft.util.math.Vec2f
 import java.util.*
 
 class Square(a: Vec2f, b: Vec2f) {
-    val a: LineSegment = LineSegment(a, Vec2f(a.x, b.y))
-    val b: LineSegment = LineSegment(Vec2f(a.x, b.y), b)
-    val c: LineSegment = LineSegment(Vec2f(b.x, a.y), b)
-    val d: LineSegment = LineSegment(a, Vec2f(b.x, a.y))
+    private val a: LineSegment = LineSegment(a, Vec2f(a.x, b.y))
+    private val b: LineSegment = LineSegment(Vec2f(a.x, b.y), b)
+    private val c: LineSegment = LineSegment(Vec2f(b.x, a.y), b)
+    private val d: LineSegment = LineSegment(a, Vec2f(b.x, a.y))
 
-    val min: Vec2f = a
-    val max: Vec2f = b
+    private val min: Vec2f = a
+    private val max: Vec2f = b
 
     fun splitFromLine(line: Line): Pair<Array<Vec2f>, Array<Vec2f>> {
         val aRes: Optional<Vec2f> = a.intersectFromLine(line, false)

@@ -12,11 +12,10 @@ import io.github.faecraft.heartshapedbox.main.HSBMain
 import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 
-class S2CBodyPartSyncPacket {
+class S2CBodyPartSyncPacket() {
     private val parts = HashSet<AbstractBodyPart>()
 
-    constructor() {}
-    constructor(provider: BodyPartProvider) {
+    constructor(provider: BodyPartProvider) : this() {
         parts.addAll(provider.parts)
     }
 
@@ -24,7 +23,7 @@ class S2CBodyPartSyncPacket {
         parts.add(part)
     }
 
-    fun write(buffer: PacketByteBuf) {
+    private fun write(buffer: PacketByteBuf) {
         for (part in parts) {
             buffer.writeIdentifier(part.getIdentifier())
             buffer.writeFloat(part.getHealth())

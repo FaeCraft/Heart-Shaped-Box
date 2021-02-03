@@ -7,8 +7,8 @@ import io.github.faecraft.heartshapedbox.math.FlexBox
 import java.util.*
 
 class Ray(val start: Vec3d, direction: Vec3d) {
-    val direction: Vec3d
-    fun intersectsQuad(quad: Quad): Boolean {
+    val direction: Vec3d = direction.normalize()
+    private fun intersectsQuad(quad: Quad): Boolean {
         val a = MollerTrumbore.rayIntersectsTriangle(
             start,
             direction,
@@ -26,10 +26,6 @@ class Ray(val start: Vec3d, direction: Vec3d) {
     }
 
     fun intersectsBox(box: FlexBox): Boolean {
-        return Arrays.stream(box.quads).anyMatch { quad: Quad -> intersectsQuad(quad) }
-    }
-
-    init {
-        this.direction = direction.normalize()
+        return box.quads.any { intersectsQuad(it) }
     }
 }

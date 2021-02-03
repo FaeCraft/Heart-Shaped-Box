@@ -10,7 +10,7 @@ import net.minecraft.util.Pair
 
 class FallingBlockDamageHandler : DamageHandler {
     override fun shouldHandle(source: DamageSource): Boolean {
-        return source!!.name == "anvil" || source.name == "fallingBlock"
+        return source.name == "anvil" || source.name == "fallingBlock"
     }
 
     override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack> {

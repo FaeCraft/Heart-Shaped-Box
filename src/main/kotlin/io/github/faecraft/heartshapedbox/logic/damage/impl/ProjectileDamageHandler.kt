@@ -22,17 +22,17 @@ class ProjectileDamageHandler : DamageHandler {
         amount: Float
     ): Pair<Boolean, Float> {
         // Can suppress because our predicate only fires if its not null
-        val ray = Ray(source!!.attacker!!.pos, source.attacker!!.velocity)
-        val possible = provider!!.parts
-        possible!!.sortWith(Comparator.comparingDouble { o: AbstractBodyPart? ->
-            o?.flexBox?.roughCenter?.distanceTo(
+        val ray = Ray(source.attacker!!.pos, source.attacker!!.velocity)
+        val possible = provider.parts
+        possible.sortWith(Comparator.comparingDouble { o: AbstractBodyPart ->
+            o.flexBox.roughCenter.distanceTo(
                 ray.start.add(
                     ray.direction
                 )
-            ) ?: 0.0
+            )
         })
         for (limb in possible) {
-            if (ray.intersectsBox(limb!!.flexBox)) {
+            if (ray.intersectsBox(limb.flexBox)) {
                 return Pair(false, limb.takeDamage(amount))
             }
         }

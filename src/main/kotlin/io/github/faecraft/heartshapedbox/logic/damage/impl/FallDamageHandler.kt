@@ -20,8 +20,8 @@ class FallDamageHandler : DamageHandler {
         return source.name == "fall"
     }
 
-    override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack?>? {
-        val out = ArrayList<ItemStack?>()
+    override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack> {
+        val out = ArrayList<ItemStack>()
         // Boots
         out.add(player.inventory.armor[0])
         // Leggings

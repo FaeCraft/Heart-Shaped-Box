@@ -14,10 +14,10 @@ import net.minecraft.util.Pair
 
 class HotFloorDamageHandler : DamageHandler {
     override fun shouldHandle(source: DamageSource): Boolean {
-        return source!!.name == "hotFloor"
+        return source.name == "hotFloor"
     }
 
-    override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack?>? {
+    override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack> {
         // Boots
         return setOf(player.inventory.armor[0])
     }
@@ -31,7 +31,7 @@ class HotFloorDamageHandler : DamageHandler {
         return Pair(
             false, dealDamageToPair(
                 getFeet(
-                    provider!!
+                    provider
                 ), amount
             )
         )

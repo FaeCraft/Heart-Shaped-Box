@@ -18,18 +18,18 @@ class GenericDamageHandler : DamageHandler {
         source: DamageSource,
         amount: Float
     ): Pair<Boolean, Float> {
-        var amount = amount
-        val parts = provider!!.parts
+        var mutAmount = amount
+        val parts = provider.parts
         var remainingTries = 30f
         do {
-            val randomPart = parts!![Random().nextInt(parts.size)]
+            val randomPart = parts[Random().nextInt(parts.size)]
             remainingTries--
-            if (randomPart!!.getHealth() <= 0) {
+            if (randomPart.getHealth() <= 0) {
                 continue
             }
-            val result = randomPart.takeDamage(amount)
-            amount -= amount - result
-        } while (amount > 0 && remainingTries > 0)
-        return Pair(true, amount)
+            val result = randomPart.takeDamage(mutAmount)
+            mutAmount -= mutAmount - result
+        } while (mutAmount > 0 && remainingTries > 0)
+        return Pair(true, mutAmount)
     }
 }

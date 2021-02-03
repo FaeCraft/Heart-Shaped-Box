@@ -1,3 +1,6 @@
+// Apparently calling "getDefaultMaxHealth" inside the constructor can have issues in multithreading environments
+@file:Suppress("LeakingThis")
+
 package io.github.faecraft.heartshapedbox.body
 
 import io.github.faecraft.heartshapedbox.math.FlexBox
@@ -12,7 +15,7 @@ abstract class AbstractBodyPart(private val owner: PlayerEntity) {
     private var maxHealth = getDefaultMaxHealth()
     private var health = maxHealth
     var flexBox = FlexBox.zero()
-    fun update() {
+    private fun update() {
         if (owner is ServerPlayerEntity) {
             val packet = S2CBodyPartSyncPacket()
             packet.addPart(this)

@@ -13,6 +13,6 @@ interface BodyPartProvider {
     fun writeToTag(): CompoundTag
     fun readFromTag(tag: CompoundTag)
     fun maybeGet(identifier: Identifier): Optional<AbstractBodyPart>
-    fun getOrNull(identifier: Identifier): AbstractBodyPart
+    fun getOrNull(identifier: Identifier): AbstractBodyPart?
     fun getOrThrow(identifier: Identifier): AbstractBodyPart
 }
