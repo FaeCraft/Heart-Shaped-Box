@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '0.5-SNAPSHOT'
 	id 'maven-publish'
+	id "org.jetbrains.kotlin.jvm" version "1.4.21"
 }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
@@ -19,8 +20,7 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-	// You may need to force-disable transitiveness on them.
+	modImplementation "net.fabricmc:fabric-language-kotlin:${project.fabric_kotlin_version}"
 }
 
 processResources {
@@ -80,3 +80,5 @@ publishing {
 		// See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
 	}
 }
+
+compileKotlin.kotlinOptions.jvmTarget = "1.8"
