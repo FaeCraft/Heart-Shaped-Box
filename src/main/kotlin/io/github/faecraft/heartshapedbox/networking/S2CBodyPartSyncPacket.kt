@@ -56,6 +56,7 @@ class S2CBodyPartSyncPacket() {
             }
         }
 
+        @JvmStatic
         fun from(player: ServerPlayerEntity): S2CBodyPartSyncPacket {
             return S2CBodyPartSyncPacket(player as BodyPartProvider)
         }

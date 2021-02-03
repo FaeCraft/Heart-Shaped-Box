@@ -11,5 +11,4 @@ data class Line(private val start: Vec2f, private val slope: Double) {
     fun solveForY(x: Double): Double {
         return slope * x + b
     }
-
 }

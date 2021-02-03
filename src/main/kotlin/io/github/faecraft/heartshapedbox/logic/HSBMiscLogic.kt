@@ -19,6 +19,7 @@ import net.minecraft.util.math.Vec3d
 import java.util.*
 
 object HSBMiscLogic {
+    @JvmStatic
     fun forceHealthChangeToLimbs(newAmount: Float, provider: BodyPartProvider) {
         val allLimbs: ArrayList<AbstractBodyPart> = try {
             provider.parts

@@ -11,6 +11,8 @@ import java.util.concurrent.atomic.AtomicBoolean
  * @author P03W
  */
 object BadMixinAtomicFlags {
+    @JvmField
     val callSuperDamage = AtomicBoolean()
+    @JvmField
     val dontPassDamageToCustomLogic = AtomicBoolean()
 }
