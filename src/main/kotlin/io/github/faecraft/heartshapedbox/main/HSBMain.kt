@@ -40,16 +40,16 @@ class HSBMain : ModInitializer {
             )
             S2CBodyPartSyncPacket.from(newPlayer).send(newPlayer)
         })
-        
+
         ServerTickEvents.END_SERVER_TICK.register(
             ServerTickEvents.EndTick { minecraftServer: MinecraftServer? ->
                 // Update FlexBoxes
-                PlayerLookup.all(minecraftServer).forEach(Consumer { playerEntity: ServerPlayerEntity? ->
+                PlayerLookup.all(minecraftServer).forEach(Consumer { playerEntity: ServerPlayerEntity ->
                     HSBMiscLogic.updatePlayerFlexBoxes(playerEntity)
                 })
                 // Debuff all players accordingly
                 PlayerLookup.all(minecraftServer)
-                    .forEach(Consumer { playerEntity: ServerPlayerEntity? -> HSBMiscLogic.debuffPlayer(playerEntity) })
+                    .forEach(Consumer { playerEntity: ServerPlayerEntity -> HSBMiscLogic.debuffPlayer(playerEntity) })
             }
         )
 
@@ -62,9 +62,9 @@ class HSBMain : ModInitializer {
                     val provider = context.source.player as BodyPartProvider
                     for (part in provider.parts) {
                         source.sendFeedback(
-                            LiteralText(part.identifier.toString())
+                            LiteralText(part.getIdentifier().toString())
                                 .append(LiteralText(" - "))
-                                .append(LiteralText(part.health.toString() + "/" + part.maxHealth)),
+                                .append(LiteralText(part.getHealth().toString() + "/" + part.getMaxHealth())),
                             false
                         )
                     }
@@ -75,7 +75,7 @@ class HSBMain : ModInitializer {
                         val player = context.source.player
                         val provider = context.source.player as BodyPartProvider
                         for (limb in provider.parts) {
-                            limb.health = limb.defaultMaxHealth
+                            limb.setHealth(limb.getDefaultMaxHealth())
                         }
                         player.health = player.maxHealth
                         source.sendFeedback(LiteralText("Reset health"), false)
