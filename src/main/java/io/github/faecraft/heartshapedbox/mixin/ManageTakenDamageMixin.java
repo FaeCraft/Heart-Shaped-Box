@@ -23,16 +23,16 @@ public abstract class ManageTakenDamageMixin extends LivingEntity {
     
     @Redirect(method = "damage", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;damage(Lnet/minecraft/entity/damage/DamageSource;F)Z"))
     public boolean redirectDamageToCustomLogic(LivingEntity livingEntity, DamageSource source, float amount) {
-        if (BadMixinAtomicFlags.dontPassDamageToCustomLogic.get()) {
+        if (BadMixinAtomicFlags.doNotPassDamageToCustomLogic.get()) {
             return super.damage(source, amount);
         }
         
         if (!this.world.isClient && !(source.isOutOfWorld() && amount == Float.MAX_VALUE)) {
             return DamageHandlerDispatcher.handleDamage((ServerPlayerEntity)(Object)this, source, amount);
         } else if (source.isOutOfWorld() && amount == Float.MAX_VALUE) {
-            BadMixinAtomicFlags.dontPassDamageToCustomLogic.set(true);
+            BadMixinAtomicFlags.doNotPassDamageToCustomLogic.set(true);
             damage(source, amount);
-            BadMixinAtomicFlags.dontPassDamageToCustomLogic.set(false);
+            BadMixinAtomicFlags.doNotPassDamageToCustomLogic.set(false);
         }
         return false;
     }

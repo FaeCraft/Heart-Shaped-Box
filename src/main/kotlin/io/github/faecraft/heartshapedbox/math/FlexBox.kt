@@ -1,7 +1,6 @@
 package io.github.faecraft.heartshapedbox.math
 
 import net.minecraft.util.math.Vec3d
-import io.github.faecraft.heartshapedbox.math.FlexBox
 
 // box with a flex
 // how perplex

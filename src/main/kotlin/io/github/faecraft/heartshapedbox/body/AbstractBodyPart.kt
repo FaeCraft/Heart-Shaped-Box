@@ -1,16 +1,8 @@
-/*
- Apparently calling "getDefaultMaxHealth" inside the constructor can have issues in multithreading environments
- but I don't care enough right now to restructure this so it stays
-
- This whole class should probably be reworked
- - P03W
-*/
-@file:Suppress("LeakingThis")
-
 package io.github.faecraft.heartshapedbox.body
 
 import io.github.faecraft.heartshapedbox.math.FlexBox
 import io.github.faecraft.heartshapedbox.networking.S2CBodyPartSyncPacket
+import io.github.faecraft.heartshapedbox.util.SettableLazy
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.network.ServerPlayerEntity
@@ -18,9 +10,26 @@ import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 
 abstract class AbstractBodyPart(private val owner: PlayerEntity) {
-    private var maxHealth = getDefaultMaxHealth()
-    private var health = maxHealth
+    private var internalMaxHealth by SettableLazy { getDefaultMaxHealth() }
+    private var health = internalMaxHealth
     var flexBox = FlexBox.zero()
+
+    open val isCritical: Boolean = false
+
+    abstract fun getIdentifier(): Identifier
+    abstract fun getSide(): BodyPartSide
+    abstract fun getDefaultMaxHealth(): Float
+
+    fun takeDamage(amount: Float): Float {
+        if (amount > health) {
+            val used = amount - health
+            setHealth(0f)
+            return used
+        }
+        setHealth(health - amount)
+        return 0f
+    }
+
     private fun update() {
         if (owner is ServerPlayerEntity) {
             val packet = S2CBodyPartSyncPacket()
@@ -29,18 +38,16 @@ abstract class AbstractBodyPart(private val owner: PlayerEntity) {
         }
     }
 
-    open val isCritical: Boolean = false
-
     fun toTag(tag: CompoundTag) {
         val data = CompoundTag()
         data.putFloat("health", health)
-        data.putFloat("maxHealth", maxHealth)
+        data.putFloat("maxHealth", internalMaxHealth)
         tag.put(getIdentifier().toString(), data)
     }
 
     fun fromTag(tag: CompoundTag) {
         health = tag.getFloat("health")
-        maxHealth = tag.getFloat("maxHealth")
+        internalMaxHealth = tag.getFloat("maxHealth")
     }
 
     fun getHealth(): Float {
@@ -57,31 +64,21 @@ abstract class AbstractBodyPart(private val owner: PlayerEntity) {
     }
 
     fun getMaxHealth(): Float {
-        return maxHealth
+        return internalMaxHealth
     }
 
     fun setMaxHealth(amount: Float) {
         // TODO: Remove logging call later
         LOGGER.info("Max health changed (" + getIdentifier() + ") " + health + " -> " + amount)
-        if (amount != maxHealth) {
-            maxHealth = amount
+        if (amount != internalMaxHealth) {
+            internalMaxHealth = amount
             update()
         }
     }
 
-    fun takeDamage(amount: Float): Float {
-        if (amount > health) {
-            val used = amount - health
-            setHealth(0f)
-            return used
-        }
-        setHealth(health - amount)
-        return 0f
-    }
-
-    override fun toString(): String {
+    final override fun toString(): String {
         return "BodyPart(" + getIdentifier().toString() + ") {" +
-                "maxHealth=" + maxHealth +
+                "maxHealth=" + internalMaxHealth +
                 ", health=" + health +
                 '}'
     }
@@ -89,8 +86,4 @@ abstract class AbstractBodyPart(private val owner: PlayerEntity) {
     companion object {
         private val LOGGER = LogManager.getLogger("AbstractBodyPart")
     }
-
-    abstract fun getIdentifier(): Identifier
-    abstract fun getSide(): BodyPartSide
-    abstract fun getDefaultMaxHealth(): Float
 }
