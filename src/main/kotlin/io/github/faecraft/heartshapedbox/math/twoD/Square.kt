@@ -1,4 +1,4 @@
-package io.github.faecraft.heartshapedbox.math.two_d
+package io.github.faecraft.heartshapedbox.math.twoD
 
 import net.minecraft.util.math.Vec2f
 import java.util.*
@@ -42,6 +42,6 @@ data class Square(val min: Vec2f, val max: Vec2f) {
     }
 
     private fun <T: Any?> Optional<T>.getOrIllegal(): T {
-        return this.orElseThrow { IllegalStateException() }
+        return this.orElseThrow { IllegalStateException("Optional may not return null at this stage") }
     }
 }

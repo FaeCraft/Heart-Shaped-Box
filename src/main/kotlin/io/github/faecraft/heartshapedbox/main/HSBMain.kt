@@ -9,7 +9,6 @@ import io.github.faecraft.heartshapedbox.networking.S2CBodyPartSyncPacket
 import net.fabricmc.api.ModInitializer
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback
 import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents
-import net.fabricmc.fabric.api.entity.event.v1.ServerPlayerEvents.AfterRespawn
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents
 import net.fabricmc.fabric.api.networking.v1.PlayerLookup
 import net.minecraft.server.MinecraftServer
@@ -32,24 +31,24 @@ class HSBMain : ModInitializer {
 //            }
 //        });
 
-        ServerPlayerEvents.AFTER_RESPAWN.register(AfterRespawn { oldPlayer: ServerPlayerEntity, newPlayer: ServerPlayerEntity, server: Boolean ->
+        ServerPlayerEvents.AFTER_RESPAWN.register()
+        { oldPlayer: ServerPlayerEntity, newPlayer: ServerPlayerEntity, server: Boolean ->
             LOGGER.info(
                 "AFTER RESPAWN | Old: $oldPlayer New: $newPlayer Server: $server"
             )
             S2CBodyPartSyncPacket.from(newPlayer).send(newPlayer)
-        })
+        }
 
-        ServerTickEvents.END_SERVER_TICK.register(
-            ServerTickEvents.EndTick { minecraftServer: MinecraftServer? ->
-                // Update FlexBoxes
-                PlayerLookup.all(minecraftServer).forEach(Consumer { playerEntity: ServerPlayerEntity ->
-                    HSBMiscLogic.updatePlayerFlexBoxes(playerEntity)
-                })
-                // Debuff all players accordingly
-                PlayerLookup.all(minecraftServer)
-                    .forEach(Consumer { playerEntity: ServerPlayerEntity -> HSBMiscLogic.debuffPlayer(playerEntity) })
-            }
-        )
+        ServerTickEvents.END_SERVER_TICK.register()
+        { minecraftServer: MinecraftServer? ->
+            // Update FlexBoxes
+            PlayerLookup.all(minecraftServer).forEach(Consumer { playerEntity: ServerPlayerEntity ->
+                HSBMiscLogic.updatePlayerFlexBoxes(playerEntity)
+            })
+            // Debuff all players accordingly
+            PlayerLookup.all(minecraftServer)
+                .forEach(Consumer { playerEntity: ServerPlayerEntity -> HSBMiscLogic.debuffPlayer(playerEntity) })
+        }
 
         // Debug command
         // TODO: REMOVE THIS! or add an op requirement idc

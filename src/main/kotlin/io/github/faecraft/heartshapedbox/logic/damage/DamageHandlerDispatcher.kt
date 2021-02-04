@@ -28,7 +28,7 @@ object DamageHandlerDispatcher {
             val g = mutAmount
             mutAmount = max(f / 25.0f, 0f)
             val h = g - mutAmount
-            if (h > 0.0f && h < 3.4028235E37f) {
+            if (h > 0.0f && h < Float.MAX_VALUE) {
                 player.increaseStat(Stats.DAMAGE_RESISTED, (h * 10.0f).roundToInt())
             }
         }

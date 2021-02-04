@@ -1,4 +1,4 @@
-package io.github.faecraft.heartshapedbox.math.two_d
+package io.github.faecraft.heartshapedbox.math.twoD
 
 import net.minecraft.util.math.Vec2f
 

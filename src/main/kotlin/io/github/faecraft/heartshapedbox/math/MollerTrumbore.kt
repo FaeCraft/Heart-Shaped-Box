@@ -7,8 +7,8 @@ import java.util.*
 // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 // For compatibility with Minecraft
 object MollerTrumbore {
+    private const val EPSILON = 0.0000001
     fun rayIntersectsTriangle(rayOrigin: Vec3d, rayVector: Vec3d, inTriangle: Triangle): Optional<Vec3d> {
-        val epsilon = 0.0000001
         val vertex0 = inTriangle.vec1
         val vertex1 = inTriangle.vec2
         val vertex2 = inTriangle.vec3
@@ -19,7 +19,7 @@ object MollerTrumbore {
         val h: Vec3d = rayVector.crossProduct(edge2)
         val a: Double = edge1.dotProduct(h)
 
-        if (a > -epsilon && a < epsilon) return Optional.empty() // This ray is parallel to this triangle.
+        if (a > -EPSILON && a < EPSILON) return Optional.empty() // This ray is parallel to this triangle.
 
         val f: Double = 1.0 / a
         val s: Vec3d = rayOrigin.subtract(vertex0)
@@ -32,7 +32,7 @@ object MollerTrumbore {
 
         // At this stage we can compute t to find out where the intersection point is on the line.
         val t = f * edge2.dotProduct(q)
-        return if (t > epsilon) { // ray intersection
+        return if (t > EPSILON) { // ray intersection
             Optional.of(rayOrigin.add(rayVector.multiply(t)))
         } else { // This means that there is a line intersection but not a ray intersection.
             Optional.empty()

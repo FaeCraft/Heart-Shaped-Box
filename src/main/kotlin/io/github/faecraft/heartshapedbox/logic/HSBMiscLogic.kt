@@ -7,8 +7,8 @@ import io.github.faecraft.heartshapedbox.body.BuiltInParts.getArms
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getFeet
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getLegs
 import io.github.faecraft.heartshapedbox.math.FlexBox
-import io.github.faecraft.heartshapedbox.math.two_d.Line
-import io.github.faecraft.heartshapedbox.math.two_d.Square
+import io.github.faecraft.heartshapedbox.math.twoD.Line
+import io.github.faecraft.heartshapedbox.math.twoD.Square
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
@@ -22,9 +22,10 @@ object HSBMiscLogic {
     fun forceHealthChangeToLimbs(newAmount: Float, provider: BodyPartProvider) {
         val allLimbs: ArrayList<AbstractBodyPart> = try {
             provider.parts
-        } catch (err: NullPointerException) {
+        } catch (ignored: NullPointerException) {
             return
         }
+
         var totalCurrent = 0f
         for (limb in allLimbs) {
             totalCurrent += limb.getHealth()
@@ -35,10 +36,9 @@ object HSBMiscLogic {
         // Also big epsilon because im sick of this triggering because the health differs by 1e^-6 NO ONE CARES
         if (newAmount - totalCurrent > 0.001) {
             var healingPool = newAmount - totalCurrent
-            val criticalLimbs = allLimbs.stream().filter { it?.isCritical ?: false }.iterator()
-            val normalLimbs =
-                allLimbs.stream().filter { abstractBodyPart: AbstractBodyPart? -> !abstractBodyPart!!.isCritical }
-                    .iterator()
+            val criticalLimbs = allLimbs.filter { it.isCritical }.iterator()
+            val normalLimbs = allLimbs.filter { abstractBodyPart: AbstractBodyPart -> !abstractBodyPart.isCritical }
+
             for (critLimb in criticalLimbs) {
                 if (healingPool <= 0) {
                     break
@@ -54,21 +54,19 @@ object HSBMiscLogic {
                     healingPool -= missing
                 }
             }
-            if (healingPool > 0) {
-                for (limb in criticalLimbs) {
-                    if (healingPool <= 0) {
-                        break
-                    }
+            for (limb in normalLimbs) {
+                if (healingPool <= 0) {
+                    break
+                }
 
-                    val missing = limb.getMaxHealth() - limb.getHealth()
-                    if (missing > 0) {
-                        if (healingPool >= missing) {
-                            limb.setHealth(limb.getMaxHealth())
-                        } else {
-                            limb.setHealth(limb.getHealth() + healingPool)
-                        }
-                        healingPool -= missing
+                val missing = limb.getMaxHealth() - limb.getHealth()
+                if (missing > 0) {
+                    if (healingPool >= missing) {
+                        limb.setHealth(limb.getMaxHealth())
+                    } else {
+                        limb.setHealth(limb.getHealth() + healingPool)
                     }
+                    healingPool -= missing
                 }
             }
         }
@@ -83,7 +81,6 @@ object HSBMiscLogic {
             Vec2f((pos.x + boundingBox.minX).toFloat(), (pos.z + boundingBox.minZ).toFloat()),
             Vec2f((pos.x + boundingBox.maxX).toFloat(), (pos.z + boundingBox.maxZ).toFloat())
         )
-
         val facingLine = Line(
             Vec2f(pos.x.toFloat(), pos.z.toFloat()),
             (if (playerEntity.yaw == 0f) 0.00001f else playerEntity.yaw).toDouble()
@@ -93,61 +90,66 @@ object HSBMiscLogic {
         val leftSet = results.first
         val rightSet = results.second
 
+        val feetHeight = 0.2
+        val legHeight = 0.6
+        val armOrCenterHeight = 0.8
+        val headHeight = 0.4
+
         // Feet
         provider.getOrThrow(BuiltInParts.LEFT_FOOT).flexBox = FlexBox(
             v3FromV2(leftSet[0], pos.y),
             v3FromV2(leftSet[1], pos.y),
             v3FromV2(leftSet[2], pos.y),
             v3FromV2(leftSet[3], pos.y),
-            0.2
+            feetHeight
         )
         provider.getOrThrow(BuiltInParts.RIGHT_FOOT).flexBox = FlexBox(
             v3FromV2(rightSet[0], pos.y),
             v3FromV2(rightSet[1], pos.y),
             v3FromV2(rightSet[2], pos.y),
             v3FromV2(rightSet[3], pos.y),
-            0.2
+            feetHeight
         )
 
         // Legs
         provider.getOrThrow(BuiltInParts.LEFT_LEG).flexBox = FlexBox(
-            v3FromV2(leftSet[0], pos.y + 0.2),
-            v3FromV2(leftSet[1], pos.y + 0.2),
-            v3FromV2(leftSet[2], pos.y + 0.2),
-            v3FromV2(leftSet[3], pos.y + 0.2),
-            0.6
+            v3FromV2(leftSet[0], pos.y + feetHeight),
+            v3FromV2(leftSet[1], pos.y + feetHeight),
+            v3FromV2(leftSet[2], pos.y + feetHeight),
+            v3FromV2(leftSet[3], pos.y + feetHeight),
+            legHeight
         )
         provider.getOrThrow(BuiltInParts.RIGHT_LEG).flexBox = FlexBox(
-            v3FromV2(rightSet[0], pos.y + 0.2),
-            v3FromV2(rightSet[1], pos.y + 0.2),
-            v3FromV2(rightSet[2], pos.y + 0.2),
-            v3FromV2(rightSet[3], pos.y + 0.2),
-            0.6
+            v3FromV2(rightSet[0], pos.y + feetHeight),
+            v3FromV2(rightSet[1], pos.y + feetHeight),
+            v3FromV2(rightSet[2], pos.y + feetHeight),
+            v3FromV2(rightSet[3], pos.y + feetHeight),
+            legHeight
         )
 
         // Arms
         provider.getOrThrow(BuiltInParts.LEFT_ARM).flexBox = FlexBox(
-            v3FromV2(leftSet[0], pos.y + 0.2 + 0.6),
-            v3FromV2(leftSet[1], pos.y + 0.2 + 0.6),
-            v3FromV2(leftSet[2], pos.y + 0.2 + 0.6),
-            v3FromV2(leftSet[3], pos.y + 0.2 + 0.6),
-            0.8
+            v3FromV2(leftSet[0], pos.y + feetHeight + legHeight),
+            v3FromV2(leftSet[1], pos.y + feetHeight + legHeight),
+            v3FromV2(leftSet[2], pos.y + feetHeight + legHeight),
+            v3FromV2(leftSet[3], pos.y + feetHeight + legHeight),
+            armOrCenterHeight
         )
         provider.getOrThrow(BuiltInParts.RIGHT_ARM).flexBox = FlexBox(
-            v3FromV2(rightSet[0], pos.y + 0.2 + 0.6),
-            v3FromV2(rightSet[1], pos.y + 0.2 + 0.6),
-            v3FromV2(rightSet[2], pos.y + 0.2 + 0.6),
-            v3FromV2(rightSet[3], pos.y + 0.2 + 0.6),
-            0.8
+            v3FromV2(rightSet[0], pos.y + feetHeight + legHeight),
+            v3FromV2(rightSet[1], pos.y + feetHeight + legHeight),
+            v3FromV2(rightSet[2], pos.y + feetHeight + legHeight),
+            v3FromV2(rightSet[3], pos.y + feetHeight + legHeight),
+            armOrCenterHeight
         )
 
         // Head
         provider.getOrThrow(BuiltInParts.HEAD).flexBox = FlexBox(
-            v3FromV2(leftSet[2], pos.y + 0.2 + 0.6 + 0.8),
-            v3FromV2(leftSet[1], pos.y + 0.2 + 0.6 + 0.8),
-            v3FromV2(rightSet[1], pos.y + 0.2 + 0.6 + 0.8),
-            v3FromV2(rightSet[2], pos.y + 0.2 + 0.6 + 0.8),
-            0.4
+            v3FromV2(leftSet[2], pos.y + feetHeight + legHeight + armOrCenterHeight),
+            v3FromV2(leftSet[1], pos.y + feetHeight + legHeight + armOrCenterHeight),
+            v3FromV2(rightSet[1], pos.y + feetHeight + legHeight + armOrCenterHeight),
+            v3FromV2(rightSet[2], pos.y + feetHeight + legHeight + armOrCenterHeight),
+            headHeight
         )
     }
 

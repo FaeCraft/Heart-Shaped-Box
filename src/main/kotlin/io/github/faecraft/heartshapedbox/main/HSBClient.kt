@@ -16,7 +16,7 @@ class HSBClient : ClientModInitializer {
 
     private fun setupNetworking() {
         ClientPlayNetworking.registerGlobalReceiver(S2CBodyPartSyncPacket.IDENTIFIER)
-        { client: MinecraftClient, handler: ClientPlayNetworkHandler, buf: PacketByteBuf, responseSender: PacketSender ->
+        { client: MinecraftClient, _: ClientPlayNetworkHandler, buf: PacketByteBuf, _: PacketSender ->
             S2CBodyPartSyncPacket.update(buf, client.player as BodyPartProvider)
         }
     }
