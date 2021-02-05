@@ -10,15 +10,13 @@ import io.github.faecraft.heartshapedbox.body.impl.FootBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.HeadBodyPart;
 import io.github.faecraft.heartshapedbox.body.impl.LegBodyPart;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -47,33 +45,33 @@ public abstract class BodyPartDuck implements BodyPartProvider {
     }
 
     @Override
-    public HashMap<Identifier, AbstractBodyPart> getPartsMap() {
+    public @NotNull HashMap<Identifier, AbstractBodyPart> getPartsMap() {
         return parts;
     }
 
     @Override
-    public ArrayList<AbstractBodyPart> getParts() {
+    public @NotNull ArrayList<AbstractBodyPart> getParts() {
         return new ArrayList<>(parts.values());
     }
 
     @Override
-    public Optional<AbstractBodyPart> maybeGet(Identifier identifier) {
+    public @NotNull Optional<AbstractBodyPart> maybeGet(@NotNull Identifier identifier) {
         return Optional.ofNullable(parts.get(identifier));
     }
 
     @Override
-    public @Nullable AbstractBodyPart getOrNull(Identifier identifier) {
+    public @Nullable AbstractBodyPart getOrNull(@NotNull Identifier identifier) {
         return parts.get(identifier);
     }
 
     @Override
-    public AbstractBodyPart getOrThrow(Identifier identifier) {
+    public @NotNull AbstractBodyPart getOrThrow(@NotNull Identifier identifier) {
         //noinspection OptionalGetWithoutIsPresent
         return maybeGet(identifier).get();
     }
 
     @Override
-    public CompoundTag writeToTag() {
+    public @NotNull CompoundTag writeToTag() {
         CompoundTag out = new CompoundTag();
         getParts().iterator().forEachRemaining(abstractBodyPart -> abstractBodyPart.toTag(out));
         return out;

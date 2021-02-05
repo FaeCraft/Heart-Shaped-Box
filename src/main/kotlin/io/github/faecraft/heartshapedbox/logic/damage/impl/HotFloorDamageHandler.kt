@@ -1,0 +1,28 @@
+package io.github.faecraft.heartshapedbox.logic.damage.impl
+
+import io.github.faecraft.heartshapedbox.body.BodyPartProvider
+import io.github.faecraft.heartshapedbox.body.BuiltInParts.getFeet
+import io.github.faecraft.heartshapedbox.constants.ArmorSlots
+import io.github.faecraft.heartshapedbox.logic.HSBMiscLogic.dealDamageToPair
+import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler
+import net.minecraft.entity.damage.DamageSource
+import net.minecraft.item.ItemStack
+import net.minecraft.server.network.ServerPlayerEntity
+
+public class HotFloorDamageHandler : DamageHandler {
+    override fun shouldHandle(source: DamageSource): Boolean =source.name == "hotFloor"
+
+    override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack> =
+        setOf(player.inventory.armor[ArmorSlots.BOOTS])
+
+    override fun handleDamage(
+        player: ServerPlayerEntity,
+        provider: BodyPartProvider,
+        source: DamageSource,
+        amount: Float
+    ): Pair<Boolean, Float> = false to dealDamageToPair(
+        getFeet(
+            provider
+        ), amount
+    )
+}
