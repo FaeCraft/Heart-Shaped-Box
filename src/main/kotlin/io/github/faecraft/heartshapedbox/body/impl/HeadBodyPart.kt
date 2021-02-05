@@ -6,18 +6,10 @@ import io.github.faecraft.heartshapedbox.body.BuiltInParts
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.util.Identifier
 
-class HeadBodyPart(owner: PlayerEntity) : AbstractBodyPart(owner) {
+public class HeadBodyPart(owner: PlayerEntity) : AbstractBodyPart(owner) {
     override val isCritical: Boolean = true
 
-    override fun getIdentifier(): Identifier {
-        return BuiltInParts.HEAD
-    }
-
-    override fun getSide(): BodyPartSide {
-        return BodyPartSide.CENTER
-    }
-
-    override fun getDefaultMaxHealth(): Float {
-        return 4f
-    }
+    override fun getIdentifier(): Identifier = BuiltInParts.HEAD
+    override fun getDefaultMaxHealth(): Float = 4f
+    override fun getSide(): BodyPartSide = BodyPartSide.CENTER
 }

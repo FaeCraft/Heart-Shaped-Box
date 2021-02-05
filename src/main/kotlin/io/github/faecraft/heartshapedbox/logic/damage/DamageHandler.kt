@@ -4,15 +4,13 @@ import net.minecraft.entity.damage.DamageSource
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.item.ItemStack
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider
-import net.minecraft.util.Pair
 
-interface DamageHandler {
-    fun shouldHandle(source: DamageSource): Boolean
-    fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack?>? {
-        return player.armorItems
-    }
+public interface DamageHandler {
+    public fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack?>? = player.armorItems
 
-    fun handleDamage(
+    public fun shouldHandle(source: DamageSource): Boolean
+
+    public fun handleDamage(
         player: ServerPlayerEntity,
         provider: BodyPartProvider,
         source: DamageSource,

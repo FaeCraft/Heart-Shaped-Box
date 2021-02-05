@@ -2,35 +2,27 @@ package io.github.faecraft.heartshapedbox.logic.damage.impl
 
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getFeet
+import io.github.faecraft.heartshapedbox.constants.ArmorSlots
 import io.github.faecraft.heartshapedbox.logic.HSBMiscLogic.dealDamageToPair
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler
 import net.minecraft.entity.damage.DamageSource
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
-import net.minecraft.util.Pair
 
-class HotFloorDamageHandler : DamageHandler {
-    override fun shouldHandle(source: DamageSource): Boolean {
-        return source.name == "hotFloor"
-    }
+public class HotFloorDamageHandler : DamageHandler {
+    override fun shouldHandle(source: DamageSource): Boolean =source.name == "hotFloor"
 
-    override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack> {
-        // Boots
-        return setOf(player.inventory.armor[0])
-    }
+    override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack> =
+        setOf(player.inventory.armor[ArmorSlots.BOOTS])
 
     override fun handleDamage(
         player: ServerPlayerEntity,
         provider: BodyPartProvider,
         source: DamageSource,
         amount: Float
-    ): Pair<Boolean, Float> {
-        return Pair(
-            false, dealDamageToPair(
-                getFeet(
-                    provider
-                ), amount
-            )
-        )
-    }
+    ): Pair<Boolean, Float> = false to dealDamageToPair(
+        getFeet(
+            provider
+        ), amount
+    )
 }

@@ -13,11 +13,12 @@ import java.util.*
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-object DamageHandlerDispatcher {
+public object DamageHandlerDispatcher {
     private val handlers = ArrayList<DamageHandler>()
 
     @JvmStatic
-    fun handleDamage(player: ServerPlayerEntity, source: DamageSource, amount: Float): Boolean {
+    @Suppress("MagicNumber")  // Based on vanilla code
+    public fun handleDamage(player: ServerPlayerEntity, source: DamageSource, amount: Float): Boolean {
         var mutAmount = amount
         val provider = player as BodyPartProvider
 
@@ -41,17 +42,22 @@ object DamageHandlerDispatcher {
             if (possibleHandler.shouldHandle(source)) {
                 val items = possibleHandler.getPossibleArmorPieces(player)
                 val k = EnchantmentHelper.getProtectionAmount(items, source)
+
                 if (k > 0) {
                     mutAmount = DamageUtil.getInflictedDamage(mutAmount, k.toFloat())
                 }
+
                 val result = possibleHandler.handleDamage(player, player as BodyPartProvider, source, mutAmount)
-                collectedDamage += mutAmount - result.right
-                mutAmount = result.right
-                if (result.left || result.right <= 0) {
+
+                collectedDamage += mutAmount - result.second
+                mutAmount = result.second
+
+                if (result.first || result.second <= 0) {
                     break
                 }
             }
         }
+
         // Try to deal damage, roll back if failed
         // see BadMixinAtomicFlags for the reason behind this
         BadMixinAtomicFlags.callSuperDamage.set(true)
@@ -62,10 +68,11 @@ object DamageHandlerDispatcher {
         if (!didDealDamage) {
             provider.readFromTag(stateBefore)
         }
+
         return didDealDamage
     }
 
-    fun registerHandlers() {
+    public fun registerHandlers() {
         // Lower indices get tested first (i.e higher priority)
         handlers.add(ProjectileDamageHandler())
         handlers.add(FallingBlockDamageHandler())

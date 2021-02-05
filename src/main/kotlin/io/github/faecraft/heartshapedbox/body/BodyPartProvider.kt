@@ -7,12 +7,12 @@ import java.util.*
 /**
  * Duck, applied in BodyPartDuck mixin
  */
-interface BodyPartProvider {
-    val partsMap: HashMap<Identifier, AbstractBodyPart>
-    val parts: ArrayList<AbstractBodyPart>
-    fun writeToTag(): CompoundTag
-    fun readFromTag(tag: CompoundTag)
-    fun maybeGet(identifier: Identifier): Optional<AbstractBodyPart>
-    fun getOrNull(identifier: Identifier): AbstractBodyPart?
-    fun getOrThrow(identifier: Identifier): AbstractBodyPart
+public interface BodyPartProvider {
+    public val partsMap: HashMap<Identifier, AbstractBodyPart>
+    public val parts: ArrayList<AbstractBodyPart>
+    public fun writeToTag(): CompoundTag
+    public fun readFromTag(tag: CompoundTag)
+    public fun maybeGet(identifier: Identifier): Optional<AbstractBodyPart>
+    public fun getOrNull(identifier: Identifier): AbstractBodyPart?
+    public fun getOrThrow(identifier: Identifier): AbstractBodyPart
 }

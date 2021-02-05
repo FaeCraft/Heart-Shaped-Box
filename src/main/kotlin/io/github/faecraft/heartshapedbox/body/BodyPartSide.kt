@@ -1,15 +1,13 @@
 package io.github.faecraft.heartshapedbox.body
 
-import java.util.Locale
+import java.util.*
 
 internal interface LowerCaseEnumName {
     fun lowerName(): String
 }
 
-enum class BodyPartSide : LowerCaseEnumName {
+public enum class BodyPartSide : LowerCaseEnumName {
     CENTER, LEFT, RIGHT;
 
-    override fun lowerName(): String {
-        return name.toLowerCase(Locale.ROOT)
-    }
+    override fun lowerName(): String = name.toLowerCase(Locale.ROOT)
 }

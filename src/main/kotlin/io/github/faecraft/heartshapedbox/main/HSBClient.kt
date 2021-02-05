@@ -9,7 +9,7 @@ import net.minecraft.client.MinecraftClient
 import net.minecraft.client.network.ClientPlayNetworkHandler
 import net.minecraft.network.PacketByteBuf
 
-class HSBClient : ClientModInitializer {
+public class HSBClient : ClientModInitializer {
     override fun onInitializeClient() {
         setupNetworking()
     }

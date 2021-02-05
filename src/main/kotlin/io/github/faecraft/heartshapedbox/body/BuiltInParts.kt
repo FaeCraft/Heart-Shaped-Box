@@ -7,45 +7,48 @@ import io.github.faecraft.heartshapedbox.main.HSBMain
 import net.minecraft.util.Identifier
 import net.minecraft.util.Pair
 
-object BuiltInParts {
+public object BuiltInParts {
     // Head
     @JvmField
-    val HEAD = Identifier(HSBMain.MOD_ID, "head")
+    public val HEAD: Identifier = Identifier(HSBMain.MOD_ID, "head")
 
     // Arms
     @JvmField
-    val LEFT_ARM = Identifier(HSBMain.MOD_ID, "arm/${BodyPartSide.LEFT.lowerName()}")
+    public val LEFT_ARM: Identifier = Identifier(HSBMain.MOD_ID, "arm/${BodyPartSide.LEFT.lowerName()}")
+
     @JvmField
-    val RIGHT_ARM = Identifier(HSBMain.MOD_ID, "arm/${BodyPartSide.RIGHT.lowerName()}")
+    public val RIGHT_ARM: Identifier = Identifier(HSBMain.MOD_ID, "arm/${BodyPartSide.RIGHT.lowerName()}")
 
     // Legs
     @JvmField
-    val LEFT_LEG = Identifier(HSBMain.MOD_ID, "leg/${BodyPartSide.LEFT.lowerName()}")
+    public val LEFT_LEG: Identifier = Identifier(HSBMain.MOD_ID, "leg/${BodyPartSide.LEFT.lowerName()}")
+
     @JvmField
-    val RIGHT_LEG = Identifier(HSBMain.MOD_ID, "leg/${BodyPartSide.RIGHT.lowerName()}")
+    public val RIGHT_LEG: Identifier = Identifier(HSBMain.MOD_ID, "leg/${BodyPartSide.RIGHT.lowerName()}")
 
     // Feet
     @JvmField
-    val LEFT_FOOT = Identifier(HSBMain.MOD_ID, "foot/${BodyPartSide.LEFT.lowerName()}")
+    public val LEFT_FOOT: Identifier = Identifier(HSBMain.MOD_ID, "foot/${BodyPartSide.LEFT.lowerName()}")
+
     @JvmField
-    val RIGHT_FOOT = Identifier(HSBMain.MOD_ID, "foot/${BodyPartSide.RIGHT.lowerName()}")
+    public val RIGHT_FOOT: Identifier = Identifier(HSBMain.MOD_ID, "foot/${BodyPartSide.RIGHT.lowerName()}")
 
     // Pairs
-    fun getArms(provider: BodyPartProvider): Pair<ArmBodyPart, ArmBodyPart> {
+    public fun getArms(provider: BodyPartProvider): Pair<ArmBodyPart, ArmBodyPart> {
         return Pair(
             provider.getOrThrow(LEFT_ARM) as ArmBodyPart,
             provider.getOrThrow(RIGHT_ARM) as ArmBodyPart
         )
     }
 
-    fun getLegs(provider: BodyPartProvider): Pair<LegBodyPart, LegBodyPart> {
+    public fun getLegs(provider: BodyPartProvider): Pair<LegBodyPart, LegBodyPart> {
         return Pair(
             provider.getOrThrow(LEFT_LEG) as LegBodyPart,
             provider.getOrThrow(RIGHT_LEG) as LegBodyPart
         )
     }
 
-    fun getFeet(provider: BodyPartProvider): Pair<FootBodyPart, FootBodyPart> {
+    public fun getFeet(provider: BodyPartProvider): Pair<FootBodyPart, FootBodyPart> {
         return Pair(
             provider.getOrThrow(LEFT_FOOT) as FootBodyPart,
             provider.getOrThrow(RIGHT_FOOT) as FootBodyPart

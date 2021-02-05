@@ -7,11 +7,11 @@ import kotlin.reflect.KProperty
  *
  * Not nullable because lateinit is used
  */
-class SettableLazy<T: Any>(val lazyProvider: () -> T) {
-    var hasSetup = false
-    lateinit var storedValue: T
+public class SettableLazy<T: Any>(public val lazyProvider: () -> T) {
+    public var hasSetup: Boolean = false
+    public lateinit var storedValue: T
 
-    operator fun getValue(thisRef: Any, property: KProperty<*>): T {
+    public operator fun getValue(thisRef: Any, property: KProperty<*>): T {
         if (!hasSetup) {
             storedValue = lazyProvider()
             hasSetup = true
@@ -19,7 +19,7 @@ class SettableLazy<T: Any>(val lazyProvider: () -> T) {
         return storedValue
     }
 
-    operator fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
+    public operator fun setValue(thisRef: Any, property: KProperty<*>, value: T) {
         hasSetup = true
         storedValue = value
     }

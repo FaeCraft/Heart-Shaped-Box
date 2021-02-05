@@ -19,7 +19,7 @@ import net.minecraft.text.LiteralText
 import org.apache.logging.log4j.LogManager
 import java.util.function.Consumer
 
-class HSBMain : ModInitializer {
+public class HSBMain : ModInitializer {
     override fun onInitialize() {
         DamageHandlerDispatcher.registerHandlers()
 
@@ -31,20 +31,14 @@ class HSBMain : ModInitializer {
 //            }
 //        });
 
-        ServerPlayerEvents.AFTER_RESPAWN.register()
-        { oldPlayer: ServerPlayerEntity, newPlayer: ServerPlayerEntity, server: Boolean ->
-            LOGGER.info(
-                "AFTER RESPAWN | Old: $oldPlayer New: $newPlayer Server: $server"
-            )
-            S2CBodyPartSyncPacket.from(newPlayer).send(newPlayer)
-        }
+        ServerPlayerEvents.AFTER_RESPAWN.register(::afterRespawn)
 
-        ServerTickEvents.END_SERVER_TICK.register()
-        { minecraftServer: MinecraftServer? ->
+        ServerTickEvents.END_SERVER_TICK.register { minecraftServer: MinecraftServer? ->
             // Update FlexBoxes
             PlayerLookup.all(minecraftServer).forEach(Consumer { playerEntity: ServerPlayerEntity ->
                 HSBMiscLogic.updatePlayerFlexBoxes(playerEntity)
             })
+
             // Debuff all players accordingly
             PlayerLookup.all(minecraftServer)
                 .forEach(Consumer { playerEntity: ServerPlayerEntity -> HSBMiscLogic.debuffPlayer(playerEntity) })
@@ -52,39 +46,63 @@ class HSBMain : ModInitializer {
 
         // Debug command
         // TODO: REMOVE THIS! or add an op requirement idc
-        CommandRegistrationCallback.EVENT.register(CommandRegistrationCallback { commandDispatcher: CommandDispatcher<ServerCommandSource?>, b: Boolean ->
-            commandDispatcher.register(
-                CommandManager
-                    .literal("hsb").executes { context: CommandContext<ServerCommandSource> ->
-                        val source = context.source
-                        val provider = context.source.player as BodyPartProvider
-                        for (part in provider.parts) {
-                            source.sendFeedback(
-                                LiteralText(part.getIdentifier().toString())
-                                    .append(LiteralText(" - "))
-                                    .append(LiteralText(part.getHealth().toString() + "/" + part.getMaxHealth())),
-                                false
-                            )
+        CommandRegistrationCallback.EVENT.register(
+            CommandRegistrationCallback { commandDispatcher: CommandDispatcher<ServerCommandSource?>, _: Boolean ->
+                commandDispatcher.register(
+                    CommandManager
+                        .literal("hsb")
+                        .executes { context: CommandContext<ServerCommandSource> ->
+                            val source = context.source
+                            val provider = context.source.player as BodyPartProvider
+                            for (part in provider.parts) {
+                                source.sendFeedback(
+                                    LiteralText(part.getIdentifier().toString())
+                                        .append(LiteralText(" - "))
+                                        .append(
+                                            LiteralText(
+                                                part.getHealth().toString() + "/" + part.getMaxHealth()
+                                            )
+                                        ),
+                                    false
+                                )
+                            }
+
+                            1
                         }
-                        1
-                    }
-                    .then(CommandManager.literal("reset").executes { context: CommandContext<ServerCommandSource> ->
-                        val source = context.source
-                        val player = context.source.player
-                        val provider = context.source.player as BodyPartProvider
-                        for (limb in provider.parts) {
-                            limb.setHealth(limb.getDefaultMaxHealth())
-                        }
-                        player.health = player.maxHealth
-                        source.sendFeedback(LiteralText("Reset health"), false)
-                        1
-                    })
-            )
-        })
+                        .then(
+                            CommandManager
+                                .literal("reset")
+                                .executes { context: CommandContext<ServerCommandSource> ->
+                                    val source = context.source
+                                    val player = context.source.player
+                                    val provider = context.source.player as BodyPartProvider
+
+                                    for (limb in provider.parts) {
+                                        limb.setHealth(limb.getDefaultMaxHealth())
+                                    }
+
+                                    player.health = player.maxHealth
+                                    source.sendFeedback(LiteralText("Reset health"), false)
+
+                                    1
+                                }
+                        )
+                )
+            })
     }
 
-    companion object {
+    private fun afterRespawn(oldPlayer: ServerPlayerEntity, newPlayer: ServerPlayerEntity, server: Boolean) {
+        // Extracted to a function because it's easier to understand with a signature this large
+
+        LOGGER.info(
+            "AFTER RESPAWN | Old: $oldPlayer New: $newPlayer Server: $server"
+        )
+
+        S2CBodyPartSyncPacket.from(newPlayer).send(newPlayer)
+    }
+
+    public companion object {
         private val LOGGER = LogManager.getLogger("HSBMain")
-        const val MOD_ID = "heartshapedbox"
+        public const val MOD_ID: String = "heartshapedbox"
     }
 }

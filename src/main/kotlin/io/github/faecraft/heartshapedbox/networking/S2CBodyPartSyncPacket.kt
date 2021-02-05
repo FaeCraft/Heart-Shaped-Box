@@ -11,14 +11,14 @@ import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 import java.util.*
 
-class S2CBodyPartSyncPacket() {
+public class S2CBodyPartSyncPacket() {
     private val parts = HashSet<AbstractBodyPart>()
 
-    constructor(provider: BodyPartProvider) : this() {
+    public constructor(provider: BodyPartProvider) : this() {
         parts.addAll(provider.parts)
     }
 
-    fun addPart(part: AbstractBodyPart) {
+    public fun addPart(part: AbstractBodyPart) {
         parts.add(part)
     }
 
@@ -30,18 +30,18 @@ class S2CBodyPartSyncPacket() {
         }
     }
 
-    fun send(player: ServerPlayerEntity) {
+    public fun send(player: ServerPlayerEntity) {
         LOGGER.info("Sending packet to player: " + player.displayName.asString())
         val buffer = PacketByteBufs.create()
         write(buffer)
         ServerPlayNetworking.send(player, IDENTIFIER, buffer)
     }
 
-    companion object {
+    public companion object {
         private val LOGGER = LogManager.getLogger("S2CBodyPartSyncPacket")
-        val IDENTIFIER = Identifier(HSBMain.MOD_ID, "body_part_sync")
+        public val IDENTIFIER: Identifier = Identifier(HSBMain.MOD_ID, "body_part_sync")
 
-        fun update(buffer: PacketByteBuf, provider: BodyPartProvider) {
+        public fun update(buffer: PacketByteBuf, provider: BodyPartProvider) {
             while (buffer.isReadable) {
                 val id = buffer.readIdentifier()
                 val health = buffer.readFloat()
@@ -58,8 +58,7 @@ class S2CBodyPartSyncPacket() {
         }
 
         @JvmStatic
-        fun from(player: ServerPlayerEntity): S2CBodyPartSyncPacket {
-            return S2CBodyPartSyncPacket(player as BodyPartProvider)
-        }
+        public fun from(player: ServerPlayerEntity): S2CBodyPartSyncPacket =
+            S2CBodyPartSyncPacket(player as BodyPartProvider)
     }
 }

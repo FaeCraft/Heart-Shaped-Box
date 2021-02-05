@@ -6,9 +6,9 @@ import java.util.*
 // Slightly adapted from
 // https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
 // For compatibility with Minecraft
-object MollerTrumbore {
+public object MollerTrumbore {
     private const val EPSILON = 0.0000001
-    fun rayIntersectsTriangle(rayOrigin: Vec3d, rayVector: Vec3d, inTriangle: Triangle): Optional<Vec3d> {
+    public fun rayIntersectsTriangle(rayOrigin: Vec3d, rayVector: Vec3d, inTriangle: Triangle): Optional<Vec3d> {
         val vertex0 = inTriangle.vec1
         val vertex1 = inTriangle.vec2
         val vertex2 = inTriangle.vec3

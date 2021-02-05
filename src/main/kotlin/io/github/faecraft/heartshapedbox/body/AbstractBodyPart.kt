@@ -9,18 +9,18 @@ import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
 import org.apache.logging.log4j.LogManager
 
-abstract class AbstractBodyPart(private val owner: PlayerEntity) {
+public abstract class AbstractBodyPart(private val owner: PlayerEntity) {
     private var internalMaxHealth by SettableLazy { getDefaultMaxHealth() }
     private var health = internalMaxHealth
-    var flexBox = FlexBox.zero()
+    public var flexBox: FlexBox = FlexBox.ZERO
 
-    open val isCritical: Boolean = false
+    public open val isCritical: Boolean = false
 
-    abstract fun getIdentifier(): Identifier
-    abstract fun getSide(): BodyPartSide
-    abstract fun getDefaultMaxHealth(): Float
+    public abstract fun getIdentifier(): Identifier
+    public abstract fun getSide(): BodyPartSide
+    public abstract fun getDefaultMaxHealth(): Float
 
-    fun takeDamage(amount: Float): Float {
+    public fun takeDamage(amount: Float): Float {
         if (amount > health) {
             val used = amount - health
             setHealth(0f)
@@ -38,23 +38,21 @@ abstract class AbstractBodyPart(private val owner: PlayerEntity) {
         }
     }
 
-    fun toTag(tag: CompoundTag) {
+    public fun toTag(tag: CompoundTag) {
         val data = CompoundTag()
         data.putFloat("health", health)
         data.putFloat("maxHealth", internalMaxHealth)
         tag.put(getIdentifier().toString(), data)
     }
 
-    fun fromTag(tag: CompoundTag) {
+    public fun fromTag(tag: CompoundTag) {
         health = tag.getFloat("health")
         internalMaxHealth = tag.getFloat("maxHealth")
     }
 
-    fun getHealth(): Float {
-        return health
-    }
+    public fun getHealth(): Float = health
 
-    fun setHealth(amount: Float) {
+    public fun setHealth(amount: Float) {
         if (amount != health) {
             // TODO: Remove logging call later
             LOGGER.info("Health changed (" + getIdentifier() + ") " + health + " -> " + amount)
@@ -63,11 +61,9 @@ abstract class AbstractBodyPart(private val owner: PlayerEntity) {
         }
     }
 
-    fun getMaxHealth(): Float {
-        return internalMaxHealth
-    }
+    public fun getMaxHealth(): Float = internalMaxHealth
 
-    fun setMaxHealth(amount: Float) {
+    public fun setMaxHealth(amount: Float) {
         // TODO: Remove logging call later
         LOGGER.info("Max health changed (" + getIdentifier() + ") " + health + " -> " + amount)
         if (amount != internalMaxHealth) {
@@ -83,7 +79,7 @@ abstract class AbstractBodyPart(private val owner: PlayerEntity) {
                 '}'
     }
 
-    companion object {
+    public companion object {
         private val LOGGER = LogManager.getLogger("AbstractBodyPart")
     }
 }

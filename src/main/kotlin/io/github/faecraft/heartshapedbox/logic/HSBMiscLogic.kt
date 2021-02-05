@@ -17,9 +17,13 @@ import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 import java.util.*
 
-object HSBMiscLogic {
+private const val MINING_FATIGUE_DURATION: Int = 2
+private const val BLINDNESS_DURATION: Int = 25 // Causes rapid strobing at ~23->~10, be careful!
+private const val NAUSEA_DURATION: Int = 62 // Has no effect at 61 or below
+
+public object HSBMiscLogic {
     @JvmStatic
-    fun forceHealthChangeToLimbs(newAmount: Float, provider: BodyPartProvider) {
+    public fun forceHealthChangeToLimbs(newAmount: Float, provider: BodyPartProvider) {
         val allLimbs: ArrayList<AbstractBodyPart> = try {
             provider.parts
         } catch (ignored: NullPointerException) {
@@ -31,9 +35,9 @@ object HSBMiscLogic {
             totalCurrent += limb.getHealth()
         }
 
-
         // all damage is passed through damage handler which force sync through math anyways, so only option is healing
         // Also big epsilon because im sick of this triggering because the health differs by 1e^-6 NO ONE CARES
+        @Suppress("MagicNumber")
         if (newAmount - totalCurrent > 0.001) {
             var healingPool = newAmount - totalCurrent
             val criticalLimbs = allLimbs.filter { it.isCritical }.iterator()
@@ -72,7 +76,7 @@ object HSBMiscLogic {
         }
     }
 
-    fun updatePlayerFlexBoxes(playerEntity: ServerPlayerEntity) {
+    public fun updatePlayerFlexBoxes(playerEntity: ServerPlayerEntity) {
         val provider = playerEntity as BodyPartProvider
         val pos = playerEntity.pos
         val boundingBox = playerEntity.getBoundingBox(playerEntity.pose)
@@ -81,6 +85,7 @@ object HSBMiscLogic {
             Vec2f((pos.x + boundingBox.minX).toFloat(), (pos.z + boundingBox.minZ).toFloat()),
             Vec2f((pos.x + boundingBox.maxX).toFloat(), (pos.z + boundingBox.maxZ).toFloat())
         )
+
         val facingLine = Line(
             Vec2f(pos.x.toFloat(), pos.z.toFloat()),
             (if (playerEntity.yaw == 0f) 0.00001f else playerEntity.yaw).toDouble()
@@ -153,10 +158,11 @@ object HSBMiscLogic {
         )
     }
 
-    fun debuffPlayer(playerEntity: ServerPlayerEntity) {
+    public fun debuffPlayer(playerEntity: ServerPlayerEntity) {
         if (!playerEntity.isAlive) {
             return
         }
+
         val provider = playerEntity as BodyPartProvider
 
         // Check for broken legs/feet
@@ -164,10 +170,12 @@ object HSBMiscLogic {
         val legs = getLegs(provider)
         val feet = getFeet(provider)
         var slowAmp = -1
+
         if (legs.left.getHealth() <= 0) slowAmp++
         if (legs.right.getHealth() <= 0) slowAmp++
         if (feet.left.getHealth() <= 0) slowAmp++
         if (feet.right.getHealth() <= 0) slowAmp++
+
         if (slowAmp > -1) {
             playerEntity.addStatusEffect(StatusEffectInstance(StatusEffects.SLOWNESS, 2, slowAmp, true, true))
         }
@@ -176,20 +184,29 @@ object HSBMiscLogic {
         // Each broken one adds a mining fatigue level
         val arms = getArms(provider)
         var fatigueAmp = -1
+
         if (arms.left.getHealth() <= 0) fatigueAmp++
         if (arms.right.getHealth() <= 0) fatigueAmp++
+
         if (fatigueAmp > -1) {
-            playerEntity.addStatusEffect(StatusEffectInstance(StatusEffects.MINING_FATIGUE, 2, fatigueAmp, true, true))
+            playerEntity.addStatusEffect(StatusEffectInstance(
+                StatusEffects.MINING_FATIGUE, MINING_FATIGUE_DURATION, fatigueAmp, true, true)
+            )
         }
 
         // Blindness and nausea if low on health
         val head = provider.getOrThrow(BuiltInParts.HEAD)
+
         if (head.getHealth() <= 2) {
-            // Causes rapid strobing at ~23->~10, be careful!
-            playerEntity.addStatusEffect(StatusEffectInstance(StatusEffects.BLINDNESS, 25, 0, true, true))
-            // Has no effect at 61 or below
-            playerEntity.addStatusEffect(StatusEffectInstance(StatusEffects.NAUSEA, 62, 0, true, true))
+            playerEntity.addStatusEffect(
+                StatusEffectInstance(StatusEffects.BLINDNESS, BLINDNESS_DURATION, 0, true, true)
+            )
+
+            playerEntity.addStatusEffect(
+                StatusEffectInstance(StatusEffects.NAUSEA, NAUSEA_DURATION, 0, true, true)
+            )
         }
+
         for (limb in provider.parts) {
             if (limb.isCritical && limb.getHealth() <= 0) {
                 // Slightly hacky way to make em die with proper death message
@@ -198,8 +215,9 @@ object HSBMiscLogic {
         }
     }
 
-    fun <T : AbstractBodyPart> dealDamageToPair(pair: Pair<T, T>, amount: Float): Float {
+    public fun <T : AbstractBodyPart> dealDamageToPair(pair: Pair<T, T>, amount: Float): Float {
         val halved = amount / 2
+
         // Deal half to left
         // Deal left-over to right
         // Return leftover
@@ -209,7 +227,5 @@ object HSBMiscLogic {
         )
     }
 
-    private fun v3FromV2(vec: Vec2f, height: Double): Vec3d {
-        return Vec3d(vec.x.toDouble(), height, vec.y.toDouble())
-    }
+    private fun v3FromV2(vec: Vec2f, height: Double): Vec3d = Vec3d(vec.x.toDouble(), height, vec.y.toDouble())
 }

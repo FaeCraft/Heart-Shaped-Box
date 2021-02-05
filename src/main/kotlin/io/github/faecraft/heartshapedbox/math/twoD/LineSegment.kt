@@ -3,8 +3,8 @@ package io.github.faecraft.heartshapedbox.math.twoD
 import net.minecraft.util.math.Vec2f
 import java.util.*
 
-data class LineSegment(val a: Vec2f, val b: Vec2f) {
-    fun intersectFromLine(line: Line, solveForY: Boolean): Optional<Vec2f> {
+public data class LineSegment(val a: Vec2f, val b: Vec2f) {
+    public fun intersectFromLine(line: Line, solveForY: Boolean): Optional<Vec2f> {
         return if (!solveForY) {
             val aRes = line.solveForX(a.y.toDouble())
             val bRes = line.solveForX(b.y.toDouble())
