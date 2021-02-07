@@ -6,6 +6,7 @@ import io.github.faecraft.heartshapedbox.body.BuiltInParts
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getArms
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getFeet
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getLegs
+import io.github.faecraft.heartshapedbox.main.HSBMain
 import io.github.faecraft.heartshapedbox.math.FlexBox
 import io.github.faecraft.heartshapedbox.math.twoD.Line
 import io.github.faecraft.heartshapedbox.math.twoD.Square
@@ -164,6 +165,17 @@ public object HSBMiscLogic {
         }
 
         val provider = playerEntity as BodyPartProvider
+        for (limb in provider.parts) {
+            if (limb.isCritical && limb.getHealth() <= 0) {
+                // Slightly hacky way to make em die with proper death message
+                playerEntity.health = -1f
+            }
+        }
+
+        // Don't apply debuffs if the player has morphine effect
+        if (playerEntity.hasStatusEffect(HSBMain.MORPHINE_STATUS_EFFECT)) {
+            return
+        }
 
         // Check for broken legs/feet
         // Each broken part adds a slowness level
@@ -205,13 +217,6 @@ public object HSBMiscLogic {
             playerEntity.addStatusEffect(
                 StatusEffectInstance(StatusEffects.NAUSEA, NAUSEA_DURATION, 0, true, true)
             )
-        }
-
-        for (limb in provider.parts) {
-            if (limb.isCritical && limb.getHealth() <= 0) {
-                // Slightly hacky way to make em die with proper death message
-                playerEntity.health = -1f
-            }
         }
     }
 

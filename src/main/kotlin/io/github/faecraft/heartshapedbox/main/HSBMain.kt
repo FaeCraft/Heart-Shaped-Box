@@ -3,6 +3,7 @@ package io.github.faecraft.heartshapedbox.main
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.context.CommandContext
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider
+import io.github.faecraft.heartshapedbox.effects.MorphineStatusEffect
 import io.github.faecraft.heartshapedbox.items.HSBItems
 import io.github.faecraft.heartshapedbox.logic.HSBMiscLogic
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandlerDispatcher
@@ -27,6 +28,9 @@ import org.apache.logging.log4j.LogManager
 public class HSBMain : ModInitializer {
     override fun onInitialize() {
         DamageHandlerDispatcher.registerHandlers()
+
+        // Status Effects
+        Registry.register(Registry.STATUS_EFFECT, Identifier(MOD_ID, "morphine"), MORPHINE_STATUS_EFFECT)
 
         // Items
         Registry.register(Registry.ITEM, Identifier(MOD_ID, "morphine"), HSBItems.MORPHINE)
@@ -117,6 +121,8 @@ public class HSBMain : ModInitializer {
     public companion object {
         private val LOGGER = LogManager.getLogger("HSBMain")
         public const val MOD_ID: String = "heartshapedbox"
+
+        public val MORPHINE_STATUS_EFFECT: MorphineStatusEffect = MorphineStatusEffect()
 
         public val ITEM_GROUP: ItemGroup = FabricItemGroupBuilder.create(Identifier(MOD_ID, "items"))
             .icon { ItemStack(HSBItems.HEART_CRYSTAL) }

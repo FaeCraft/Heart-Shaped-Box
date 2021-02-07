@@ -1,6 +1,8 @@
 package io.github.faecraft.heartshapedbox.items
 
+import io.github.faecraft.heartshapedbox.main.HSBMain
 import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
@@ -20,10 +22,10 @@ public class MorphineItem(settings: Settings) : Item(settings) {
 
     override fun getUseAction(stack: ItemStack): UseAction = UseAction.BLOCK
 
-    override fun getMaxUseTime(stack: ItemStack): Int = 30
+    override fun getMaxUseTime(stack: ItemStack): Int = 27
 
     override fun finishUsing(stack: ItemStack, world: World, user: LivingEntity): ItemStack {
-        println("Used morphine")
+        user.addStatusEffect(StatusEffectInstance(HSBMain.MORPHINE_STATUS_EFFECT, MORPHINE_DURATION, 0))
         if (user is PlayerEntity) {
             user.itemCooldownManager.set(stack.item, COOLDOWN_TIME)
         }
@@ -32,5 +34,6 @@ public class MorphineItem(settings: Settings) : Item(settings) {
 
     public companion object {
         public const val COOLDOWN_TIME: Int = 20
+        public const val MORPHINE_DURATION: Int = 60 * 20 // 60 seconds
     }
 }
