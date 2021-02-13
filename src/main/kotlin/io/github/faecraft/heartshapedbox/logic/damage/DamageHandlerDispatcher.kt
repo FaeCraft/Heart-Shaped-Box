@@ -74,10 +74,18 @@ public object DamageHandlerDispatcher {
 
     public fun registerHandlers() {
         // Lower indices get tested first (i.e higher priority)
+
+        // Likely entities
+        handlers.add(EntityDamageHandler())
         handlers.add(ProjectileDamageHandler())
+
+        // Environment
+        handlers.add(DrownDamageHandler())
         handlers.add(FallingBlockDamageHandler())
         handlers.add(FallDamageHandler())
         handlers.add(HotFloorDamageHandler())
-        handlers.add(GenericDamageHandler())
+
+        // Other
+        handlers.add(GenericAndRemainingDamageHandler())
     }
 }

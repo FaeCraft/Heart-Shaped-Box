@@ -5,22 +5,25 @@ import io.github.faecraft.heartshapedbox.body.BodyPartProvider
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler
 import io.github.faecraft.heartshapedbox.math.Ray
 import net.minecraft.entity.damage.DamageSource
-import net.minecraft.entity.damage.ProjectileDamageSource
+import net.minecraft.entity.damage.EntityDamageSource
 import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 import java.util.*
 
-public class ProjectileDamageHandler : DamageHandler {
+public class EntityDamageHandler: DamageHandler {
     private var cachedPart: AbstractBodyPart? = null
 
-    override fun shouldHandle(source: DamageSource): Boolean =
-        source is ProjectileDamageSource && source.getAttacker() != null
+    override fun shouldHandle(source: DamageSource)
+    : Boolean = source is EntityDamageSource && source.attacker != null && !source.isThorns
 
     override fun getPossibleArmorPieces(source: DamageSource, player: ServerPlayerEntity): List<ItemStack> {
         val provider: BodyPartProvider = player as BodyPartProvider
 
         // Can suppress because our predicate only fires if its not null
-        val ray = Ray(source.attacker!!.pos, source.attacker!!.velocity)
+        val ray = Ray(
+            source.attacker!!.pos.add(0.0, source.attacker!!.eyeY, 0.0),
+            source.attacker!!.rotationVector
+        )
         val possible = provider.parts
 
         possible.sortWith(Comparator.comparingDouble { part: AbstractBodyPart ->

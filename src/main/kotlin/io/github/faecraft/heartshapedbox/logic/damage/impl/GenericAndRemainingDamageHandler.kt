@@ -9,7 +9,7 @@ import java.util.*
 
 private const val DEFAULT_RETRIES: Float = 30f
 
-public class GenericDamageHandler : DamageHandler {
+public class GenericAndRemainingDamageHandler : DamageHandler {
     override fun shouldHandle(source: DamageSource): Boolean = true
 
     override fun getPossibleArmorPieces(source: DamageSource, player: ServerPlayerEntity): List<ItemStack> {
