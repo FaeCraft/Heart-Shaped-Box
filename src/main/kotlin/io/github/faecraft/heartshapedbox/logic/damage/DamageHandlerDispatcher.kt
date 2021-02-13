@@ -40,7 +40,7 @@ public object DamageHandlerDispatcher {
         val stateBefore = provider.writeToTag()
         for (possibleHandler in handlers) {
             if (possibleHandler.shouldHandle(source)) {
-                val items = possibleHandler.getPossibleArmorPieces(player)
+                val items = possibleHandler.getPossibleArmorPieces(source, player)
                 val k = EnchantmentHelper.getProtectionAmount(items, source)
 
                 if (k > 0) {

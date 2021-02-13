@@ -3,6 +3,7 @@ package io.github.faecraft.heartshapedbox.logic.damage.impl
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler
 import net.minecraft.entity.damage.DamageSource
+import net.minecraft.item.ItemStack
 import net.minecraft.server.network.ServerPlayerEntity
 import java.util.*
 
@@ -10,6 +11,15 @@ private const val DEFAULT_RETRIES: Float = 30f
 
 public class GenericDamageHandler : DamageHandler {
     override fun shouldHandle(source: DamageSource): Boolean = true
+
+    override fun getPossibleArmorPieces(source: DamageSource, player: ServerPlayerEntity): List<ItemStack> {
+        val provider: BodyPartProvider = player as BodyPartProvider
+        val out = mutableListOf<ItemStack>()
+        provider.parts.forEach {
+            out.addAll(it.getAffectingArmor(player))
+        }
+        return out
+    }
 
     override fun handleDamage(
         player: ServerPlayerEntity,

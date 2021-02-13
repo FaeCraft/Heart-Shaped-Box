@@ -4,6 +4,7 @@ import io.github.faecraft.heartshapedbox.math.FlexBox
 import io.github.faecraft.heartshapedbox.networking.S2CBodyPartSyncPacket
 import io.github.faecraft.heartshapedbox.util.SettableLazy
 import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.item.ItemStack
 import net.minecraft.nbt.CompoundTag
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Identifier
@@ -19,6 +20,7 @@ public abstract class AbstractBodyPart(private val owner: PlayerEntity) {
     public abstract fun getIdentifier(): Identifier
     public abstract fun getSide(): BodyPartSide
     public abstract fun getDefaultMaxHealth(): Float
+    public abstract fun getAffectingArmor(player: ServerPlayerEntity): List<ItemStack>
 
     public fun takeDamage(amount: Float): Float {
         if (amount > health) {

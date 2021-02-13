@@ -3,7 +3,6 @@ package io.github.faecraft.heartshapedbox.logic.damage.impl
 import io.github.faecraft.heartshapedbox.body.BodyPartProvider
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getFeet
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getLegs
-import io.github.faecraft.heartshapedbox.constants.ArmorSlots
 import io.github.faecraft.heartshapedbox.logic.HSBMiscLogic.dealDamageToPair
 import io.github.faecraft.heartshapedbox.logic.damage.DamageHandler
 import net.minecraft.entity.damage.DamageSource
@@ -14,13 +13,18 @@ import java.util.*
 public class FallDamageHandler : DamageHandler {
     override fun shouldHandle(source: DamageSource): Boolean = source.name == "fall"
 
-    override fun getPossibleArmorPieces(player: ServerPlayerEntity): Iterable<ItemStack> {
+    override fun getPossibleArmorPieces(source: DamageSource, player: ServerPlayerEntity): List<ItemStack> {
         val out = ArrayList<ItemStack>()
+        val provider: BodyPartProvider = player as BodyPartProvider
 
-        out.add(player.inventory.armor[ArmorSlots.BOOTS])
-        out.add(player.inventory.armor[ArmorSlots.LEGGINGS])
+        val legs = getLegs(provider)
+        val feet = getFeet(provider)
+        out.addAll(legs.left.getAffectingArmor(player))
+        out.addAll(legs.right.getAffectingArmor(player))
+        out.addAll(feet.left.getAffectingArmor(player))
+        out.addAll(feet.right.getAffectingArmor(player))
 
-        return out
+        return out.distinct()
     }
 
     override fun handleDamage(
