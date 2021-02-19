@@ -28,7 +28,8 @@ public abstract class AbstractBodyPart(private val owner: PlayerEntity) {
         player: ServerPlayerEntity,
         pose: EntityPose,
         leftSet: QuadSame<Vec2f>,
-        rightSet: QuadSame<Vec2f>): FlexBox
+        rightSet: QuadSame<Vec2f>
+    ): FlexBox
 
     public fun takeDamage(amount: Float): Float {
         if (amount > health) {

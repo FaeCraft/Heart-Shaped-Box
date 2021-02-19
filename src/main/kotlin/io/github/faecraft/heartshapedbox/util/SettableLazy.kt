@@ -7,7 +7,7 @@ import kotlin.reflect.KProperty
  *
  * Not nullable because lateinit is used
  */
-public class SettableLazy<T: Any>(public val lazyProvider: () -> T) {
+public class SettableLazy<T : Any>(public val lazyProvider: () -> T) {
     public var hasSetup: Boolean = false
     public lateinit var storedValue: T
 

@@ -10,7 +10,7 @@ import net.minecraft.server.network.ServerPlayerEntity
 import java.util.*
 
 public class HotFloorDamageHandler : DamageHandler {
-    override fun shouldHandle(source: DamageSource): Boolean =source.name == "hotFloor"
+    override fun shouldHandle(source: DamageSource): Boolean = source.name == "hotFloor"
 
     override fun getPossibleArmorPieces(source: DamageSource, player: ServerPlayerEntity): List<ItemStack> {
         val out = ArrayList<ItemStack>()

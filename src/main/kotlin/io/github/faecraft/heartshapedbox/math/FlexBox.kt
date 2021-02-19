@@ -1,6 +1,7 @@
 package io.github.faecraft.heartshapedbox.math
 
 import io.github.faecraft.heartshapedbox.util.FlexboxBaseBuilder
+import io.github.faecraft.heartshapedbox.util.raise
 import net.minecraft.util.math.Vec3d
 
 // box with a flex
@@ -35,13 +36,13 @@ public data class FlexBox(
     @Suppress("MagicNumber")
     public constructor(a: Vec3d, b: Vec3d, c: Vec3d, d: Vec3d, height: Double) : this(
         Quad(a, b, c, d),
-        Quad(a.up(height), b.up(height), c.up(height), d.up(height)),
-        Quad(a, a.up(height), d.up(height), d),
-        Quad(b, b.up(height), a.up(height), a),
-        Quad(c, c.up(height), b.up(height), b),
-        Quad(d, d.up(height), c.up(height), c),
+        Quad(a.raise(height), b.raise(height), c.raise(height), d.raise(height)),
+        Quad(a, a.raise(height), d.raise(height), d),
+        Quad(b, b.raise(height), a.raise(height), a),
+        Quad(c, c.raise(height), b.raise(height), b),
+        Quad(d, d.raise(height), c.raise(height), c),
 
-        a.add(d.up(height).subtract(a).multiply(0.5))
+        a.add(d.raise(height).subtract(a).multiply(0.5))
     )
 
     public constructor(builder: FlexboxBaseBuilder, height: Double) : this(
@@ -63,8 +64,5 @@ public data class FlexBox(
             Vec3d.ZERO,
             Vec3d.ZERO
         )
-
-        private fun Vec3d.up(height: Double): Vec3d =
-            this.add(0.0, height, 0.0)
     }
 }

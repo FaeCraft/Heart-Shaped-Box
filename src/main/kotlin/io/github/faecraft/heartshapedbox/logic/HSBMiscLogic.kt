@@ -9,7 +9,6 @@ import io.github.faecraft.heartshapedbox.body.BuiltInParts.getLegs
 import io.github.faecraft.heartshapedbox.main.HSBMain
 import io.github.faecraft.heartshapedbox.math.twoD.Line
 import io.github.faecraft.heartshapedbox.math.twoD.Square
-import io.github.faecraft.heartshapedbox.util.QuadSame
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
@@ -92,24 +91,12 @@ public object HSBMiscLogic {
         )
 
         val results = playerBoxSlice.splitFromLine(facingLine)
-        val leftSet = QuadSame(
-            results.first[0],
-            results.first[1],
-            results.first[2],
-            results.first[3]
-        )
-        val rightSet = QuadSame(
-            results.second[0],
-            results.second[1],
-            results.second[2],
-            results.second[3]
-        )
 
         for (limb in provider.parts) {
             limb.flexBox = limb.generateFlexBox(
                 playerEntity,
                 playerEntity.pose,
-                leftSet, rightSet
+                results.first, results.second
             )
         }
     }
@@ -156,8 +143,10 @@ public object HSBMiscLogic {
         if (arms.right.getHealth() <= 0) fatigueAmp++
 
         if (fatigueAmp > -1) {
-            playerEntity.addStatusEffect(StatusEffectInstance(
-                StatusEffects.MINING_FATIGUE, MINING_FATIGUE_DURATION, fatigueAmp, true, true)
+            playerEntity.addStatusEffect(
+                StatusEffectInstance(
+                    StatusEffects.MINING_FATIGUE, MINING_FATIGUE_DURATION, fatigueAmp, true, true
+                )
             )
         }
 

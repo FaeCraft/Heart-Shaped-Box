@@ -12,7 +12,7 @@ public class DrownDamageHandler : DamageHandler {
 
     override fun getPossibleArmorPieces(source: DamageSource, player: ServerPlayerEntity)
     // Empty as it always bypasses armor
-    : List<ItemStack> = emptyList()
+            : List<ItemStack> = emptyList()
 
     override fun handleDamage(
         player: ServerPlayerEntity,
