@@ -28,6 +28,9 @@ public class MorphineItem(settings: Settings) : Item(settings) {
         user.addStatusEffect(StatusEffectInstance(HSBMain.MORPHINE_STATUS_EFFECT, MORPHINE_DURATION, 0))
         if (user is PlayerEntity) {
             user.itemCooldownManager.set(stack.item, COOLDOWN_TIME)
+            if (!user.isCreative) {
+                stack.decrement(1)
+            }
         }
         return super.finishUsing(stack, world, user)
     }
