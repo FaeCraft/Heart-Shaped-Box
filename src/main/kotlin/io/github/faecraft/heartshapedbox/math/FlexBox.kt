@@ -1,5 +1,6 @@
 package io.github.faecraft.heartshapedbox.math
 
+import io.github.faecraft.heartshapedbox.util.FlexboxBaseBuilder
 import net.minecraft.util.math.Vec3d
 
 // box with a flex
@@ -41,6 +42,14 @@ public data class FlexBox(
         Quad(d, d.up(height), c.up(height), c),
 
         a.add(d.up(height).subtract(a).multiply(0.5))
+    )
+
+    public constructor(builder: FlexboxBaseBuilder, height: Double) : this(
+        builder.component1(),
+        builder.component2(),
+        builder.component3(),
+        builder.component4(),
+        height
     )
 
     public companion object {

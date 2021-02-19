@@ -7,15 +7,14 @@ import io.github.faecraft.heartshapedbox.body.BuiltInParts.getArms
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getFeet
 import io.github.faecraft.heartshapedbox.body.BuiltInParts.getLegs
 import io.github.faecraft.heartshapedbox.main.HSBMain
-import io.github.faecraft.heartshapedbox.math.FlexBox
 import io.github.faecraft.heartshapedbox.math.twoD.Line
 import io.github.faecraft.heartshapedbox.math.twoD.Square
+import io.github.faecraft.heartshapedbox.util.QuadSame
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffects
 import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.util.Pair
 import net.minecraft.util.math.Vec2f
-import net.minecraft.util.math.Vec3d
 import java.util.*
 
 private const val MINING_FATIGUE_DURATION: Int = 2
@@ -93,70 +92,26 @@ public object HSBMiscLogic {
         )
 
         val results = playerBoxSlice.splitFromLine(facingLine)
-        val leftSet = results.first
-        val rightSet = results.second
-
-        val feetHeight = 0.2
-        val legHeight = 0.6
-        val armOrCenterHeight = 0.8
-        val headHeight = 0.4
-
-        // Feet
-        provider.getOrThrow(BuiltInParts.LEFT_FOOT).flexBox = FlexBox(
-            v3FromV2(leftSet[0], pos.y),
-            v3FromV2(leftSet[1], pos.y),
-            v3FromV2(leftSet[2], pos.y),
-            v3FromV2(leftSet[3], pos.y),
-            feetHeight
+        val leftSet = QuadSame(
+            results.first[0],
+            results.first[1],
+            results.first[2],
+            results.first[3]
         )
-        provider.getOrThrow(BuiltInParts.RIGHT_FOOT).flexBox = FlexBox(
-            v3FromV2(rightSet[0], pos.y),
-            v3FromV2(rightSet[1], pos.y),
-            v3FromV2(rightSet[2], pos.y),
-            v3FromV2(rightSet[3], pos.y),
-            feetHeight
+        val rightSet = QuadSame(
+            results.second[0],
+            results.second[1],
+            results.second[2],
+            results.second[3]
         )
 
-        // Legs
-        provider.getOrThrow(BuiltInParts.LEFT_LEG).flexBox = FlexBox(
-            v3FromV2(leftSet[0], pos.y + feetHeight),
-            v3FromV2(leftSet[1], pos.y + feetHeight),
-            v3FromV2(leftSet[2], pos.y + feetHeight),
-            v3FromV2(leftSet[3], pos.y + feetHeight),
-            legHeight
-        )
-        provider.getOrThrow(BuiltInParts.RIGHT_LEG).flexBox = FlexBox(
-            v3FromV2(rightSet[0], pos.y + feetHeight),
-            v3FromV2(rightSet[1], pos.y + feetHeight),
-            v3FromV2(rightSet[2], pos.y + feetHeight),
-            v3FromV2(rightSet[3], pos.y + feetHeight),
-            legHeight
-        )
-
-        // Arms
-        provider.getOrThrow(BuiltInParts.LEFT_ARM).flexBox = FlexBox(
-            v3FromV2(leftSet[0], pos.y + feetHeight + legHeight),
-            v3FromV2(leftSet[1], pos.y + feetHeight + legHeight),
-            v3FromV2(leftSet[2], pos.y + feetHeight + legHeight),
-            v3FromV2(leftSet[3], pos.y + feetHeight + legHeight),
-            armOrCenterHeight
-        )
-        provider.getOrThrow(BuiltInParts.RIGHT_ARM).flexBox = FlexBox(
-            v3FromV2(rightSet[0], pos.y + feetHeight + legHeight),
-            v3FromV2(rightSet[1], pos.y + feetHeight + legHeight),
-            v3FromV2(rightSet[2], pos.y + feetHeight + legHeight),
-            v3FromV2(rightSet[3], pos.y + feetHeight + legHeight),
-            armOrCenterHeight
-        )
-
-        // Head
-        provider.getOrThrow(BuiltInParts.HEAD).flexBox = FlexBox(
-            v3FromV2(leftSet[2], pos.y + feetHeight + legHeight + armOrCenterHeight),
-            v3FromV2(leftSet[1], pos.y + feetHeight + legHeight + armOrCenterHeight),
-            v3FromV2(rightSet[1], pos.y + feetHeight + legHeight + armOrCenterHeight),
-            v3FromV2(rightSet[2], pos.y + feetHeight + legHeight + armOrCenterHeight),
-            headHeight
-        )
+        for (limb in provider.parts) {
+            limb.flexBox = limb.generateFlexBox(
+                playerEntity,
+                playerEntity.pose,
+                leftSet, rightSet
+            )
+        }
     }
 
     public fun debuffPlayer(playerEntity: ServerPlayerEntity) {
@@ -231,6 +186,4 @@ public object HSBMiscLogic {
                     pair.left.takeDamage(halved)
         )
     }
-
-    private fun v3FromV2(vec: Vec2f, height: Double): Vec3d = Vec3d(vec.x.toDouble(), height, vec.y.toDouble())
 }
