@@ -93,11 +93,16 @@ public object HSBMiscLogic {
         val results = playerBoxSlice.splitFromLine(facingLine)
 
         for (limb in provider.parts) {
-            limb.flexBox = limb.generateFlexBox(
-                playerEntity,
-                playerEntity.pose,
-                results.first, results.second
-            )
+            try {
+                limb.flexBox = limb.generateFlexBox(
+                    playerEntity,
+                    playerEntity.pose,
+                    results.first, results.second
+                )
+            } catch (ignored: NotImplementedError) {
+                println("$limb was unable to handle ${playerEntity.pose} with player at $pos")
+                break
+            }
         }
     }
 

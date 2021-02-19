@@ -37,7 +37,7 @@ public class FootBodyPart(owner: PlayerEntity, private val side: BodyPartSide) :
                 LimbHeights.FOOT_HEIGHT
             )
             EntityPose.FALL_FLYING -> TODO()
-            EntityPose.SLEEPING -> TODO()
+            EntityPose.SLEEPING -> FlexBox.ZERO
             EntityPose.SWIMMING -> TODO()
             EntityPose.SPIN_ATTACK -> TODO()
             EntityPose.CROUCHING -> FlexBox(
