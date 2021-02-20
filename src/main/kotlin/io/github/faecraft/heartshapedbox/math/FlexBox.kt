@@ -4,8 +4,14 @@ import io.github.faecraft.heartshapedbox.util.FlexboxBaseBuilder
 import io.github.faecraft.heartshapedbox.util.raise
 import net.minecraft.util.math.Vec3d
 
-// box with a flex
-// how perplex
+/**
+ * box with a flex, how perplex
+ *
+ * This is called a flex box because its a "Box" without the axis-aligned requirement.
+ * This allows it to have sheared sides and similar deformations
+ *
+ * There are several constructors for vertically straight FlexBoxes because those are what get used the most internally
+ **/
 public data class FlexBox(
     val a: Quad,
     val b: Quad,

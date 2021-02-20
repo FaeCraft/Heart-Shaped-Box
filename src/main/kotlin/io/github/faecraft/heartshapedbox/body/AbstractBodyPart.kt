@@ -31,6 +31,9 @@ public abstract class AbstractBodyPart(private val owner: PlayerEntity) {
         rightSet: QuadSame<Vec2f>
     ): FlexBox
 
+    /**
+     * @return The amount dealt to the body part
+     */
     public fun takeDamage(amount: Float): Float {
         if (amount > health) {
             val used = amount - health

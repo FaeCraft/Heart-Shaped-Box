@@ -13,6 +13,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SyncDataOnJoinMixin {
     @Inject(method = "onCustomPayload", at = @At(value = "HEAD"))
     public void syncHSBLimbDataOnJoin(CustomPayloadC2SPacket packet, CallbackInfo ci) {
+        // BRAND packet is sent after the ClientPlayerEntity is created (see ClientPlayNetworkHandler.onGameJoin)
+        // So when this is sent its safe to assume the client player exists
+        // At no risk to the server, because only the client would crash if the ClientPlayerEntity didn't exist
         if (((CustomPayloadChannelAccessor)packet).getChannel() == CustomPayloadC2SPacket.BRAND) {
             ServerPlayNetworkHandler handler = (ServerPlayNetworkHandler)(Object)this;
             

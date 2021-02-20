@@ -6,7 +6,7 @@
   "mixins": [
     "AlertChangeHealthMixin",
     "BodyPartDuck",
-    "ManageLivingEntityDamageLogicMixin",
+    "FallingBlockDamageMixin",
     "ManageTakenDamageMixin",
     "NaturalRegenEffectMixin",
     "SaveDamageMixin",

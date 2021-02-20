@@ -22,6 +22,7 @@ public object DamageHandlerDispatcher {
         var mutAmount = amount
         val provider = player as BodyPartProvider
 
+        // Taken directly from damage logic
         if (player.hasStatusEffect(StatusEffects.RESISTANCE) && source != DamageSource.OUT_OF_WORLD) {
             val k = (player.getStatusEffect(StatusEffects.RESISTANCE)!!.amplifier + 1) * 5
             val j = 25 - k

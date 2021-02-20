@@ -5,6 +5,9 @@ import io.github.faecraft.heartshapedbox.body.BodyPartSide.*
 import net.minecraft.util.math.Vec2f
 import net.minecraft.util.math.Vec3d
 
+/**
+ * Allows for constructing the base of FlexBoxes through a few utility methods
+ */
 public class FlexboxBaseBuilder(
     baseHeight: Double,
     leftSet: QuadSame<Vec2f>,

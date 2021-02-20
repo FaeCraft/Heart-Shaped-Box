@@ -31,6 +31,7 @@ public class S2CBodyPartSyncPacket() {
     }
 
     public fun send(player: ServerPlayerEntity) {
+        // TODO: Remove logging call
         LOGGER.info("Sending packet to player: " + player.displayName.asString())
         val buffer = PacketByteBufs.create()
         write(buffer)
@@ -46,6 +47,7 @@ public class S2CBodyPartSyncPacket() {
                 val id = buffer.readIdentifier()
                 val health = buffer.readFloat()
                 val maxHealth = buffer.readFloat()
+                // TODO: Remove logging calls
                 LOGGER.info("UPDATE | Provider: $provider")
                 LOGGER.info("UPDATE | ID: $id Health: $health Max Health: $maxHealth")
                 val optionalPart = provider.maybeGet(id)

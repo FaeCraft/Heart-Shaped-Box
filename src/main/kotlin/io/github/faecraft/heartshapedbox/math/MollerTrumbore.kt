@@ -3,9 +3,13 @@ package io.github.faecraft.heartshapedbox.math
 import net.minecraft.util.math.Vec3d
 import java.util.*
 
-// Slightly adapted from
-// https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
-// For compatibility with Minecraft
+/**
+ * Slightly adapted from
+ * https://en.wikipedia.org/wiki/M%C3%B6ller%E2%80%93Trumbore_intersection_algorithm
+ * for compatibility with Minecraft
+ *
+ * Also run through IDEAs auto-convert for java -> kotlin then manually cleaned up slightly
+**/
 public object MollerTrumbore {
     private const val EPSILON = 0.0000001
     public fun rayIntersectsTriangle(rayOrigin: Vec3d, rayVector: Vec3d, inTriangle: Triangle): Optional<Vec3d> {

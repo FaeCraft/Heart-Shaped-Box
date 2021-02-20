@@ -5,7 +5,7 @@ import net.minecraft.entity.effect.StatusEffect
 import net.minecraft.entity.effect.StatusEffectType
 
 public class MorphineStatusEffect : StatusEffect(StatusEffectType.BENEFICIAL, EFFECT_COLOR) {
-    override fun getTranslationKey(): String = HSBMain.MOD_ID + ".effect.morphine"
+    override fun getTranslationKey(): String = "effect.${HSBMain.MOD_ID}.morphine"
 
     public companion object {
         public const val EFFECT_COLOR: Int = 0x8b5f65

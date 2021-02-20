@@ -1,0 +1,11 @@
+{
+  "itemGroup.heartshapedbox.items": "Heart Shaped Box Items",
+
+  "item.heartshapedbox.morphine": "Morphine Syringe",
+  "item.heartshapedbox.medkit": "Medkit",
+  "item.heartshapedbox.plaster": "Plaster",
+  "item.heartshapedbox.heart_crystal": "Heart Crystal",
+  "item.heartshapedbox.heart_crystal_shard": "Heart Crystal Shard",
+
+  "effect.heartshapedbox.morphine": "Morphine"
+}

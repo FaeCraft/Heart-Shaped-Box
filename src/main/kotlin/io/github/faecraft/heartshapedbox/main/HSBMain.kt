@@ -39,14 +39,6 @@ public class HSBMain : ModInitializer {
         Registry.register(Registry.ITEM, Identifier(MOD_ID, "heart_crystal"), HSBItems.HEART_CRYSTAL)
         Registry.register(Registry.ITEM, Identifier(MOD_ID, "heart_crystal_shard"), HSBItems.HEART_CRYSTAL_SHARD)
 
-//        ServerEntityEvents.ENTITY_LOAD.register((entity, world) -> {
-//            if (entity instanceof ServerPlayerEntity) {
-//                LOGGER.info("ENTITY LOAD | Entity: " + entity + " World: " + world);
-//
-//                S2CBodyPartSyncPacket.from((ServerPlayerEntity) entity).send((ServerPlayerEntity) entity);
-//            }
-//        });
-
         ServerPlayerEvents.AFTER_RESPAWN.register(::afterRespawn)
 
         ServerTickEvents.END_SERVER_TICK.register { minecraftServer: MinecraftServer? ->
@@ -55,14 +47,14 @@ public class HSBMain : ModInitializer {
                 HSBMiscLogic.updatePlayerFlexBoxes(playerEntity)
             }
 
-            // Debuff all players accordingly
+            // Debuff all players
             PlayerLookup.all(minecraftServer).forEach { playerEntity: ServerPlayerEntity ->
                 HSBMiscLogic.debuffPlayer(playerEntity)
             }
         }
 
         // Debug command
-        // TODO: REMOVE THIS! or add an op requirement idc
+        // TODO: REMOVE THIS! or add an op requirement
         CommandRegistrationCallback.EVENT.register(
             CommandRegistrationCallback { commandDispatcher: CommandDispatcher<ServerCommandSource?>, _: Boolean ->
                 commandDispatcher.register(
@@ -110,7 +102,7 @@ public class HSBMain : ModInitializer {
 
     private fun afterRespawn(oldPlayer: ServerPlayerEntity, newPlayer: ServerPlayerEntity, server: Boolean) {
         // Extracted to a function because it's easier to understand with a signature this large
-
+        // TODO: Remove logging call
         LOGGER.info(
             "AFTER RESPAWN | Old: $oldPlayer New: $newPlayer Server: $server"
         )

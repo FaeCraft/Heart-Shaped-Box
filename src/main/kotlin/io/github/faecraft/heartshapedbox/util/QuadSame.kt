@@ -1,5 +1,8 @@
 package io.github.faecraft.heartshapedbox.util
 
+/**
+ * A container for 4 objects of the same type
+ */
 public data class QuadSame<T>(val zero: T, val one: T, val two: T, val three: T) {
     public operator fun get(i: Int): T {
         return when(i) {
