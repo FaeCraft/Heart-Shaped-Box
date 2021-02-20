@@ -39,15 +39,15 @@ public class HeadBodyPart(owner: PlayerEntity) : AbstractBodyPart(owner) {
                     leftSet, rightSet, FlexboxBaseBuilder.BuildType.FULL_BOX),
                 LimbHeights.HEAD_HEIGHT
             )
-            FALL_FLYING -> TODO()
+            FALL_FLYING -> FlexBox.ZERO
             SLEEPING -> FlexBox(
                 FlexboxBaseBuilder(
                     pos.y,
                     leftSet, rightSet, FlexboxBaseBuilder.BuildType.FULL_BOX),
-                LimbHeights.HEAD_HEIGHT
+                LimbHeights.FULL_BLOCK
             )
             SWIMMING -> FlexBox.ZERO
-            SPIN_ATTACK -> TODO()
+            SPIN_ATTACK -> FlexBox.ZERO
             CROUCHING -> FlexBox(
                 FlexboxBaseBuilder(
                     pos.y + LimbHeights.FOOT_HEIGHT_C + LimbHeights.LEG_HEIGHT_C + LimbHeights.CENTER_HEIGHT_C,

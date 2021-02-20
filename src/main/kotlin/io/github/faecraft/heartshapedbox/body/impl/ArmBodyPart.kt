@@ -38,15 +38,15 @@ public class ArmBodyPart(owner: PlayerEntity, private val side: BodyPartSide) : 
                     leftSet, rightSet, FlexboxBaseBuilder.BuildType.ofSide(side)),
                 LimbHeights.CENTER_HEIGHT
             )
-            EntityPose.FALL_FLYING -> TODO()
+            EntityPose.FALL_FLYING -> FlexBox.ZERO
             EntityPose.SLEEPING -> FlexBox.ZERO
             EntityPose.SWIMMING -> FlexBox(
                 FlexboxBaseBuilder(
                     pos.y,
                     leftSet, rightSet, FlexboxBaseBuilder.BuildType.ofSide(side)),
-                LimbHeights.CENTER_HEIGHT
+                LimbHeights.FULL_BLOCK
             )
-            EntityPose.SPIN_ATTACK -> TODO()
+            EntityPose.SPIN_ATTACK -> FlexBox.ZERO
             EntityPose.CROUCHING -> FlexBox(
                 FlexboxBaseBuilder(
                     pos.y + LimbHeights.FOOT_HEIGHT_C + LimbHeights.LEG_HEIGHT_C,
