@@ -7,5 +7,8 @@
   "item.heartshapedbox.heart_crystal": "Heart Crystal",
   "item.heartshapedbox.heart_crystal_shard": "Heart Crystal Shard",
 
-  "effect.heartshapedbox.morphine": "Morphine"
+  "effect.heartshapedbox.morphine": "Morphine",
+
+  "key.heartshapedbox.open_health_screen": "Open Health Menu",
+  "category.heartshapedbox.keybinds": "Heart Shaped Box Keybinds"
 }
