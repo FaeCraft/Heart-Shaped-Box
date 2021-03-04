@@ -10,5 +10,8 @@
   "effect.heartshapedbox.morphine": "Morphine",
 
   "key.heartshapedbox.open_health_screen": "Open Health Menu",
-  "category.heartshapedbox.keybinds": "Heart Shaped Box Keybinds"
+  "category.heartshapedbox.keybinds": "Heart Shaped Box Keybinds",
+
+  "screen.heartshapedbox.health_screen.title_view": "Limb Health",
+  "screen.heartshapedbox.health_screen.title_heal": "Choose a Limb to Heal"
 }

@@ -8,9 +8,13 @@ import net.minecraft.client.util.math.MatrixStack
 import net.minecraft.client.util.math.Vector3f
 import net.minecraft.entity.LivingEntity
 import net.minecraft.text.LiteralText
+import net.minecraft.text.TranslatableText
 import net.minecraft.util.Identifier
 
-public class HealthDisplayScreen : Screen(LiteralText("Health")) {
+public class HealthDisplayScreen(public val allowHealing: Boolean) : Screen(LiteralText("Health")) {
+    public val viewTitle: TranslatableText = TranslatableText("screen.${HSBMain.MOD_ID}.health_screen.title_view")
+    public val healTitle: TranslatableText = TranslatableText("screen.${HSBMain.MOD_ID}.health_screen.title_heal")
+
     override fun isPauseScreen(): Boolean = false
 
     override fun render(matrices: MatrixStack?, mouseX: Int, mouseY: Int, delta: Float) {
@@ -28,6 +32,15 @@ public class HealthDisplayScreen : Screen(LiteralText("Health")) {
 
         drawTexture(matrices, x, y, 0, 0, TEXTURE_WIDTH, TEXTURE_HEIGHT)
         drawPlayer(x, y, client!!.player!!)
+
+        val text = if (allowHealing) healTitle else viewTitle
+        textRenderer.draw(
+            matrices,
+            text,
+            x + PLAYER_X_OFFSET - textRenderer.getWidth(text) / 2,
+            y + TITLE_VERTICAL_OFFSET,
+            TEXT_COLOR
+        )
     }
 
     private fun drawPlayer(x: Int, y: Int, entity: LivingEntity) {
@@ -99,5 +112,8 @@ public class HealthDisplayScreen : Screen(LiteralText("Health")) {
 
         public const val UNKNOWN_TRANSFORM_A: Float = 1050f
         public const val UNKNOWN_TRANSFORM_B: Double = 1000.0
+
+        public const val TEXT_COLOR: Int = 4_210_752
+        public const val TITLE_VERTICAL_OFFSET: Float = 7.0f
     }
 }

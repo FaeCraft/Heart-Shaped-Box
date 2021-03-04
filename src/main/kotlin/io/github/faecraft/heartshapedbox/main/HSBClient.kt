@@ -39,7 +39,7 @@ public class HSBClient : ClientModInitializer {
         // So people cant accidentally bind to left mouse
         // And constantly open the screen
         if (instance.currentScreen == null) {
-            instance.openScreen(HealthDisplayScreen())
+            instance.openScreen(HealthDisplayScreen(false))
         }
     }
 
